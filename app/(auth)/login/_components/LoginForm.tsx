@@ -105,11 +105,11 @@ export default function LoginForm() {
                     <div className="flex flex-col justify-center items-center gap-1">
                         <Logo />
                         <h1 className="text-3xl text-gray-800 font-li-shohid">
-                            প্রশ্নকোষ
+                            অনুশীলন
                         </h1>
                     </div>
                     <p className="mt-2 text-sm text-gray-400">
-                        লগইন করুন
+                        লগইন করো
                     </p>
                 </div>
 

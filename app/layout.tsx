@@ -28,23 +28,23 @@ const notoSerifBengali = Noto_Serif_Bengali({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://proshnokosh.com"),
+  metadataBase: new URL("https://anushilon.net"),
   alternates: {
     canonical: "/",
   },
   title: {
-    default: "প্রশ্নকোষ (Proshnokosh) — মিনিটেই নিখুঁত প্রশ্নপত্র",
-    template: "%s | প্রশ্নকোষ",
+    default: "অনুশীলন (Anushilon) — সফলতার নির্ভরযোগ্য সূত্র",
+    template: "%s | অনুশীলন",
   },
   description:
-    "প্রশ্নকোষ (Proshnokosh) — শিক্ষকদের জন্য ডিজিটাল প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। মিনিটেই তৈরী করুন নিখুঁত প্রশ্নপত্র।",
+    "অনুশীলন (Anushilon) — SSC, HSC and Admission Preparation Platform",
   applicationName: "Proshnokosh",
   openGraph: {
-    title: "প্রশ্নকোষ (Proshnokosh) — মিনিটেই নিখুঁত প্রশ্নপত্র",
+    title: "অনুশীলন (Anushilon) — সফলতার নির্ভরযোগ্য সূত্র",
     description:
-      "প্রশ্নকোষ (Proshnokosh) — শিক্ষকদের জন্য ডিজিটাল প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। মিনিটেই তৈরী করুন নিখুঁত প্রশ্নপত্র।",
-    url: "https://proshnokosh.com",
-    siteName: "প্রশ্নকোষ | Proshnokosh",
+      "অনুশীলন (Anushilon) — SSC, HSC and Admission Preparation Platform",
+    url: "https://anushilon.net",
+    siteName: "অনুশীলন | Anushilon",
     locale: "bn_BD",
     type: "website",
     images: [
@@ -52,15 +52,15 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "প্রশ্নকোষ (Proshnokosh)",
+        alt: "অনুশীলন (Anushilon)",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "প্রশ্নকোষ (Proshnokosh) — মিনিটেই নিখুঁত প্রশ্নপত্র",
+    title: "অনুশীলন (Anushilon) — সফলতার নির্ভরযোগ্য সূত্র ",
     description:
-      "প্রশ্নকোষ (Proshnokosh) — শিক্ষকদের জন্য ডিজিটাল প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। মিনিটেই তৈরী করুন নিখুঁত প্রশ্নপত্র।",
+      "অনুশীলন (Anushilon) — SSC, HSC and Admission Preparation Platform",
     images: ["/og.png"],
   },
   robots: { index: true, follow: true },
@@ -71,21 +71,21 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://proshnokosh.com/#org",
-      name: "প্রশ্নকোষ",
-      alternateName: ["Proshnokosh"],
-      url: "https://proshnokosh.com",
-      logo: "https://proshnokosh.com/logo.svg",
-      sameAs: ["https://www.facebook.com/proshnokosh/"],
+      "@id": "https://anushilon.net/#org",
+      name: "অনুশীলন",
+      alternateName: ["Anushilon"],
+      url: "https://anushilon.net",
+      logo: "https://anushilon.net/logo.svg",
+      sameAs: ["https://www.facebook.com/anushilon/"],
     },
     {
       "@type": "WebSite",
-      "@id": "https://proshnokosh.com/#site",
-      name: "প্রশ্নকোষ",
+      "@id": "https://anushilon.net/#site",
+      name: "অনুশীলন",
       alternateName: "Proshnokosh",
-      url: "https://proshnokosh.com",
+      url: "https://anushilon.net",
       inLanguage: "bn",
-      publisher: { "@id": "https://proshnokosh.com/#org" },
+      publisher: { "@id": "https://anushilon.net/#org" },
     },
   ],
 };

@@ -149,10 +149,10 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
                         <Logo />
                         <div className={clsx(collapsed && 'lg:hidden')}>
                             <div className="font-li-shohid text-[28px] text-primary leading-none">
-                                প্রশ্নকোষ
+                                অনুশীলন
                             </div>
                             <div className="text-[11px] text-muted-foreground tracking-wide mt-1">
-                                মিনিটেই নিখুঁত প্রশ্নপত্র
+                                সফলতার নির্ভরযোগ্য সূত্র
                             </div>
                         </div>
                     </div>

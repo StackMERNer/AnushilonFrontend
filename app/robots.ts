@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://proshnokosh.com/sitemap.xml",
+    sitemap: "https://anushilon.net/sitemap.xml",
   };
 }

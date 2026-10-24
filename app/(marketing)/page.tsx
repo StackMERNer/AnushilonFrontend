@@ -7,16 +7,16 @@ const ogImage = {
     url: "/og.png", // resolved against metadataBase
     width: 1200,
     height: 630,
-    alt: "প্রশ্নকোষ (Proshnokosh)",
+    alt: "অনুশীলন (Anushilon)",
 };
 
 export const metadata: Metadata = {
-    title: { absolute: "প্রশ্নকোষ (Proshnokosh) — ৬ষ্ঠ থেকে ১০ম শ্রেণির প্রশ্নপত্র তৈরি" },
+    title: { absolute: "অনুশীলন (Anushilon) — ৬ষ্ঠ থেকে ১০ম শ্রেণির প্রশ্নপত্র তৈরি" },
     description:
-        "প্রশ্নকোষ (Proshnokosh) বাংলাদেশের স্কুল শিক্ষকদের জন্য অনলাইনে প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। ৬ষ্ঠ থেকে ১০ম শ্রেণির বিভিন্ন বিষয়ের MCQ, সৃজনশীল ও সংক্ষিপ্ত প্রশ্ন বেছে নিয়ে কয়েক মিনিটেই প্রশ্নপত্র তৈরি করুন এবং প্রিন্ট-রেডি PDF ডাউনলোড করুন।",
+        "অনুশীলন (Anushilon) বাংলাদেশের স্কুল শিক্ষকদের জন্য অনলাইনে প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। ৬ষ্ঠ থেকে ১০ম শ্রেণির বিভিন্ন বিষয়ের MCQ, সৃজনশীল ও সংক্ষিপ্ত প্রশ্ন বেছে নিয়ে কয়েক মিনিটেই প্রশ্নপত্র তৈরি করুন এবং প্রিন্ট-রেডি PDF ডাউনলোড করুন।",
     applicationName: "Proshnokosh",
     keywords: [
-        "প্রশ্নকোষ",
+        "অনুশীলন",
         "Proshnokosh",
 
         "প্রশ্নপত্র তৈরি",
@@ -49,16 +49,16 @@ export const metadata: Metadata = {
         "question paper maker Bangladesh",
     ],
 
-    authors: [{ name: "প্রশ্নকোষ" }],
-    creator: "প্রশ্নকোষ",
-    publisher: "প্রশ্নকোষ",
+    authors: [{ name: "অনুশীলন" }],
+    creator: "অনুশীলন",
+    publisher: "অনুশীলন",
 
     openGraph: {
-        title: "প্রশ্নকোষ (Proshnokosh) — মিনিটেই নিখুঁত প্রশ্নপত্র",
+        title: "অনুশীলন (Anushilon) — সফলতার নির্ভরযোগ্য সূত্র ",
         description:
             "প্রশ্ন ব্যাংক থেকে প্রশ্ন বেছে নিয়ে সহজেই প্রশ্নপত্র তৈরি করুন এবং প্রিন্ট-রেডি PDF ডাউনলোড করুন।",
-        url: "https://proshnokosh.com",
-        siteName: "Proshnokosh | প্রশ্নকোষ",
+        url: "https://anushilon.net",
+        siteName: "Proshnokosh | অনুশীলন",
         locale: "bn_BD",
         type: "website",
         images: [ogImage],
@@ -66,14 +66,14 @@ export const metadata: Metadata = {
 
     twitter: {
         card: "summary_large_image",
-        title: "Proshnokosh । প্রশ্নকোষ — মিনিটেই নিখুঁত প্রশ্নপত্র",
+        title: "Proshnokosh । অনুশীলন — সফলতার নির্ভরযোগ্য সূত্র ",
         description:
             "শিক্ষকদের জন্য সহজ ডিজিটাল প্রশ্নপত্র তৈরির প্ল্যাটফর্ম।",
         images: ["/og.png"],
     },
 
     alternates: {
-        canonical: "https://proshnokosh.com",
+        canonical: "https://anushilon.net",
     },
 
     robots: {
@@ -84,16 +84,16 @@ export const metadata: Metadata = {
 const MarketingPage = () => {
     const faqs = [
         {
-            question: "প্রশ্নকোষ (Proshnokosh) কী?",
-            answer: "প্রশ্নকোষ হলো শিক্ষকদের জন্য একটি ডিজিটাল প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। বিভিন্ন বিষয়, অধ্যায় ও প্রশ্নের ধরন অনুযায়ী প্রশ্ন বেছে নিয়ে কয়েক মিনিটেই সম্পূর্ণ প্রশ্নপত্র তৈরি করা যায়।"
+            question: "অনুশীলন (Anushilon) কী?",
+            answer: "অনুশীলন হলো শিক্ষকদের জন্য একটি ডিজিটাল প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। বিভিন্ন বিষয়, অধ্যায় ও প্রশ্নের ধরন অনুযায়ী প্রশ্ন বেছে নিয়ে কয়েক মিনিটেই সম্পূর্ণ প্রশ্নপত্র তৈরি করা যায়।"
         },
         {
-            question: "প্রশ্নকোষ দিয়ে কী ধরনের প্রশ্নপত্র তৈরি করা যায়?",
+            question: "অনুশীলন দিয়ে কী ধরনের প্রশ্নপত্র তৈরি করা যায়?",
             answer: "MCQ, সৃজনশীল ও সংক্ষিপ্ত প্রশ্নসহ বিভিন্ন ধরনের প্রশ্ন নিয়ে প্রশ্নপত্র তৈরি করা যায়। প্রশ্নের ক্রম, নম্বর এবং অন্যান্য প্রয়োজনীয় বিষয় নিজের মতো করে সাজানো যায়।"
         },
         {
             question: "প্রশ্নগুলো কোথা থেকে পাব?",
-            answer: "প্রশ্নকোষের প্রশ্ন ব্যাংক থেকেই বিষয়, অধ্যায়, শ্রেণি এবং অন্যান্য ফিল্টার ব্যবহার করে প্রয়োজনীয় প্রশ্ন খুঁজে নিতে পারবেন।"
+            answer: "অনুশীলনের প্রশ্ন ব্যাংক থেকেই বিষয়, অধ্যায়, শ্রেণি এবং অন্যান্য ফিল্টার ব্যবহার করে প্রয়োজনীয় প্রশ্ন খুঁজে নিতে পারবেন।"
         },
         {
             question: "প্রশ্নপত্র তৈরি করতে কত সময় লাগে?",
@@ -104,8 +104,8 @@ const MarketingPage = () => {
             answer: "হ্যাঁ। প্রশ্নপত্র তৈরি হয়ে গেলে প্রিন্ট-রেডি PDF হিসেবে ডাউনলোড করে সরাসরি প্রিন্ট করতে পারবেন।"
         },
         {
-            question: "প্রশ্নকোষ ব্যবহার করতে কি কোনো সফটওয়্যার ইনস্টল করতে হবে?",
-            answer: "না। প্রশ্নকোষ একটি ওয়েবভিত্তিক প্ল্যাটফর্ম। আপনার ব্রাউজার থেকেই ব্যবহার করতে পারবেন।"
+            question: "অনুশীলন ব্যবহার করতে কি কোনো সফটওয়্যার ইনস্টল করতে হবে?",
+            answer: "না। অনুশীলন একটি ওয়েবভিত্তিক প্ল্যাটফর্ম। আপনার ব্রাউজার থেকেই ব্যবহার করতে পারবেন।"
         },
         {
             question: "আমি কি নিজের মতো করে প্রশ্নপত্র সাজাতে পারব?",
@@ -120,10 +120,10 @@ const MarketingPage = () => {
                     <Logo />
                     <div>
                         <div className="font-li-shohid text-[28px] leading-none text-primary">
-                            প্রশ্নকোষ
+                            অনুশীলন
                         </div>
                         <div className="mt-1 text-[11px] tracking-wide text-muted-foreground">
-                            মিনিটেই নিখুঁত প্রশ্নপত্র
+                            সফলতার নির্ভরযোগ্য সূত্র
                         </div>
                     </div>
                 </div>
@@ -366,7 +366,7 @@ const MarketingPage = () => {
             <section className="border-t border-border bg-muted/30 py-20">
                 <div className="mx-auto max-w-5xl px-6 lg:px-10">
                     <h2 className="text-center font-tiro text-2xl font-bold sm:text-3xl">
-                        Word-এ যা কষ্টের, প্রশ্নকোষে তা এক মিনিটের
+                        Word-এ যা কষ্টের, অনুশীলনে তা এক মিনিটের
                     </h2>
 
                     <div className="mt-10 grid gap-6 sm:grid-cols-2">
@@ -379,7 +379,7 @@ const MarketingPage = () => {
                             </ul>
                         </div>
                         <div className="rounded-2xl border border-(--teal)/40 bg-(--teal-tint)/20 p-6 shadow-sm">
-                            <p className="text-xs font-semibold text-teal uppercase tracking-wider">প্রশ্নকোষে (এখন)</p>
+                            <p className="text-xs font-semibold text-teal uppercase tracking-wider">অনুশীলনে (এখন)</p>
                             <ul className="mt-4 space-y-3 text-sm text-foreground">
                                 <li className="flex items-center gap-2">✓ একবার সাজালেই লেআউট নিজে থেকে ঠিক হয়ে যায়</li>
                                 <li className="flex items-center gap-2">✓ প্রশ্ন ব্যাংক থেকে খুঁজে সরাসরি যোগ করা যায়</li>
@@ -398,7 +398,7 @@ const MarketingPage = () => {
                             সচরাচর জিজ্ঞাসা
                         </h2>
                         <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                            প্রশ্নকোষ ব্যবহার সম্পর্কে সাধারণ কিছু প্রশ্নের উত্তর
+                            অনুশীলন ব্যবহার সম্পর্কে সাধারণ কিছু প্রশ্নের উত্তর
                         </p>
                     </div>
 
@@ -442,8 +442,8 @@ const MarketingPage = () => {
             {/* Footer */}
             <footer className="border-t border-border py-8">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 text-xs text-muted-foreground sm:flex-row lg:px-10">
-                    <span className="font-tiro font-semibold text-foreground">প্রশ্নকোষ | Proshnokosh</span>
-                    <span>© ২০২৬ প্রশ্নকোষ। সর্বস্বত্ব সংরক্ষিত।</span>
+                    <span className="font-tiro font-semibold text-foreground">অনুশীলন | Proshnokosh</span>
+                    <span>© ২০২৬ অনুশীলন। সর্বস্বত্ব সংরক্ষিত।</span>
                 </div>
             </footer>
         </main>

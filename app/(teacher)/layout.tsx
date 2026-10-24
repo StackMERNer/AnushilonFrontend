@@ -4,8 +4,8 @@ import './../globals.css';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 export const metadata: Metadata = {
-    title: 'প্রশ্নকোষ - শিক্ষক ড্যাশবোর্ড',
-    description: 'মিনিটেই নিখুঁত প্রশ্নপত্র তৈরি করুন',
+    title: 'অনুশীলন - শিক্ষক ড্যাশবোর্ড',
+    description: 'সফলতার নির্ভরযোগ্য সূত্র  তৈরি করুন',
     robots: { index: false }
 };
 

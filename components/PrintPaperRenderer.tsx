@@ -112,7 +112,7 @@ export default function PrintPaperRenderer({
 
     useEffect(() => {
         const originalTitle = document.title;
-        document.title = `${paper.title || 'untitled'} - প্রশ্নকোষ.কম`;
+        document.title = `${paper.title || 'untitled'} - অনুশীলন.কম`;
 
         return () => {
             document.title = originalTitle;

@@ -92,7 +92,7 @@ const PaymentHistoryPageContent = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold">
-                      প্রশ্নকোষ —{" "}
+                      অনুশীলন —{" "}
                       {planNames[payment.plan] ?? payment.plan}
                     </h3>
 

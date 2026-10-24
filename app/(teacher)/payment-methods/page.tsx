@@ -167,7 +167,7 @@ const PaymentMethods = () => {
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h1 className="text-2xl font-bold">
-                            প্রশ্নকোষ
+                            অনুশীলন
                         </h1>
 
                         <p className="text-sm text-muted-foreground mt-1">
