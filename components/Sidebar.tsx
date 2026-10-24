@@ -66,11 +66,6 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
             icon: Notebook,
         },
         {
-            label: "প্রশ্নসেট",
-            href: '/create-question-set',
-            icon: File
-        },
-        {
             label: "প্রশ্নসমূহ",
             href: '/analytics/question-analytics',
             icon: File
@@ -79,27 +74,25 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
 
     const teacherNavItems: MenuItem[] = [
         { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard },
-        { label: 'নতুন প্রশ্নপত্র', href: '/create-paper', icon: FilePlus },
+        { label: 'মক পরীক্ষা', href: '/mock', icon: FilePlus },
         {
-            label: 'আমার প্রশ্নপত্র',
-            href: '/my-papers',
+            label: 'টেমপ্লেট সমূহ',
+            href: '/templates',
+            icon: BookOpen,
+        },
+        {
+            label: 'আমার প্রচেষ্টাসমূহ',
+            href: '/my-attempts',
             icon: FileText,
         },
-        // {
-        //     label: "কন্টেন্ট লাইব্রেরি",
-        //     href: '/content-library',
-        //     icon: Crown
-        // }
+        {
+            label: 'প্রশ্নব্যাংক',
+            href: '/question-bank',
+            icon: File
+        }
     ];
 
     const teacherGeneralNavItems: MenuItem[] = [
-        {
-            label: "বুকলেট তৈরী", href: '/tools/booklet', icon: BookOpen
-        },
-        {
-            label: 'প্রতিষ্ঠানের তথ্য', href: '/my-institute', icon: User,
-
-        },
         {
             label: "পেমেন্ট হিস্টোরি", href: '/payment-history', icon: Clock
         },
