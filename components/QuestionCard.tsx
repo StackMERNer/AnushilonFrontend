@@ -9,15 +9,9 @@ import { questionLevelMap } from "@/lib/question-paper";
 const QuestionCard = ({
     question,
     questionNo,
-    isSelected,
-    isPending,
-    toggleSelect,
 }: {
     question: IFilterdQuestion;
     questionNo: number;
-    isSelected: boolean;
-    isPending: boolean;
-    toggleSelect: (id: string) => void;
 }) => {
     const typeLabel = QUESTION_TYPE_LABEL_MAP[question.type] ?? question.type;
     const sources = [
@@ -36,15 +30,7 @@ const QuestionCard = ({
         <div
             role="button"
             tabIndex={0}
-            onClick={() => toggleSelect(question._id)}
-            onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") &&
-                toggleSelect(question._id)
-            }
-            className={`question-card relative p-5 rounded-lg border bg-white cursor-pointer select-none transition-all duration-200 ${isSelected
-                ? "border-primary ring-2 ring-primary/20 shadow-sm"
-                : "border-slate-200 hover:border-slate-300"
-                }`}
+            className={`question-card relative p-5 rounded-lg border bg-white cursor-pointer select-none transition-all duration-200`}
         >
 
             {/* Question metadata */}
@@ -188,19 +174,6 @@ const QuestionCard = ({
                             </ul>
                         )}
                 </div>
-            </div>
-
-            {/* Selection status */}
-            <div className="absolute right-3 bottom-1">
-                {isPending ? (
-                    <span className="inline-flex items-center gap-1 px-1 py-1 rounded-full bg-slate-100 text-slate-600 animate-pulse">
-                        <Loader2 className="w-3 h-3 animate-spin text-primary" />
-                    </span>
-                ) : isSelected ? (
-                    <span className="inline-flex items-center gap-1 font-medium px-1 py-1 rounded-full bg-primary text-white transition-all scale-100">
-                        <Check className="w-3.5 h-3.5 stroke-3" />
-                    </span>
-                ) : null}
             </div>
         </div>
     );

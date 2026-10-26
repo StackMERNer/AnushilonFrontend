@@ -14,26 +14,22 @@ import { PremiumGate } from "./PremiumGate";
 
 interface Props {
     boards: IBoard[];
-    classId: string;
     selectedSubject: string;
     selectedChapter: string;
     selectedTopics: string[];
     selectedBoards: string[];
     selectedSchools: string[];
-    paperId: string;
     selectedYear?: number;
 }
 
 
 
 export default function QuestionFilterSidebar({
-    classId,
     selectedSubject: selectedSubjectId,
     selectedChapter: selectedChapterId,
     selectedTopics,
     selectedBoards,
     selectedSchools,
-    paperId,
     selectedYear
 }: Props) {
     const router = useRouter();
@@ -42,7 +38,7 @@ export default function QuestionFilterSidebar({
     const [isPending, startTransition] = useTransition();
 
 
-    const { data: academicTree } = useAcademicTree({ classId, upto: "topic", paperId });
+    const { data: academicTree } = useAcademicTree({ classId: "6a6e31bdd2ea30ebd6a29ded", upto: "topic" });
     const { data: questionTypes } = useQuestionTypes(selectedChapterId);
 
     const setParams = (updates: {

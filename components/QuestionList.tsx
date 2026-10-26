@@ -28,15 +28,11 @@ import { PremiumGate } from "./PremiumGate";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
 export default function QuestionList({
-    paperId,
-    initialSelectedIds = [],
     questions,
     totalPages,
     currentPage,
     resetParams,
 }: {
-    paperId: string;
-    initialSelectedIds?: string[];
     questions: IFilterdQuestion[];
     total: number;
     totalPages: number;
@@ -47,9 +43,6 @@ export default function QuestionList({
         classId?: string;
     };
 }) {
-    const [selectedIds, setSelectedIds] = useState<Set<string>>(
-        () => new Set(initialSelectedIds)
-    );
     const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
     const [columns, setColumns] = useState<1 | 2>(() => {
         if (typeof window !== "undefined") {
@@ -69,64 +62,8 @@ export default function QuestionList({
     const searchParams = useSearchParams();
 
     const paperService = createPaperService(apiClient);
-    // Optimistic Toggle Mutation
-    const toggleMutation = useMutation({
-        mutationFn: async (questionId: string) =>
-            paperService.toggleQuestionInPaper(paperId, questionId),
 
-        onMutate: (questionId) => {
-            setPendingIds((prev) => new Set(prev).add(questionId));
-            setSelectedIds((prev) => {
-                const next = new Set(prev);
 
-                if (next.has(questionId)) {
-                    next.delete(questionId);
-                } else {
-                    next.add(questionId);
-                }
-
-                return next;
-            });
-        },
-
-        onSettled: (_, __, questionId) => {
-            setPendingIds((prev) => {
-                const next = new Set(prev);
-                next.delete(questionId);
-                return next;
-            });
-        },
-
-        onError: (error: unknown, questionId) => {
-            setSelectedIds((prev) => {
-                const next = new Set(prev);
-
-                if (next.has(questionId)) {
-                    next.delete(questionId);
-                } else {
-                    next.add(questionId);
-                }
-
-                return next;
-            });
-
-            let errorMessage = "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।";
-
-            if (isAxiosError(error)) {
-                errorMessage =
-                    error.response?.data?.message || errorMessage;
-            } else if (error instanceof Error) {
-                errorMessage = error.message;
-            }
-
-            toast.error(errorMessage);
-        },
-    });
-
-    const toggleSelect = (id: string) => {
-        if (pendingIds.has(id)) return;
-        toggleMutation.mutate(id);
-    };
 
     const updateColumns = (cols: 1 | 2) => {
         setColumns(cols);
@@ -191,12 +128,6 @@ export default function QuestionList({
                 >
                     <Menu className="w-5 h-5" />
                 </button>
-                <Badge variant="secondary">নির্বাচিত: {toBnDigits(selectedIds.size)} টি</Badge>
-
-                <PressableButton onClick={() => router.push(`/my-papers/${paperId}`)} className="flex items-center gap-1 cursor-pointer" size={'sm'}>
-                    <Eye size={14} />
-                    <span>প্রিভিউ</span>
-                </PressableButton>
 
                 <div className="flex items-center gap-2">
                     {/* View Switcher: Hidden on Mobile */}
@@ -233,7 +164,7 @@ export default function QuestionList({
                 <p className="text-slate-500 py-10 text-center">
                     কোন প্রশ্ন পাওয়া যায়নি।
                     <br />
-                    <PressableButton href={`/my-papers/${paperId}/add-questions?class=${resetParams.classId}&subject=${resetParams.subjectId}&chapter=${resetParams.chapterId}`}>ফিল্টার রিসেট করুন</PressableButton>
+                    {/* <PressableButton href={`/my-papers/${paperId}/add-questions?class=${resetParams.classId}&subject=${resetParams.subjectId}&chapter=${resetParams.chapterId}`}>ফিল্টার রিসেট করুন</PressableButton> */}
                 </p>
             ) : (
                 <div
@@ -241,16 +172,12 @@ export default function QuestionList({
                         }`}
                 >
                     {questions.map((q, index) => {
-                        const isSelected = selectedIds.has(q._id);
-                        const isPending = pendingIds.has(q._id);
                         return (
                             <QuestionCard
                                 key={q._id}
                                 question={q}
                                 questionNo={(currentPage - 1) * 20 + index + 1}
-                                isSelected={isSelected}
-                                isPending={isPending}
-                                toggleSelect={toggleSelect}
+
                             />
                         );
                     })}

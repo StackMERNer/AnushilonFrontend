@@ -1,15 +1,14 @@
 import { PaginatedResponse } from "@/types/pagination";
 import { IFilterdQuestion } from "@/types/question";
 import { AxiosError, AxiosInstance } from "axios";
-export function createQuestionService(client: AxiosInstance) {
-  const baseUrl = "/questions";
+export function createQuestionBankService(client: AxiosInstance) {
+  const baseUrl = "/question-bank";
   return {
     getFilteredQuestions: async (filters: {
       page: number;
       selectedSubject: string;
       selectedChapter: string;
       selectedTopics: string;
-      paper: string;
       selectedBoards: string;
       selectedSchools: string;
       selectedUniversities: string;
@@ -26,7 +25,6 @@ export function createQuestionService(client: AxiosInstance) {
               subject: filters.selectedSubject,
               chapter: filters.selectedChapter,
               topics: filters.selectedTopics,
-              paper: filters.paper,
               boards: filters.selectedBoards,
               schools: filters.selectedSchools,
               universities: filters.selectedUniversities,

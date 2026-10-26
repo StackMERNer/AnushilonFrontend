@@ -1,4 +1,3 @@
-// components/Topbar.tsx
 "use client";
 
 import { useSidebar } from "@/context/SidebarContext";
@@ -27,7 +26,7 @@ export function Topbar() {
         "/add-questions",
         "/my-papers",
         "/content-library",
-        // "/tools",
+        "/question-bank",
     ];
 
 

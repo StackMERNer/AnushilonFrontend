@@ -74,7 +74,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
 
     const teacherNavItems: MenuItem[] = [
         { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard },
-        { label: 'মক পরীক্ষা', href: '/mock', icon: FilePlus },
+        { label: 'মক পরীক্ষা', href: '/mock-exam', icon: FilePlus },
         {
             label: 'টেমপ্লেট সমূহ',
             href: '/templates',

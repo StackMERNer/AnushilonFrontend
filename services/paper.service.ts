@@ -4,7 +4,7 @@ import {
   IPopulatedQuestionPaper,
   IQuestionPaper,
 } from "@/types/question-paper";
-import { Axios, AxiosError, AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
 
 export function createPaperService(client: AxiosInstance) {
   const baseUrl = "/question-papers";

@@ -3,7 +3,7 @@ import QuestionFilterSidebar from "@/components/QuestionFilterSidebar";
 import FilterDrawerWrapper, { FilterDrawerContent } from "@/components/FilterDrawerWrapper";
 import QuestionList from "@/components/QuestionList";
 import QuestionListSkeleton from "@/components/QuestionListSkeleton";
-import { createQuestionService } from "@/services/question.service";
+import { createQuestionBankService } from "@/services/question-bank.service";
 import { createServerApiClient } from "@/lib/api/api-server";
 import { createPaperService } from "@/services/paper.service";
 import { IPopulatedQuestionPaper } from "@/types/question-paper";
@@ -44,7 +44,7 @@ async function QuestionListLoader(props: {
     classId: string;
 }) {
     const serverClient = createServerApiClient();
-    const questionService = createQuestionService(serverClient);
+    const questionService = createQuestionBankService(serverClient);
     const paperService = createPaperService(serverClient);
 
     // Fetch both questions and current paper state concurrently
