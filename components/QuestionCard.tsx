@@ -1,7 +1,6 @@
 import { toBnDigits } from "@/lib/helpers";
 import RichTextRenderer from "./RichTextRenderer";
 import { IFilterdQuestion } from "@/types/question";
-import { Check, Loader2 } from "lucide-react";
 import { QUESTION_TYPE_LABEL_MAP } from "@/lib/constants";
 import clsx from "clsx";
 import { questionLevelMap } from "@/lib/question-paper";
@@ -9,9 +8,11 @@ import { questionLevelMap } from "@/lib/question-paper";
 const QuestionCard = ({
     question,
     questionNo,
+    showQuestionLabel = true,
 }: {
     question: IFilterdQuestion;
     questionNo: number;
+    showQuestionLabel?: boolean;
 }) => {
     const typeLabel = QUESTION_TYPE_LABEL_MAP[question.type] ?? question.type;
     const sources = [
@@ -35,39 +36,10 @@ const QuestionCard = ({
 
             {/* Question metadata */}
             <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-
-
-                <span className="rounded-md bg-neutral-100 text-neutral-700 px-2 py-1">
+                {showQuestionLabel && <span className="rounded-full bg-blue-500 text-white px-2 py-1">
                     {typeLabel}
-                </span>
-                {/* Question sources */}
-                {sources.length > 0 && (
-                    <div className="font-semibold items-center bg-yellow-300 p-1 rounded-md">
-                        [{sources.map((source, index) => (
-                            <span
-                                key={`${source.name}-${source.year}-${index}`}
+                </span>}
 
-                            >
-                                {index > 0 && (
-                                    <span className="mr-2">,</span>
-                                )}
-
-                                <span>
-                                    {source.name}
-                                </span>
-
-                                {source.year && (
-                                    <>
-                                        <span className="mx-0.5">:</span>
-                                        <span className="">
-                                            {toBnDigits(source.year)}
-                                        </span>
-                                    </>
-                                )}
-                            </span>
-                        ))}]
-                    </div>
-                )}
                 {/* Level */}
                 {question.level && (
                     <span className="rounded-md bg-yellow-100 text-yellow-700 px-2 py-1">
@@ -76,11 +48,11 @@ const QuestionCard = ({
                 )}
 
                 {/* Difficulty */}
-                {/* {question.difficulty && (
+                {question.difficulty && (
                     <span className="rounded-md bg-amber-50 px-2 py-1 text-amber-700">
                         {question.difficulty}
                     </span>
-                )} */}
+                )}
             </div>
 
             <div className="flex items-start gap-3">
@@ -103,7 +75,35 @@ const QuestionCard = ({
                         />
                     )}
 
+                    {/* Question sources */}
+                    <div className="w-full flex justify-end">
+                        {sources.length > 0 && (
+                            <div className="font-semibold items-center bg-yellow-300 p-1 rounded-full text-xs">
+                                [{sources.map((source, index) => (
+                                    <span
+                                        key={`${source.name}-${source.year}-${index}`}
+                                    >
+                                        {index > 0 && (
+                                            <span className="mr-2">,</span>
+                                        )}
 
+                                        <span>
+                                            {source.name}
+                                        </span>
+
+                                        {source.year && (
+                                            <>
+                                                <span className="mx-0.5">:</span>
+                                                <span className="">
+                                                    {toBnDigits(source.year)}
+                                                </span>
+                                            </>
+                                        )}
+                                    </span>
+                                ))}]
+                            </div>
+                        )}
+                    </div>
 
                     {/* MCQ options */}
                     {question.type === "mcq" &&
