@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useIsMutating } from "@tanstack/react-query";
@@ -21,6 +21,36 @@ const RATINGS: { value: Rating; label: string; cls: string }[] = [
     { value: 4, label: "সহজ", cls: "bg-blue-600 hover:bg-blue-700" },
 ];
 
+// ---- localStorage-backed "auto rate" preference (external store) ----
+const autoListeners = new Set<() => void>();
+
+function subscribeAuto(cb: () => void) {
+    autoListeners.add(cb);
+    window.addEventListener("storage", cb);
+    return () => {
+        autoListeners.delete(cb);
+        window.removeEventListener("storage", cb);
+    };
+}
+
+function getAutoSnapshot(): boolean {
+    try {
+        const v = localStorage.getItem(AUTO_KEY);
+        return v === null ? true : v === "1";
+    } catch {
+        return true;
+    }
+}
+
+const getAutoServerSnapshot = () => true;
+
+function setAutoPref(v: boolean) {
+    try {
+        localStorage.setItem(AUTO_KEY, v ? "1" : "0");
+    } catch { }
+    autoListeners.forEach((l) => l());
+}
+
 interface Props {
     items: IStudyItem[];
     totalDue: number;
@@ -35,10 +65,11 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
     const [queue, setQueue] = useState(items);
     const [revealed, setRevealed] = useState(false);
     const [picked, setPicked] = useState<number | null>(null);
-    const [autoRate, setAutoRate] = useState(true);
     const [againCount, setAgainCount] = useState(0);
     const [saveFailed, setSaveFailed] = useState(false);
     const shownAt = useRef(0);
+
+    const autoRate = useSyncExternalStore(subscribeAuto, getAutoSnapshot, getAutoServerSnapshot);
 
     const total = items.length;
     const current = queue[0];
@@ -52,22 +83,10 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
     const autoRating: Rating = picked === correct ? 3 : 1;
 
     useEffect(() => {
-        try {
-            const v = localStorage.getItem(AUTO_KEY);
-            if (v !== null) setAutoRate(v === "1");
-        } catch { }
-    }, []);
-
-    useEffect(() => {
         shownAt.current = Date.now();
     }, [current?.question._id]);
 
-    const toggleAuto = (v: boolean) => {
-        setAutoRate(v);
-        try {
-            localStorage.setItem(AUTO_KEY, v ? "1" : "0");
-        } catch { }
-    };
+    const toggleAuto = (v: boolean) => setAutoPref(v);
 
     const submit = (rating: Rating, auto: boolean) => {
         if (!current) return;
@@ -107,26 +126,31 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
 
     // keyboard shortcuts (handler kept in a ref so it always sees fresh state)
     const keyHandler = useRef<(e: KeyboardEvent) => void>(() => { });
-    keyHandler.current = (e) => {
-        if (!current) return;
-        const confirm = e.key === " " || e.key === "Enter";
-        const num = Number(e.key);
 
-        if (!revealed) {
-            if (isAuto && num >= 1 && num <= (q.options?.length ?? 0)) pick(num - 1);
-            else if (!isAuto && confirm) {
-                e.preventDefault();
-                setRevealed(true);
+    // runs after every render, so the ref always holds the latest closure
+    useEffect(() => {
+        keyHandler.current = (e) => {
+            if (!current) return;
+            const confirm = e.key === " " || e.key === "Enter";
+            const num = Number(e.key);
+
+            if (!revealed) {
+                if (isAuto && num >= 1 && num <= (q?.options?.length ?? 0)) pick(num - 1);
+                else if (!isAuto && confirm) {
+                    e.preventDefault();
+                    setRevealed(true);
+                }
+                return;
             }
-            return;
-        }
-        if (useAuto) {
-            if (confirm) {
-                e.preventDefault();
-                advance(autoRating);
-            }
-        } else if (num >= 1 && num <= 4) rate(num as Rating);
-    };
+            if (useAuto) {
+                if (confirm) {
+                    e.preventDefault();
+                    advance(autoRating);
+                }
+            } else if (num >= 1 && num <= 4) rate(num as Rating);
+        };
+    });
+
     useEffect(() => {
         const f = (e: KeyboardEvent) => keyHandler.current(e);
         window.addEventListener("keydown", f);
