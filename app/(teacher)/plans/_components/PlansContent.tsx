@@ -2,14 +2,14 @@ import { plansInfo } from "@/lib/constants";
 import Link from "next/link";
 
 
-const PlansContent = () => {
+const PlansContent = ({ showFree = false }: { showFree?: boolean }) => {
 
     return (
-        < >
+        <>
             <div className="container">
                 <div className="grid gap-y-10  md:grid-cols-2 md:gap-x-3 lg:gap-x-3">
                     {/* Paid Plans */}
-                    {plansInfo.map((plan) => (
+                    {plansInfo.filter((plan) => showFree || !plan.isFree).map((plan) => (
                         <div
                             key={plan.type}
                             className="relative p-8 border rounded-2xl shadow-sm flex flex-col dark:bg-neutral-900"
@@ -58,46 +58,6 @@ const PlansContent = () => {
                             </Link>}
                         </div>
                     ))}
-                    <div
-                        key={'subject_wise'}
-                        className="relative p-8 border rounded-2xl shadow-sm flex flex-col dark:bg-neutral-900"
-                    >
-
-                        {/* <p className="absolute top-0 right-8 py-1.5 px-4 bg-emerald-500 text-white rounded-full text-xs font-semibold uppercase tracking-wide transform -translate-y-1/2">
-                            টিউটর
-                        </p> */}
-
-
-                        <div className="flex-1">
-                            <h3 className="text-xl font-semibold">
-                                বিষয় ভিত্তিক
-                            </h3>
-                            <p className="mt-4 flex items-baseline text-nowrap">
-                                {/* {(plan.originalPrice) && (
-                                        <span className="text-2xl font-medium text-muted-foreground line-through mr-3">
-                                            {toBnDigits(plan.originalPrice)}৳
-                                        </span>
-                                    )} */}
-                                <span className="text-4xl font-extrabold tracking-tight">
-                                    {toBnDigits(100)}৳
-                                </span>
-
-                                <span className="ml-1 text-xl font-semibold">
-                                    / বিষয়
-                                </span>
-                            </p>
-
-                            <PlanFeatures features={['বিষয় ভিত্তিক অ্যাকসেস', "১ বছর"]} />
-                        </div>
-
-                        <Link
-                            href={`/plans/select-subjects`}
-                            className="bg-primary text-white  block w-full py-3 px-6 rounded-md text-center font-medium mt-6"
-                        >
-
-                            বিষয় নির্বাচন করুন
-                        </Link>
-                    </div>
                 </div>
             </div>
         </>

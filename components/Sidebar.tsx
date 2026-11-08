@@ -26,7 +26,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 
-export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
+export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
     const pathname = usePathname();
     const { mobileMenuOpen, closeMobileMenu, collapsed, toggleCollapsed } = useSidebar();
 
@@ -76,13 +76,13 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
         { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard },
         { label: 'মক পরীক্ষা', href: '/mock-exam', icon: FilePlus },
         {
-            label: 'টেমপ্লেট সমূহ',
-            href: '/templates',
+            label: 'রিভিউ',
+            href: '/review',
             icon: BookOpen,
         },
         {
-            label: 'আমার প্রচেষ্টাসমূহ',
-            href: '/my-attempts',
+            label: 'আমার প্রগ্রেস',
+            href: '/progress',
             icon: FileText,
         },
         {
@@ -102,8 +102,8 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
     ];
     const adminGeneralNavItems: MenuItem[] = [];
 
-    const targetMainNavItems = layout === 'teacher' ? teacherNavItems : adminNavItems;
-    const targetGeneralNavItems: MenuItem[] = layout === 'teacher' ? teacherGeneralNavItems : adminGeneralNavItems;
+    const targetMainNavItems = layout === 'student' ? teacherNavItems : adminNavItems;
+    const targetGeneralNavItems: MenuItem[] = layout === 'student' ? teacherGeneralNavItems : adminGeneralNavItems;
 
     const { data: user } = useUserProfile();
 
@@ -128,7 +128,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
             {/* Sidebar Drawer */}
             <aside
                 className={clsx(
-                    'print:hidden fixed top-0 left-0 z-50 h-screen w-72 bg-card border-r-2 border-dashed border-border p-6 text-foreground transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:z-auto lg:h-screen lg:flex lg:flex-col lg:sticky lg:top-0 lg:overflow-y-auto lg:overflow-x-hidden shrink-0 lg:w-auto',
+                    'print:hidden fixed top-0 left-0 z-50 h-screen w-72 border-r-2 border-dashed border-sidebar-border p-6 text-sidebar-foreground transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:z-auto lg:h-screen lg:flex lg:flex-col lg:sticky lg:top-0 lg:overflow-y-auto lg:overflow-x-hidden shrink-0 lg:w-auto dark:bg-black bg-white',
                     mobileMenuOpen ? 'translate-x-0' : '-translate-x-full',
                     collapsed && 'lg:px-3'
                 )}
@@ -243,7 +243,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
 
                 {/* Upgrade Banner */}
                 {/* Subscription Card */}
-                {layout === 'teacher' && (
+                {layout === 'student' && (
                     <div
                         className={clsx(
                             'mt-8 lg:mt-auto rounded-2xl relative overflow-hidden shrink-0',
@@ -324,12 +324,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'teacher' }) {
                                         সাবস্ক্রিপশন নিন
                                     </h4>
                                 </div>
-
                                 <div className={clsx(collapsed && 'lg:hidden')}>
-                                    <p className="text-[12.5px] opacity-85 leading-relaxed mb-3.5">
-                                        বোর্ড ফরম্যাটে PDF এক্সপোর্ট ও আনলিমিটেড প্রশ্ন ব্যাংক আনলক করুন।
-                                    </p>
-
                                     <Link
                                         href="/plans"
                                         onClick={closeMobileMenu}

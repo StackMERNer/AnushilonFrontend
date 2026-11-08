@@ -5,6 +5,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import { useState } from 'react';
 import InstituteInfoModal from './InstituteInfoModal';
 import ms from 'ms';
+import DueBanner from '@/components/study/due-banner';
 
 const INSTITUTE_SKIP_KEY = 'institute-info-modal-skipped';
 const SKIP_DURATION = ms('3h');
@@ -62,6 +63,7 @@ const TeacherDashboard = () => {
 
     return (
         <div className="p-4 sm:p-8 lg:p-[20px_40px_50px] flex-1">
+            {/* <DueBanner /> */}
             <InstituteInfoModal
                 open={showInstituteModal}
                 onCompleted={handleCompleted}

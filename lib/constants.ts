@@ -99,37 +99,31 @@ export const plansInfo: PlanInfo[] = [
     durationDays: 0,
     durationLabel: "",
 
-    features: [
-      "সর্বোচ্চ ৩ টি প্রশ্নপত্র তৈরী",
-      "লিমিটেড প্রশ্নব্যাংক অ্যাকসেস",
-    ],
+    features: ["লিমিটেড মক পরীক্ষা", "লিমিটেড প্রশ্নব্যাংক অ্যাকসেস"],
+  },
+  {
+    type: "monthly",
+    name: "মাসিক",
+    price: 200,
+    originalPrice: 250,
+
+    durationDays: 30,
+    durationLabel: "/ মাস",
+
+    popular: false,
+
+    features: ["আনলিমিটেড মক পরীক্ষা", "প্রশ্নব্যাংক অ্যাকসেস"],
   },
 
   {
     type: "six_month",
     name: "৬ মাস",
-
-    price: 750,
-    originalPrice: 1200,
-
+    price: 500,
+    originalPrice: 850,
+    popular: true,
     durationDays: 180,
     durationLabel: "/ ৬ মাস",
-
-    popular: false,
-
-    features: ["আনলিমিটেড প্রশ্নপত্র", "সকল ক্লাসের (৬ষ্ঠ থেকে ১০ম) অ্যাকসেস"],
-  },
-
-  {
-    type: "yearly",
-    name: "বার্ষিক",
-
-    price: 1200,
-    originalPrice: 1750,
-    popular: true,
-    durationDays: 365,
-    durationLabel: "/ বছর",
-    features: ["আনলিমিটেড প্রশ্নপত্র", "সকল ক্লাসের (৬ষ্ঠ থেকে ১০ম) অ্যাকসেস"],
+    features: ["আনলিমিটেড মক পরীক্ষা", "সকল বিষয়ের প্রশ্নব্যাংক অ্যাকসেস"],
   },
 ];
 

@@ -40,12 +40,12 @@ async function QuestionListLoader(props: {
     page: number;
 }) {
     const serverClient = createServerApiClient();
-    const questionService = createQuestionBankService(serverClient);
+    const questionBankService = createQuestionBankService(serverClient);
     const paperService = createPaperService(serverClient);
 
     // Fetch both questions and current paper state concurrently
     const [questionsResponse] = await Promise.all([
-        questionService.getFilteredQuestions({
+        questionBankService.getFilteredQuestions({
             page: props.page,
             questionType: props.type || undefined,
             selectedSubject: props.subjectId,

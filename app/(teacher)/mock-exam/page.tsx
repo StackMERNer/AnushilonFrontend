@@ -1,117 +1,138 @@
-
 "use client";
 
-import { useState } from "react";
 import { useAcademicTree } from "@/hooks/use-academic";
-import { getSubjectIconByName } from "@/lib/subjectImageMap";
+import SettingsStep from "./_components/SettingsStep";
+import StandardStep from "./_components/StandardStep";
+import SubjectStep from "./_components/SubjectStep";
+import TopicStep from "./_components/TopicStep";
+import { buildExamConfig, hasAnySelection } from "./_components/Selection";
+import type { SubjectNode } from "../../../types/mock-exam";
+import { useMockExamDraft } from "@/hooks/use-mock-exam-draft";
+
+
+const PROGRESS_STEP = { subject: 0, topics: 1, standard: 2, settings: 3 } as const;
 
 const MockExamPage = () => {
-    const { data: subjects } = useAcademicTree({
+    const { data } = useAcademicTree({
         upto: "topic",
         classId: "6a6e31bdd2ea30ebd6a29ded",
     });
+    const subjects = data as SubjectNode[] | undefined;
 
-    const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+    const exam = useMockExamDraft();
+    const { step, direction, drafts } = exam;
 
-    const toggleSubject = (id: string) => {
-        setSelectedSubjects((prev) =>
-            prev.includes(id)
-                ? prev.filter((item) => item !== id)
-                : [...prev, id]
-        );
+    console.log('drafts', exam);
+
+    const activeSubject = subjects?.find((s) => s._id === exam.activeId);
+    const activeDraft = exam.activeId ? drafts[exam.activeId] : undefined;
+    const pickedDrafts = Object.values(drafts).filter(hasAnySelection);
+    const progress = PROGRESS_STEP[step];
+
+    const handleBack = () => {
+        if (step === "topics") exam.backToSubjects();
+        else if (step === "standard") exam.goTo("subject", "back");
+        else if (step === "settings") exam.goTo("standard", "back");
+    };
+
+    const handleSubmit = () => {
+        const config = buildExamConfig(drafts, subjects ?? [], exam.standards, {
+            duration: exam.duration,
+            negativeMarking: exam.negativeMarking,
+        });
+        // TODO: POST to backend once the model/controller exist
+        console.log("Exam config:", JSON.stringify(config, null, 2));
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 p-4 sm:p-6">
-            <div className="mx-auto max-w-2xl">
-                <div className="mb-6">
-                    <h1 className="text-xl font-bold text-slate-800">
-                        Create Mock Exam
-                    </h1>
-                    <p className="mt-1 text-sm text-slate-500">
-                        Select the subjects for your exam.
-                    </p>
-                </div>
+        <div className="min-h-screen bg-slate-50 px-4 py-4 sm:py-6">
+            <style>{`
+                @keyframes slide-in-right { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: none; } }
+                @keyframes slide-in-left { from { opacity: 0; transform: translateX(-32px); } to { opacity: 1; transform: none; } }
+            `}</style>
 
-                <div className="mb-3 flex items-center justify-between">
-                    <span className="text-sm font-medium text-slate-600">
-                        Subjects
-                    </span>
-                    <span className="text-sm text-slate-500">
-                        {selectedSubjects.length} selected
-                    </span>
-                </div>
-
-                <div className="flex flex-col gap-2.5">
-                    {subjects?.map((sub) => {
-                        const selected = selectedSubjects.includes(sub._id);
-
-                        return (
+            <div className="mx-auto max-w-3xl overflow-x-hidden">
+                {step !== "subject" && (
+                    <div className="mb-4">
+                        <div className="mb-3 flex items-center justify-between">
                             <button
-                                key={sub._id}
                                 type="button"
-                                aria-pressed={selected}
-                                onClick={() => toggleSubject(sub._id)}
-                                className={`flex w-full items-center gap-3 rounded-xl border bg-white px-4 py-3 text-left transition-all duration-150 active:scale-[0.99] ${selected
-                                    ? "border-orange-300 bg-orange-50/60 shadow-sm"
-                                    : "border-slate-200 shadow-[0_2px_0_rgba(15,23,42,0.03)] hover:border-slate-300 hover:shadow-sm"
-                                    }`}
+                                onClick={handleBack}
+                                className="flex items-center gap-2 text-sm font-semibold text-slate-800"
                             >
-                                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-slate-50">
-                                    <img
-                                        src={getSubjectIconByName(sub.name)}
-                                        alt=""
-                                        width={30}
-                                        height={30}
-                                        className="h-[30px] w-[30px] object-contain"
-                                    />
-                                </div>
-
-                                <span className="flex-1 text-sm font-semibold text-slate-700 sm:text-base">
-                                    {sub.name}
-                                </span>
-
-                                <span
-                                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${selected
-                                        ? "border-orange-500 bg-orange-500 text-white"
-                                        : "border-slate-300 bg-white"
-                                        }`}
-                                >
-                                    {selected && (
-                                        <svg
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            className="h-3.5 w-3.5"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                d="m4 10 4 4 8-8"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                        </svg>
-                                    )}
-                                </span>
+                                <span aria-hidden>←</span>
+                                {step === "topics"
+                                    ? activeSubject?.name
+                                    : step === "standard"
+                                        ? "প্রশ্নের স্ট্যান্ডার্ড"
+                                        : "পরীক্ষার সেটিংস"}
                             </button>
-                        );
-                    })}
-                </div>
-
-                {selectedSubjects.length > 0 && (
-                    <div className="sticky bottom-4 mt-6">
-                        <button
-                            type="button"
-                            onClick={() =>
-                                console.log("Selected subjects:", selectedSubjects)
-                            }
-                            className="w-full rounded-xl bg-orange-500 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-orange-600 active:bg-orange-700"
-                        >
-                            Continue ({selectedSubjects.length})
-                        </button>
+                            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-900">
+                                {progress.toLocaleString("bn-BD")}/৩ স্টেপস
+                            </span>
+                        </div>
+                        <div className="flex gap-1.5">
+                            {[1, 2, 3].map((i) => (
+                                <div
+                                    key={i}
+                                    className={`h-1.5 flex-1 rounded-full transition-colors ${i <= progress ? "bg-emerald-600" : "bg-slate-200"
+                                        }`}
+                                />
+                            ))}
+                        </div>
                     </div>
                 )}
+
+                {/* key on step => remounts and replays the slide animation */}
+                <div
+                    key={step}
+                    style={{
+                        animation: `${direction === "forward" ? "slide-in-right" : "slide-in-left"
+                            } 260ms ease-out`,
+                    }}
+                >
+                    {step === "subject" && (
+                        <SubjectStep
+                            subjects={subjects}
+                            drafts={drafts}
+                            onOpen={exam.openSubject}
+                            onContinue={() => exam.goTo("standard")}
+                        />
+                    )}
+
+                    {step === "topics" && activeSubject && activeDraft && (
+                        <TopicStep
+                            subject={activeSubject}
+                            draft={activeDraft}
+                            onToggleTopic={exam.toggleTopic}
+                            onToggleChapter={exam.toggleChapter}
+                            onToggleAll={() => exam.toggleAll(activeSubject)}
+                            onQuestionCount={exam.setQuestionCount}
+                            onAddAnother={() => exam.goTo("subject", "back")}
+                            onContinue={() => exam.goTo("standard")}
+                        />
+                    )}
+
+                    {step === "standard" && (
+                        <StandardStep
+                            standards={exam.standards}
+                            onToggle={exam.toggleStandard}
+                            onContinue={() => exam.goTo("settings")}
+                        />
+                    )}
+
+                    {step === "settings" && (
+                        <SettingsStep
+                            drafts={pickedDrafts}
+                            standards={exam.standards}
+                            duration={exam.duration}
+                            negativeMarking={exam.negativeMarking}
+                            onDuration={exam.setDuration}
+                            onNegativeMarking={exam.setNegativeMarking}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

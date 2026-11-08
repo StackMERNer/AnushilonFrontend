@@ -4,7 +4,6 @@ import { useDashboard } from '@/hooks/use-dashboard';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { hasActiveSubjectSubscription, hasActiveSubscription } from '@/lib/helpers';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 export function DashboardData() {
     const { data: dashboardData } = useDashboard();
@@ -136,7 +135,7 @@ export function DashboardData() {
             </div>
             {(!userLoading && !hasAnySubscription) && <div className="mt-5">
                 <h1 className="text-center py-2 text-xl font-bold mb-2">
-                    এক সাবস্ক্রিপশনেই সকল শ্রেণি আনলক করুন!
+                    এক সাবস্ক্রিপশনেই সকল বিষয় আনলক করো!
                 </h1>
                 <PlansContent />
             </div>}

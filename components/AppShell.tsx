@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { Topbar } from '@/components/Topbar';
 import { SidebarProvider, useSidebar } from '@/context/SidebarContext';
 
-function ShellLayout({ children, layout }: { children: React.ReactNode, layout: "admin" | "teacher" }) {
+function ShellLayout({ children, layout }: { children: React.ReactNode, layout: "admin" | "student" }) {
     const { collapsed } = useSidebar();
 
     return (
@@ -24,7 +24,7 @@ function ShellLayout({ children, layout }: { children: React.ReactNode, layout: 
     );
 }
 
-export default function AppShell({ children, layout = "teacher" }: { children: React.ReactNode, layout: "admin" | "teacher" }) {
+export default function AppShell({ children, layout = "student" }: { children: React.ReactNode, layout: "admin" | "student" }) {
     return (
         <SidebarProvider>
             <ShellLayout layout={layout}>{children}</ShellLayout>

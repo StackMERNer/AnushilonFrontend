@@ -17,7 +17,9 @@ export interface IUser extends Document {
   email: string;
   name?: string;
   photoURL?: string;
-  role: "teacher" | "admin" | "teacher";
+  class: string;
+  stream?: string;
+  role: "teacher" | "admin" | "student";
   institute?: IInstitute;
   subjectWiseSubscription: ISubjectSubscription[];
   subscription: {

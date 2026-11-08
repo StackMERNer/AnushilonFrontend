@@ -5,7 +5,6 @@
 @font-face {
   font-family: "Li Shohid";
   src: url("/fonts/Li-Shohid-Shafkat-Samir-Unicode.ttf") format("truetype");
-  /* font-weight: 200; */
   font-style: normal;
   font-display: swap;
 }
@@ -15,7 +14,7 @@
   src: url("/fonts/Kalpurush.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-  font-display: swap; /* avoid invisible text while it loads */
+  font-display: swap;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -49,16 +48,16 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Custom Theme Extensions */
+  /* Custom Theme Extensions (Logo Palette) */
   --color-paper: var(--paper);
   --color-paper-alt: var(--paper-alt);
   --color-line: var(--line);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-gold: var(--gold);
-  --color-teal: var(--teal);
-  --color-teal-soft: var(--teal-soft);
-  --color-teal-tint: var(--teal-tint);
+  --color-orange: var(--orange);
+  --color-orange-soft: var(--orange-soft);
+  --color-orange-tint: var(--orange-tint);
 
   /* Sidebar Tokens */
   --color-sidebar: var(--sidebar);
@@ -92,7 +91,6 @@
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  /* margin: 0.5rem 0; */
 }
 
 .paper-sections th,
@@ -109,20 +107,18 @@
 .question-card .editable th {
   font-weight: 600;
 }
-/* Show border on hover for any element with .editable when contenteditable is true */
+
 .editable[contenteditable="true"]:hover {
-  outline: 2px dashed #9ca3af; /* Gray dashed outline */
+  outline: 2px dashed #9ca3af;
   outline-offset: 2px;
   cursor: text;
 }
 
-/* Optional: Keep a solid border when actively editing/focused */
 .editable[contenteditable="true"]:focus {
-  outline: 2px solid #3b82f6; /* Blue solid outline */
+  outline: 2px solid #f97316; /* Updated to match orange highlight */
   outline-offset: 2px;
 }
 
-/* Custom scrollbar for dropdown menus */
 .custom-scrollbar::-webkit-scrollbar {
   width: 10px;
 }
@@ -137,31 +133,26 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--teal);
+  background: var(--orange);
 }
 
 :root {
   /* Design Tokens - Clean White Surfaces */
   --paper: #ffffff;
   --paper-alt: #ffffff;
-  --line: oklch(
-    0.91 0.005 200
-  ); /* Neutral slate-tinted light border (#E2E8F0 equivalent) */
-  --ink: oklch(
-    0.2 0.015 200
-  ); /* Slate Dark Ink (#0F172A equivalent) - Sharp for Bangla ligatures */
-  --ink-soft: oklch(0.46 0.02 200); /* Soft Slate (#475569) */
+  --line: oklch(0.91 0.005 260);
+  --ink: black;
+  --ink-soft: oklch(0.45 0.02 270); /* Soft Slate */
 
-  /* Teal Palette System */
-  --teal: #005f61; /* #005F61 - Primary Deep Teal */
-  --teal-soft: #007a7c; /* #007A7C - Secondary Hover Teal */
-  --teal-tint: #e6f4f4; /* #E6F4F4 - Soft Teal Badge/Hover */
+  /* Logo Orange & Gold Palette System */
+  --orange: #f97316; /* Vibrant Logo Orange */
+  --orange-soft: #fb923c; /* Hover Orange */
+  --orange-tint: #fff7ed; /* Soft Orange Badge/Hover */
+  --gold: #f59e0b; /* Accent Gold from banner */
+  --red: #b23a2e;
+  --red-tint: #f5e5e1;
 
-  --red: #b23a2e; /* Crimson Red */
-  --red-tint: #f5e5e1; /* Soft Red Badge */
-  --gold: #c89b3c; /* Accent Gold */
-
-  /* Map to shadcn CSS Variables */
+  /* Map to shadcn CSS Variables (Primary mapped to Orange/Vibrant accent) */
   --background: var(--paper);
   --foreground: var(--ink);
   --card: var(--paper-alt);
@@ -169,51 +160,51 @@
   --popover: var(--paper-alt);
   --popover-foreground: var(--ink);
 
-  --primary: oklch(0.44 0.11 200); /* Mapped to #005F61 */
+  --primary: oklch(0.65 0.2 40); /* Primary Orange */
   --primary-foreground: oklch(0.99 0 0);
 
-  --secondary: oklch(0.96 0.008 200); /* #F1F5F9 Slate tint */
+  --secondary: oklch(0.96 0.008 260);
   --secondary-foreground: var(--ink);
 
-  --muted: oklch(0.96 0.008 200);
+  --muted: oklch(0.96 0.008 260);
   --muted-foreground: var(--ink-soft);
-  --accent: oklch(0.96 0.008 200);
+  --accent: oklch(0.96 0.008 260);
   --accent-foreground: var(--ink);
 
-  --destructive: oklch(0.52 0.17 25); /* Mapped to #B23A2E */
+  --destructive: oklch(0.52 0.17 25);
   --destructive-foreground: oklch(0.99 0 0);
 
   --border: var(--line);
   --input: var(--line);
-  --ring: oklch(0.44 0.11 200); /* Matches Primary Teal */
+  --ring: oklch(0.65 0.2 40);
 
   --radius: 0.75rem;
 
   /* Sidebar integration */
   --sidebar: var(--paper-alt);
   --sidebar-foreground: var(--ink);
-  --sidebar-primary: oklch(0.44 0.11 200);
+  --sidebar-primary: oklch(0.65 0.2 40);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.96 0.008 200);
+  --sidebar-accent: oklch(0.96 0.008 260);
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--line);
-  --sidebar-ring: oklch(0.44 0.11 200);
+  --sidebar-ring: oklch(0.65 0.2 40);
 
   /* Chart tokens mapped to palette */
-  --chart-1: #005f61;
-  --chart-2: #007a7c;
-  --chart-3: #c89b3c;
+  --chart-1: #f97316;
+  --chart-2: #f59e0b;
+  --chart-3: #6366f1;
   --chart-4: #b23a2e;
   --chart-5: #475569;
 }
 
 .dark {
-  /* Slate Dark Mode aligned with Teal Accent */
-  --paper: oklch(0.16 0.01 200); /* #0F172A Charcoal Surface */
-  --paper-alt: oklch(0.2 0.01 200); /* #1E293B Card/Sidebar Surface */
-  --line: oklch(0.3 0.012 200);
-  --ink: oklch(0.95 0.005 200);
-  --ink-soft: oklch(0.7 0.012 200);
+  /* Deep Indigo/Midnight Dark Mode matching logo background */
+  --paper: oklch(0.14 0.03 275); /* #131127 Deep Indigo Surface */
+  --paper-alt: oklch(0.19 0.035 275); /* #1e1b38 Card/Sidebar Surface */
+  --line: oklch(0.28 0.03 275);
+  --ink: oklch(0.95 0.005 260);
+  --ink-soft: oklch(0.72 0.015 260);
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -222,14 +213,14 @@
   --popover: var(--paper-alt);
   --popover-foreground: var(--ink);
 
-  --primary: oklch(0.65 0.12 200); /* Bright Teal for Dark Mode */
-  --primary-foreground: oklch(0.16 0.01 200);
-  --secondary: oklch(0.25 0.01 200);
+  --primary: oklch(0.72 0.19 45); /* Bright Orange for Dark Mode */
+  --primary-foreground: oklch(0.14 0.03 275);
+  --secondary: oklch(0.23 0.03 275);
   --secondary-foreground: var(--ink);
 
-  --muted: oklch(0.25 0.01 200);
+  --muted: oklch(0.23 0.03 275);
   --muted-foreground: var(--ink-soft);
-  --accent: oklch(0.25 0.01 200);
+  --accent: oklch(0.23 0.03 275);
   --accent-foreground: var(--ink);
 
   --destructive: oklch(0.62 0.18 25);
@@ -237,16 +228,16 @@
 
   --border: var(--line);
   --input: var(--line);
-  --ring: oklch(0.65 0.12 200);
+  --ring: oklch(0.72 0.19 45);
 
   --sidebar: var(--paper-alt);
   --sidebar-foreground: var(--ink);
-  --sidebar-primary: oklch(0.65 0.12 200);
-  --sidebar-primary-foreground: oklch(0.16 0.01 200);
-  --sidebar-accent: oklch(0.25 0.01 200);
+  --sidebar-primary: oklch(0.72 0.19 45);
+  --sidebar-primary-foreground: oklch(0.14 0.03 275);
+  --sidebar-accent: oklch(0.23 0.03 275);
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--line);
-  --sidebar-ring: oklch(0.65 0.12 200);
+  --sidebar-ring: oklch(0.72 0.19 45);
 }
 
 @layer base {
@@ -254,10 +245,9 @@
     @apply border-border outline-ring/50;
   }
   body {
-    /* print:bg-none নিশ্চিত করে প্রিন্ট করার সময় ডট প্যাটার্ন বন্ধ রাখবে */
     background-image: radial-gradient(
       circle at 1px 1px,
-      rgba(0, 95, 97, 0.05) 1px,
+      rgba(249, 115, 22, 0.04) 1px,
       transparent 0
     );
     background-size: 24px 24px;
@@ -268,7 +258,6 @@
   }
 }
 
-/* ==================== PRINT CSS FIX ==================== */
 @media print {
   html,
   body {
@@ -276,7 +265,6 @@
     background-image: none !important;
   }
 
-  /* ২. ব্যাকগ্রাউন্ড কালার শুধুমাত্র নির্দিষ্ট টেক্সট/ব্যাজের জন্য নিশ্চিত রাখা */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;

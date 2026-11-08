@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import AppShell from '@/components/AppShell';
 import './../globals.css';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import StudentOnboardingGate from '@/components/onboarding/StudentOnboardingGate';
 
 export const metadata: Metadata = {
     title: 'অনুশীলন - শিক্ষক ড্যাশবোর্ড',
@@ -15,6 +16,10 @@ export default function TeacherLayout({
     children: React.ReactNode;
 }) {
     return (
-        <ProtectedRoute><AppShell layout='teacher'>{children}</AppShell></ProtectedRoute>
+        <ProtectedRoute>
+            <StudentOnboardingGate>
+                <AppShell layout='student'>{children}</AppShell>
+            </StudentOnboardingGate>
+        </ProtectedRoute>
     );
 }

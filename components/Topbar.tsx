@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Topbar() {
     const pathname = usePathname();
@@ -54,6 +55,7 @@ export function Topbar() {
                 {isDashboard && null}
             </div>
 
+            <ThemeToggle />
             {/* Profile */}
             {userProfile && (
                 <DropdownMenu>

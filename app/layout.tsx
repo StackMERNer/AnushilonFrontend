@@ -7,6 +7,7 @@ import { QueryProvider } from "@/components/QueryProvider";
 import { AuthSessionProvider } from "@/components/providers/auth-session-provider";
 import MathJaxProvider from "@/components/providers/MathJaxProvider";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -111,17 +112,18 @@ export default function RootLayout({
       suppressContentEditableWarning={true}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col font-bengali">
-        <AuthProvider>
-          <AuthSessionProvider>
-            <QueryProvider>
-              <MathJaxProvider>
-                <Toaster position="top-center" richColors />
-                {children}
-              </MathJaxProvider>
-            </QueryProvider>
-          </AuthSessionProvider>
-        </AuthProvider>
-
+        <ThemeProvider>
+          <AuthProvider>
+            <AuthSessionProvider>
+              <QueryProvider>
+                <MathJaxProvider>
+                  <Toaster position="top-center" richColors />
+                  {children}
+                </MathJaxProvider>
+              </QueryProvider>
+            </AuthSessionProvider>
+          </AuthProvider>
+        </ThemeProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
