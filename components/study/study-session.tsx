@@ -38,7 +38,7 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
     const [autoRate, setAutoRate] = useState(true);
     const [againCount, setAgainCount] = useState(0);
     const [saveFailed, setSaveFailed] = useState(false);
-    const shownAt = useRef(Date.now());
+    const shownAt = useRef(0);
 
     const total = items.length;
     const current = queue[0];
@@ -57,6 +57,10 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
             if (v !== null) setAutoRate(v === "1");
         } catch { }
     }, []);
+
+    useEffect(() => {
+        shownAt.current = Date.now();
+    }, [current?.question._id]);
 
     const toggleAuto = (v: boolean) => {
         setAutoRate(v);
@@ -87,7 +91,6 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
         });
         setRevealed(false);
         setPicked(null);
-        shownAt.current = Date.now();
     };
 
     const rate = (r: Rating) => {
@@ -208,13 +211,13 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
                 </p>
             )}
 
-            <article className="rounded-2xl border bg-white p-5 shadow-sm">
+            <article className="rounded-2xl border p-5 shadow-sm">
                 <div className="mb-3 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-full bg-gray-100 px-2.5 py-1">
+                    <span className="rounded-full bg-neutral-100 dark:bg-neutral-900 px-2.5 py-1">
                         {QUESTION_TYPE_LABEL_MAP[q.type] ?? q.type}
                     </span>
                     {current.card.state === "learning" && (
-                        <span className="rounded-full bg-amber-50 px-2.5 py-1 text-amber-700">শিখছ</span>
+                        <span className="rounded-full bg-amber-50 dark:bg-amber-800 px-2.5 py-1 text-amber-700">শিখছ</span>
                     )}
                     {tags.map((t) => (
                         <span key={t} className="rounded-full bg-blue-50 px-2.5 py-1 text-blue-700">
@@ -244,7 +247,7 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
                                         type="button"
                                         disabled={!isAuto || picked !== null}
                                         onClick={() => pick(i)}
-                                        className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left ${state} ${isAuto && picked === null ? "hover:bg-gray-50" : ""
+                                        className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left ${state} ${isAuto && picked === null ? "hover:bg-neutral-50 dark:hover:bg-neutral-800" : ""
                                             }`}
                                     >
                                         <span className="font-medium">{letters[i]}.</span>

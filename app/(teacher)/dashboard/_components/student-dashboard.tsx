@@ -61,7 +61,7 @@ const StudentDashboard = () => {
 
     return (
         <div className="p-4 sm:p-8 lg:p-[20px_40px_50px] flex-1">
-            {/* <DueBanner /> */}
+            <DueBanner />
             <InstituteInfoModal
                 open={showInstituteModal}
                 onCompleted={handleCompleted}

@@ -22,6 +22,7 @@ export function createStudyService(client: AxiosInstance) {
   return {
     getQueue: (params?: { limit?: number; chapter?: string; topic?: string }) =>
       run<IStudyQueue>(client.get(`${base}/queue`, { params })),
+    getDueCount: () => run<{ count: number }>(client.get(`${base}/count`)),
     startNew: (body: { chapterId: string; topicId?: string; count: number }) =>
       run<{ created: number }>(client.post(`${base}/new`, body)),
     submitReview: (body: {

@@ -1,4 +1,4 @@
-import StudentDashboard from './_components/teacher-dashboard';
+import StudentDashboard from './_components/student-dashboard';
 
 export default function DashboardPage() {
     return (

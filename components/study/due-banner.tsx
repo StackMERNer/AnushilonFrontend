@@ -1,15 +1,15 @@
-import Link from "next/link";
-import { createStudyService } from "@/services/study.service";
-import { createServerApiClient } from "@/lib/api/api-server";
+"use client";
+import { useDueCount } from "@/hooks/use-due-count";
 import { toBnDigits } from "@/lib/helpers";
+import Link from "next/link";
 
-
-export default async function DueBanner() {
-    const { totalDue } = await createStudyService(createServerApiClient()).getQueue({ limit: 1 });
+export default function DueBanner() {
+    const { data: countData } = useDueCount();
+    const totalDue = countData?.count ?? 0;
     return (
         <Link
             href="/review"
-            className="block rounded-2xl bg-green-600 p-5 text-white shadow-sm hover:bg-green-700"
+            className="flex items-center justify-between rounded-xl  p-4 shadow-sm max-w-50 dark:bg-primary text-white flex-col"
         >
             <p className="text-sm opacity-90">আজকের রিভিউ</p>
             <p className="text-2xl font-semibold">

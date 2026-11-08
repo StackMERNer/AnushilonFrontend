@@ -6,14 +6,13 @@ import { toBnDigits } from "@/lib/helpers";
 
 export default async function ChapterProgressList({ subjectId }: { subjectId: string }) {
     const rows = await createStudyService(createServerApiClient()).getSubjectProgress(subjectId);
-    console.log('rows', rows);
     return (
-        <ul className="space-y-3">
+        <ul className="space-y-3 px-5">
             {rows.map((r) => {
                 const studiedPct = r.total ? (r.studied / r.total) * 100 : 0;
                 const masteredPct = r.total ? (r.mastered / r.total) * 100 : 0;
                 return (
-                    <li key={r.chapterId} className="rounded-xl border bg-white p-4">
+                    <li key={r.chapterId} className="rounded-xl border p-4">
                         <div className="flex items-center justify-between gap-3">
                             <h3 className="font-medium">{r.name}</h3>
                             <span className="text-sm text-gray-500">{toBnDigits(Math.round(studiedPct))}%</span>
