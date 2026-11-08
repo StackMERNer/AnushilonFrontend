@@ -1,6 +1,4 @@
 'use client';
-
-import { DashboardData } from '@/components/dashboard/RecentPapers';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useState } from 'react';
 import InstituteInfoModal from './InstituteInfoModal';
@@ -10,7 +8,7 @@ import DueBanner from '@/components/study/due-banner';
 const INSTITUTE_SKIP_KEY = 'institute-info-modal-skipped';
 const SKIP_DURATION = ms('3h');
 
-const TeacherDashboard = () => {
+const StudentDashboard = () => {
     const { data: user, isLoading: userLoading } = useUserProfile();
 
     const [isSkipped, setIsSkipped] = useState(() => {
@@ -69,10 +67,8 @@ const TeacherDashboard = () => {
                 onCompleted={handleCompleted}
                 onSkip={handleSkip}
             />
-
-            <DashboardData />
         </div>
     );
 };
 
-export default TeacherDashboard;
+export default StudentDashboard;

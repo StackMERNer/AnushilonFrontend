@@ -25,6 +25,9 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
+import Image from 'next/image';
+import { Badge } from './ui/badge';
+import { getClassNameBn } from '@/lib/constants';
 
 export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
     const pathname = usePathname();
@@ -42,6 +45,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
         href: string;
         icon: LucideIcon;
         badge?: string;
+        image?: string;
     }
 
     const adminNavItems: MenuItem[] = [
@@ -72,38 +76,39 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
         }
     ]
 
-    const teacherNavItems: MenuItem[] = [
-        { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard },
-        { label: 'মক পরীক্ষা', href: '/mock-exam', icon: FilePlus },
+    const studentNavItems: MenuItem[] = [
+        { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard, image: '/images/dashboard.svg' },
+        { label: 'মক পরীক্ষা', href: '/mock-exam', icon: FilePlus, image: '/images/mock-exam.svg' },
         {
             label: 'রিভিউ',
             href: '/review',
             icon: BookOpen,
+            image: '/images/review.svg'
         },
         {
             label: 'আমার প্রগ্রেস',
             href: '/progress',
             icon: FileText,
+            image: '/images/progress.svg'
         },
         {
             label: 'প্রশ্নব্যাংক',
             href: '/question-bank',
-            icon: File
-        }
-    ];
-
-    const teacherGeneralNavItems: MenuItem[] = [
-        {
-            label: "পেমেন্ট হিস্টোরি", href: '/payment-history', icon: Clock
+            icon: File,
+            image: '/images/bank.svg'
         },
         {
-            label: "সহায়তা", href: '/help', icon: HelpCircle
+            label: "পেমেন্ট হিস্টোরি", href: '/payment-history', icon: Clock,
+            image: '/images/payments.svg'
+        },
+        {
+            label: "সহায়তা", href: '/help', icon: HelpCircle,
+            image: '/images/help.svg'
         }
     ];
-    const adminGeneralNavItems: MenuItem[] = [];
 
-    const targetMainNavItems = layout === 'student' ? teacherNavItems : adminNavItems;
-    const targetGeneralNavItems: MenuItem[] = layout === 'student' ? teacherGeneralNavItems : adminGeneralNavItems;
+    const targetMainNavItems = layout === 'student' ? studentNavItems : adminNavItems;
+
 
     const { data: user } = useUserProfile();
 
@@ -114,6 +119,8 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
 
     const hasGlobalSubscription = user && hasActiveSubscription(user);
     const hasAnySubscription = hasGlobalSubscription || subscribedSubectCount > 0;
+    const userClass = user?.class.name;
+    const userStream = user?.stream;
 
     return (
         <>
@@ -128,7 +135,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
             {/* Sidebar Drawer */}
             <aside
                 className={clsx(
-                    'print:hidden fixed top-0 left-0 z-50 h-screen w-72 border-r-2 border-dashed border-sidebar-border p-6 text-sidebar-foreground transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:z-auto lg:h-screen lg:flex lg:flex-col lg:sticky lg:top-0 lg:overflow-y-auto lg:overflow-x-hidden shrink-0 lg:w-auto dark:bg-black bg-white',
+                    'print:hidden fixed top-0 left-0 z-50 h-screen w-72 border-r-2  border-sidebar-border p-6 text-sidebar-foreground transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:z-auto lg:h-screen lg:flex lg:flex-col lg:sticky lg:top-0 lg:overflow-y-auto lg:overflow-x-hidden shrink-0 lg:w-auto dark:bg-black bg-white',
                     mobileMenuOpen ? 'translate-x-0' : '-translate-x-full',
                     collapsed && 'lg:px-3'
                 )}
@@ -137,16 +144,23 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                 <div className={clsx('flex items-center gap-3 mb-8 px-1 shrink-0', collapsed ? 'lg:flex-col lg:gap-2' : 'justify-between')}>
                     <div
                         onClick={closeMobileMenu}
-                        className="flex items-center gap-3"
+                        className="flex items-center gap-3 cursor-pointer min-w-0"
                     >
                         <Logo />
-                        <div className={clsx(collapsed && 'lg:hidden')}>
-                            <div className="font-li-shohid text-[28px] text-primary leading-none">
-                                অনুশীলন
-                            </div>
-                            <div className="text-[11px] text-muted-foreground tracking-wide mt-1">
-                                সফলতার নির্ভরযোগ্য সূত্র
-                            </div>
+
+                        <div className={clsx(
+                            'flex flex-col min-w-0 gap-1 pl-1',
+                            collapsed && 'lg:hidden'
+                        )}>
+                            <span className="text-xl font-bold tracking-tight text-foreground leading-tight">
+                                {getClassNameBn(userClass!)}
+                            </span>
+
+                            {userStream && (
+                                <span className="w-fit rounded-md bg-primary/10 dark:bg-primary px-2 py-0.5 text-xs font-semibold text-primary dark:text-neutral-400">
+                                    {userStream}
+                                </span>
+                            )}
                         </div>
                     </div>
 
@@ -169,15 +183,11 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                         <X className="w-5 h-5" />
                     </button>
                 </div>
-
-                {/* Main Section */}
-                <div className={clsx('text-[11px] uppercase tracking-wider text-muted-foreground my-2 mx-2 font-semibold shrink-0', collapsed && 'lg:hidden')}>
-                    মেনু
-                </div>
                 <nav className="space-y-1">
                     {targetMainNavItems.map((item) => {
                         const Icon = item.icon;
                         const active = isActive(item.href);
+                        const imgSrc = item.image;
 
                         return (
                             <Link
@@ -186,14 +196,14 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                                 onClick={closeMobileMenu}
                                 title={collapsed ? item.label : undefined}
                                 className={clsx(
-                                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14.5px] font-medium transition-colors',
+                                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14.5px] font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900',
                                     collapsed && 'lg:justify-center',
-                                    active ? 'bg-primary text-white shadow-sm' : 'text-foreground hover:bg-teal-tint'
+                                    active ? 'dark:bg-neutral-900 dark:text-white bg-neutral-100' : 'text-foreground hover:bg-teal-tint'
                                 )}
                             >
-                                <Icon
+                                {imgSrc ? <Image alt={item.label} src={imgSrc} width={28} height={28} className={`shrink-0 ${active ? 'text-white' : 'text-muted-foreground'}`} /> : <Icon
                                     className={`w-4 h-4 shrink-0 ${active ? 'text-white' : 'text-muted-foreground'}`}
-                                />
+                                />}
                                 <span className={clsx(collapsed && 'lg:hidden')}>{item.label}</span>
                                 {item.badge && (
                                     <span
@@ -210,38 +220,6 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                         );
                     })}
                 </nav>
-
-                {/* General Section */}
-                {(targetGeneralNavItems.length > 0) && <div className={clsx('text-[11px] uppercase tracking-wider text-muted-foreground mt-6 mb-2 mx-2 font-semibold shrink-0', collapsed && 'lg:hidden')}>
-                    সাধারণ
-                </div>}
-                <nav className="space-y-1">
-                    {targetGeneralNavItems.map((item) => {
-                        const Icon = item.icon;
-                        const active = isActive(item.href);
-
-                        return (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                onClick={closeMobileMenu}
-                                title={collapsed ? item.label : undefined}
-                                className={clsx(
-                                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14.5px] font-medium transition-colors',
-                                    collapsed && 'lg:justify-center',
-                                    active ? 'bg-primary text-white shadow-sm' : 'text-foreground hover:bg-teal-tint'
-                                )}
-                            >
-                                <Icon
-                                    className={`w-4 h-4 shrink-0 ${active ? 'text-white' : 'text-muted-foreground'}`}
-                                />
-                                <span className={clsx(collapsed && 'lg:hidden')}>{item.label}</span>
-                            </Link>
-                        );
-                    })}
-                </nav>
-
-                {/* Upgrade Banner */}
                 {/* Subscription Card */}
                 {layout === 'student' && (
                     <div
@@ -273,7 +251,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                                             প্রিমিয়াম অ্যাকটিভ
                                         </h4>
                                         <p className="text-[11px] text-muted-foreground">
-                                            আপনার সাবস্ক্রিপশন চালু আছে
+                                            তোমার সাবস্ক্রিপশন চালু আছে
                                         </p>
                                     </div>
                                 </div>
@@ -309,7 +287,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
 
                                 <div
                                     className={clsx(
-                                        'flex items-center gap-1.5 mb-1.5',
+                                        'flex items-center gap-1.5 mb-3',
                                         collapsed && 'lg:justify-center lg:mb-0'
                                     )}
                                 >
@@ -321,7 +299,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                                             collapsed && 'lg:hidden'
                                         )}
                                     >
-                                        সাবস্ক্রিপশন নিন
+                                        অনুশীলন প্রিমিয়াম
                                     </h4>
                                 </div>
                                 <div className={clsx(collapsed && 'lg:hidden')}>
@@ -330,7 +308,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                                         onClick={closeMobileMenu}
                                         className="bg-white text-primary px-3.5 py-2 rounded-lg font-semibold text-[12.5px] cursor-pointer hover:bg-gray-100 transition-colors"
                                     >
-                                        সাবস্ক্রিপশন নিন →
+                                        আপগ্রেড করো →
                                     </Link>
                                 </div>
                             </>

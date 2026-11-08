@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Soft Flat Background Container -->
+  <rect x="6" y="6" width="52" height="52" rx="12" fill="#E8F5E9" stroke="#C8E6C9" stroke-width="2" />
+
+  <!-- Help Bubble Elements -->
+  <g>
+    <!-- Main Speech Bubble -->
+    <path d="M 18 18 H 46 C 48.2 18 50 19.8 50 22 V 38 C 50 40.2 48.2 42 46 42 H 34 L 26 48 V 42 H 18 C 15.8 42 14 40.2 14 38 V 22 C 14 19.8 15.8 18 18 18 Z" fill="#66BB6A" />
+    
+    <!-- Question Mark -->
+    <path d="M 27 26 C 27 23.5 29.5 22 32 22 C 34.8 22 37 23.8 37 26.5 C 37 28.8 35 30 33 31.2 C 31.5 32.2 31 33 31 35" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+    <circle cx="31" cy="40" r="1.8" fill="#FFFFFF" />
+  </g>
+</svg>

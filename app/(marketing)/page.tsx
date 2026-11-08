@@ -122,7 +122,7 @@ const MarketingPage = () => {
                         <div className="font-li-shohid text-[28px] leading-none text-primary">
                             অনুশীলন
                         </div>
-                        <div className="mt-1 text-[11px] tracking-wide text-muted-foreground">
+                        <div className="mt-1 text-[11px] tracking-wide">
                             সফলতার নির্ভরযোগ্য সূত্র
                         </div>
                     </div>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Card / Frame Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B6B" />
+      <stop offset="100%" stop-color="#C02633" />
+    </linearGradient>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD1D1" />
+      <stop offset="100%" stop-color="#E53935" />
+    </linearGradient>
+
+    <!-- Bar Gradients -->
+    <linearGradient id="barGradWarm" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="100%" stop-color="#FFB300" />
+    </linearGradient>
+    <linearGradient id="barGradLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF9C4" />
+      <stop offset="100%" stop-color="#FFE082" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#5B060E" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Outer Rounded Square Container -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="2.5" />
+
+  <!-- Inner Soft Inner Shadow / Contrast Frame -->
+  <rect x="7" y="7" width="50" height="50" rx="11" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5" />
+
+  <!-- Progress Chart Elements -->
+  <g filter="url(#softShadow)">
+    <!-- Bar 1 (Short) -->
+    <rect x="15" y="38" width="8" height="13" rx="3" fill="url(#barGradLight)" opacity="0.85" />
+    
+    <!-- Bar 2 (Medium) -->
+    <rect x="28" y="28" width="8" height="23" rx="3" fill="url(#barGradWarm)" />
+    
+    <!-- Bar 3 (Tall - Target Achieved) -->
+    <rect x="41" y="19" width="8" height="32" rx="3" fill="url(#barGradLight)" />
+    
+    <!-- Trending Upward Arrow Badge -->
+    <path d="M 18 32 L 30 22 L 37 26 L 47 14" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 41 14 H 47 V 20" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

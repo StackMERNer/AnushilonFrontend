@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Background Card Gradients -->
+    <linearGradient id="bgGradDashBox" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFA726" />
+      <stop offset="100%" stop-color="#FB8C00" />
+    </linearGradient>
+    <linearGradient id="borderGradDashBox" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="100%" stop-color="#E65100" />
+    </linearGradient>
+
+    <!-- Box Fill Gradients -->
+    <linearGradient id="boxLightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF9C4" />
+      <stop offset="100%" stop-color="#FFE082" />
+    </linearGradient>
+    <linearGradient id="boxWarmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD54F" />
+      <stop offset="100%" stop-color="#FFB300" />
+    </linearGradient>
+
+    <!-- Drop Shadow -->
+    <filter id="softShadowDashBox" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#BF360C" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Outer Rounded Square Container -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bgGradDashBox)" stroke="url(#borderGradDashBox)" stroke-width="2.5" />
+
+  <!-- Inner Soft Highlight Frame -->
+  <rect x="7" y="7" width="50" height="50" rx="11" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" />
+
+  <!-- Grid / Widget Layout Boxes -->
+  <g filter="url(#softShadowDashBox)">
+    <!-- Top-Left Large Widget Box -->
+    <rect x="15" y="15" width="15" height="15" rx="4" fill="url(#boxLightGrad)" />
+    
+    <!-- Top-Right Wide Widget Box -->
+    <rect x="34" y="15" width="15" height="15" rx="4" fill="url(#boxWarmGrad)" />
+    
+    <!-- Bottom-Left Wide Widget Box -->
+    <rect x="15" y="34" width="15" height="15" rx="4" fill="url(#boxWarmGrad)" />
+    
+    <!-- Bottom-Right Widget Box -->
+    <rect x="34" y="34" width="15" height="15" rx="4" fill="url(#boxLightGrad)" />
+  </g>
+</svg>

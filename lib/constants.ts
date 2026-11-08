@@ -143,3 +143,10 @@ export const streamMap = {
 export const getStreamNameBn = (stream: string) => {
   return streamMap[stream as keyof typeof streamMap] || stream;
 };
+
+export const classNameMap = {
+  "নবম/দশম": "এসএসসি",
+};
+export const getClassNameBn = (className: string) => {
+  return classNameMap[className as keyof typeof classNameMap] || className;
+};

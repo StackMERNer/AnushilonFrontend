@@ -2,9 +2,20 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* ================================
+   Bengali Fonts
+================================ */
+
 @font-face {
-  font-family: "Li Shohid";
-  src: url("/fonts/Li-Shohid-Shafkat-Samir-Unicode.ttf") format("truetype");
+  font-family: "AlQdsUnicode";
+  src: url("/fonts/AlQdsUnicode.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "kobita";
+  src: url("/fonts/KobitaUnicode.ttf") format("truetype");
   font-style: normal;
   font-display: swap;
 }
@@ -19,47 +30,68 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ================================
+   Theme Configuration
+================================ */
+
 @theme inline {
   --font-sans: var(--font-sans), "Hind Siliguri", system-ui, sans-serif;
   --font-tiro: var(--font-tiro), "Tiro Bangla", serif;
-  --font-li-shohid: "Li Shohid", sans-serif;
+  --font-kobita: "kobita", sans-serif;
   --font-bengali: var(--font-bengali);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-tiro);
 
-  /* Semantic UI Tokens mapped to Theme CSS Variables */
+  /* Semantic Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Custom Theme Extensions (Logo Palette) */
+  /* Brand Palette */
+  --color-brand: var(--brand);
+  --color-brand-light: var(--brand-light);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-tint: var(--brand-tint);
+
   --color-paper: var(--paper);
   --color-paper-alt: var(--paper-alt);
   --color-line: var(--line);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
-  --color-gold: var(--gold);
-  --color-orange: var(--orange);
-  --color-orange-soft: var(--orange-soft);
-  --color-orange-tint: var(--orange-tint);
 
-  /* Sidebar Tokens */
+  --color-gold: var(--gold);
+  --color-red: var(--red);
+  --color-red-tint: var(--red-tint);
+
+  /* Legacy Orange Tokens (Compatibility) */
+  --color-orange: var(--brand);
+  --color-orange-soft: var(--brand-light);
+  --color-orange-tint: var(--brand-tint);
+
+  /* Sidebar */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -69,7 +101,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Chart Colors */
+  /* Charts */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -85,6 +117,171 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 }
+
+/* ================================
+   Light Theme
+================================ */
+
+:root {
+  color-scheme: light;
+
+  /* Brand: Royal Indigo */
+  --brand: #1b0851;
+  --brand-light: #392078;
+  --brand-dark: #120536;
+  --brand-soft: #ede8f7;
+  --brand-tint: #f6f3fc;
+
+  /* Surfaces */
+  --paper: #ffffff;
+  --paper-alt: #ffffff;
+
+  --line: #e9e6f0;
+
+  /* Typography */
+  --ink: #19142a;
+  --ink-soft: #716c80;
+
+  /* Supporting Colors */
+  --gold: #e9ac36;
+  --red: #b23a2e;
+  --red-tint: #fcecea;
+
+  /* Shadcn Semantic Tokens */
+  --background: var(--paper);
+  --foreground: var(--ink);
+
+  --card: var(--paper-alt);
+  --card-foreground: var(--ink);
+
+  --popover: var(--paper-alt);
+  --popover-foreground: var(--ink);
+
+  --primary: var(--brand);
+  --primary-foreground: #ffffff;
+
+  --secondary: #f3f0f9;
+  --secondary-foreground: var(--brand);
+
+  --muted: #f5f3f9;
+  --muted-foreground: var(--ink-soft);
+
+  --accent: #ede8f7;
+  --accent-foreground: var(--brand);
+
+  --destructive: #c43d35;
+  --destructive-foreground: #ffffff;
+
+  --border: var(--line);
+  --input: var(--line);
+  --ring: #8b75bc;
+
+  --radius: 0.75rem;
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--ink);
+
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: #f3f0f9;
+  --sidebar-accent-foreground: var(--brand);
+
+  --sidebar-border: var(--line);
+  --sidebar-ring: #8b75bc;
+
+  /* Charts */
+  --chart-1: #1b0851;
+  --chart-2: #7054b5;
+  --chart-3: #a48ad9;
+  --chart-4: #e9ac36;
+  --chart-5: #4d657f;
+}
+
+/* ================================
+   Dark Theme
+================================ */
+
+.dark {
+  color-scheme: dark;
+
+  /* Brand */
+  --brand: #b7a1f0;
+  --brand-light: #c9b8f5;
+  --brand-dark: #1b0851;
+  --brand-soft: #30234f;
+  --brand-tint: #261b40;
+
+  /* Surfaces */
+  /* --paper: #100d19; */
+  --paper: black;
+  --paper-alt: #191426;
+
+  --line: #302a40;
+
+  /* Typography */
+  --ink: #f4f0fc;
+  --ink-soft: #aaa2bb;
+
+  /* Supporting Colors */
+  --gold: #f0bf60;
+  --red: #f17c73;
+  --red-tint: #402522;
+
+  /* Shadcn Semantic Tokens */
+  --background: var(--paper);
+  --foreground: var(--ink);
+
+  --card: var(--paper-alt);
+  --card-foreground: var(--ink);
+
+  --popover: #211a31;
+  --popover-foreground: var(--ink);
+
+  --primary: #1b0851;
+  --primary-foreground: #1b0851;
+
+  --secondary: #272036;
+  --secondary-foreground: #e6ddfb;
+
+  --muted: #211b30;
+  --muted-foreground: var(--ink-soft);
+
+  --accent: #302448;
+  --accent-foreground: #e6ddfb;
+
+  --destructive: #f17c73;
+  --destructive-foreground: #210c0a;
+
+  --border: var(--line);
+  --input: var(--line);
+  --ring: #9278ce;
+
+  /* Sidebar */
+  --sidebar: #151120;
+  --sidebar-foreground: var(--ink);
+
+  --sidebar-primary: #b7a1f0;
+  --sidebar-primary-foreground: #1b0851;
+
+  --sidebar-accent: #272036;
+  --sidebar-accent-foreground: #e6ddfb;
+
+  --sidebar-border: var(--line);
+  --sidebar-ring: #9278ce;
+
+  /* Charts */
+  --chart-1: #b7a1f0;
+  --chart-2: #9278ce;
+  --chart-3: #7054b5;
+  --chart-4: #f0bf60;
+  --chart-5: #65a6b8;
+}
+
+/* ================================
+   Paper & Question Tables
+================================ */
 
 .paper-sections table,
 .question-card table {
@@ -108,16 +305,22 @@
   font-weight: 600;
 }
 
+/* Editable Content */
+
 .editable[contenteditable="true"]:hover {
-  outline: 2px dashed #9ca3af;
+  outline: 2px dashed #a78bfa;
   outline-offset: 2px;
   cursor: text;
 }
 
 .editable[contenteditable="true"]:focus {
-  outline: 2px solid #f97316; /* Updated to match orange highlight */
+  outline: 2px solid var(--brand-light);
   outline-offset: 2px;
 }
+
+/* ================================
+   Custom Scrollbar
+================================ */
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 10px;
@@ -133,130 +336,37 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--orange);
+  background: var(--brand-light);
 }
 
-:root {
-  /* Design Tokens - Clean White Surfaces */
-  --paper: #ffffff;
-  --paper-alt: #ffffff;
-  --line: oklch(0.91 0.005 260);
-  --ink: black;
-  --ink-soft: oklch(0.45 0.02 270); /* Soft Slate */
-
-  /* Logo Orange & Gold Palette System */
-  --orange: #f97316; /* Vibrant Logo Orange */
-  --orange-soft: #fb923c; /* Hover Orange */
-  --orange-tint: #fff7ed; /* Soft Orange Badge/Hover */
-  --gold: #f59e0b; /* Accent Gold from banner */
-  --red: #b23a2e;
-  --red-tint: #f5e5e1;
-
-  /* Map to shadcn CSS Variables (Primary mapped to Orange/Vibrant accent) */
-  --background: var(--paper);
-  --foreground: var(--ink);
-  --card: var(--paper-alt);
-  --card-foreground: var(--ink);
-  --popover: var(--paper-alt);
-  --popover-foreground: var(--ink);
-
-  --primary: oklch(0.65 0.2 40); /* Primary Orange */
-  --primary-foreground: oklch(0.99 0 0);
-
-  --secondary: oklch(0.96 0.008 260);
-  --secondary-foreground: var(--ink);
-
-  --muted: oklch(0.96 0.008 260);
-  --muted-foreground: var(--ink-soft);
-  --accent: oklch(0.96 0.008 260);
-  --accent-foreground: var(--ink);
-
-  --destructive: oklch(0.52 0.17 25);
-  --destructive-foreground: oklch(0.99 0 0);
-
-  --border: var(--line);
-  --input: var(--line);
-  --ring: oklch(0.65 0.2 40);
-
-  --radius: 0.75rem;
-
-  /* Sidebar integration */
-  --sidebar: var(--paper-alt);
-  --sidebar-foreground: var(--ink);
-  --sidebar-primary: oklch(0.65 0.2 40);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.96 0.008 260);
-  --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: var(--line);
-  --sidebar-ring: oklch(0.65 0.2 40);
-
-  /* Chart tokens mapped to palette */
-  --chart-1: #f97316;
-  --chart-2: #f59e0b;
-  --chart-3: #6366f1;
-  --chart-4: #b23a2e;
-  --chart-5: #475569;
-}
-
-.dark {
-  /* Deep Indigo/Midnight Dark Mode matching logo background */
-  --paper: oklch(0.14 0.03 275); /* #131127 Deep Indigo Surface */
-  --paper-alt: oklch(0.19 0.035 275); /* #1e1b38 Card/Sidebar Surface */
-  --line: oklch(0.28 0.03 275);
-  --ink: oklch(0.95 0.005 260);
-  --ink-soft: oklch(0.72 0.015 260);
-
-  --background: var(--paper);
-  --foreground: var(--ink);
-  --card: var(--paper-alt);
-  --card-foreground: var(--ink);
-  --popover: var(--paper-alt);
-  --popover-foreground: var(--ink);
-
-  --primary: oklch(0.72 0.19 45); /* Bright Orange for Dark Mode */
-  --primary-foreground: oklch(0.14 0.03 275);
-  --secondary: oklch(0.23 0.03 275);
-  --secondary-foreground: var(--ink);
-
-  --muted: oklch(0.23 0.03 275);
-  --muted-foreground: var(--ink-soft);
-  --accent: oklch(0.23 0.03 275);
-  --accent-foreground: var(--ink);
-
-  --destructive: oklch(0.62 0.18 25);
-  --destructive-foreground: oklch(0.99 0 0);
-
-  --border: var(--line);
-  --input: var(--line);
-  --ring: oklch(0.72 0.19 45);
-
-  --sidebar: var(--paper-alt);
-  --sidebar-foreground: var(--ink);
-  --sidebar-primary: oklch(0.72 0.19 45);
-  --sidebar-primary-foreground: oklch(0.14 0.03 275);
-  --sidebar-accent: oklch(0.23 0.03 275);
-  --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: var(--line);
-  --sidebar-ring: oklch(0.72 0.19 45);
-}
+/* ================================
+   Base Styles
+================================ */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      rgba(249, 115, 22, 0.04) 1px,
-      transparent 0
-    );
-    background-size: 24px 24px;
-    @apply bg-background text-foreground min-h-screen antialiased print:bg-none print:bg-white;
-  }
+
   html {
     @apply font-sans;
   }
+
+  body {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(27, 8, 81, 0.035) 1px,
+      transparent 0
+    );
+    background-size: 24px 24px;
+
+    @apply bg-background text-foreground min-h-screen antialiased print:bg-none print:bg-white;
+  }
 }
+
+/* ================================
+   Print Styles
+================================ */
 
 @media print {
   html,

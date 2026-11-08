@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Soft Minimalist Gradients -->
+    <linearGradient id="bgSubtle" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3E0" />
+      <stop offset="100%" stop-color="#FFE0B2" />
+    </linearGradient>
+  </defs>
+
+  <!-- Clean Container with Subtle Outline -->
+  <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#bgSubtle)" stroke="#FFB74D" stroke-width="1.5" />
+
+  <!-- Stacked Books / Elements (Flat & Minimal) -->
+  <g>
+    <!-- Book 3 (Top) -->
+    <rect x="18" y="18" width="28" height="8" rx="2" fill="#FB8C00" />
+    <line x1="22" y1="22" x2="30" y2="22" stroke="#FFE0B2" stroke-width="1.5" stroke-linecap="round" />
+
+    <!-- Book 2 (Middle) -->
+    <rect x="16" y="28" width="32" height="8" rx="2" fill="#F57C00" />
+    <line x1="20" y1="32" x2="32" y2="32" stroke="#FFE0B2" stroke-width="1.5" stroke-linecap="round" />
+
+    <!-- Book 1 (Bottom) -->
+    <rect x="14" y="38" width="36" height="8" rx="2" fill="#EF6C00" />
+    <line x1="18" y1="42" x2="34" y2="42" stroke="#FFE0B2" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+</svg>

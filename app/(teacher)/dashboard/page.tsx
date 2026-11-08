@@ -1,7 +1,7 @@
-import TeacherDashboard from './_components/teacher-dashboard';
+import StudentDashboard from './_components/teacher-dashboard';
 
 export default function DashboardPage() {
     return (
-        <TeacherDashboard />
+        <StudentDashboard />
     );
 }

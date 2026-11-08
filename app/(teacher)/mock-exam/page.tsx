@@ -45,7 +45,7 @@ const MockExamPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 px-4 py-4 sm:py-6">
+        <div className="min-h-screen px-4 py-4 sm:py-6">
             <style>{`
                 @keyframes slide-in-right { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: none; } }
                 @keyframes slide-in-left { from { opacity: 0; transform: translateX(-32px); } to { opacity: 1; transform: none; } }

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Card / Frame Gradients -->
+    <linearGradient id="bgGradReviewAlt" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4CAF50" />
+      <stop offset="100%" stop-color="#2E7D32" />
+    </linearGradient>
+    <linearGradient id="borderGradReviewAlt" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A5D6A7" />
+      <stop offset="100%" stop-color="#1B5E20" />
+    </linearGradient>
+
+    <!-- Document / Glass Gradients -->
+    <linearGradient id="docGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E8F5E9" />
+    </linearGradient>
+    <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E3F2FD" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#90CAF9" stop-opacity="0.9" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="softShadowReviewAlt" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#1B5E20" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Outer Rounded Square Container -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bgGradReviewAlt)" stroke="url(#borderGradReviewAlt)" stroke-width="2.5" />
+
+  <!-- Inner Soft Inner Shadow / Contrast Frame -->
+  <rect x="7" y="7" width="50" height="50" rx="11" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="1.5" />
+
+  <!-- Review / Magnifier Elements -->
+  <g filter="url(#softShadowReviewAlt)">
+    <!-- Document Base -->
+    <rect x="15" y="14" width="28" height="36" rx="4" fill="url(#docGrad)" />
+    <!-- Document lines -->
+    <line x1="21" y1="22" x2="31" y2="22" stroke="#81C784" stroke-width="2" stroke-linecap="round" />
+    <line x1="21" y1="28" x2="37" y2="28" stroke="#81C784" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Magnifying Glass Rim & Handle -->
+    <line x1="33" y1="42" x2="43" y2="52" stroke="#F57C00" stroke-width="4" stroke-linecap="round" />
+    <circle cx="30" cy="35" r="11" fill="url(#lensGrad)" stroke="#FFA726" stroke-width="2.5" />
+
+    <!-- Checkmark inside lens -->
+    <path d="M 26 35 L 29 38 L 35 31" fill="none" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Background Card Gradients (Matching Pencil Red Tone) -->
+    <linearGradient id="bgGradMock" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF5252" />
+      <stop offset="100%" stop-color="#C62828" />
+    </linearGradient>
+    <linearGradient id="borderGradMock" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF8A80" />
+      <stop offset="100%" stop-color="#B71C1C" />
+    </linearGradient>
+
+    <!-- Exam Sheet & Stopwatch Fill Gradients -->
+    <linearGradient id="sheetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FFEBEE" />
+    </linearGradient>
+    <linearGradient id="timerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="100%" stop-color="#FFB300" />
+    </linearGradient>
+
+    <!-- Drop Shadow -->
+    <filter id="softShadowMock" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#4A0000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Outer Rounded Square Container -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bgGradMock)" stroke="url(#borderGradMock)" stroke-width="2.5" />
+
+  <!-- Inner Soft Highlight Frame -->
+  <rect x="7" y="7" width="50" height="50" rx="11" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="1.5" />
+
+  <!-- Mock Exam Sheet & Timer Elements -->
+  <g filter="url(#softShadowMock)">
+    <!-- Exam Sheet Base -->
+    <rect x="15" y="14" width="28" height="36" rx="4" fill="url(#sheetGrad)" />
+
+    <!-- Question Lines -->
+    <line x1="21" y1="22" x2="33" y2="22" stroke="#EF9A9A" stroke-width="2" stroke-linecap="round" />
+    <line x1="21" y1="28" x2="37" y2="28" stroke="#EF9A9A" stroke-width="2" stroke-linecap="round" />
+    <line x1="21" y1="34" x2="31" y2="34" stroke="#EF9A9A" stroke-width="2" stroke-linecap="round" />
+    <line x1="21" y1="40" x2="35" y2="40" stroke="#EF9A9A" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Timed Exam Badge (Stopwatch Overlay) -->
+    <circle cx="41" cy="40" r="10" fill="url(#timerGrad)" stroke="#FFFFFF" stroke-width="2" />
+    <!-- Timer Top Button -->
+    <rect x="39.5" y="27.5" width="3" height="3" rx="1" fill="#FFFFFF" />
+    <!-- Clock Hands -->
+    <path d="M 41 40 L 41 34 M 41 40 L 45 40" stroke="#C62828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
