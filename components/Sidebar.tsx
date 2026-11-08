@@ -26,7 +26,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import Image from 'next/image';
-import { Badge } from './ui/badge';
 import { getClassNameBn } from '@/lib/constants';
 
 export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
@@ -88,6 +87,12 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
         {
             label: 'আমার প্রগ্রেস',
             href: '/progress',
+            icon: FileText,
+            image: '/images/progress.svg'
+        },
+        {
+            label: 'অধ্যায় ভিত্তিক শিখো',
+            href: '/browse',
             icon: FileText,
             image: '/images/progress.svg'
         },

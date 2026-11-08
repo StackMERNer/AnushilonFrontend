@@ -23,16 +23,18 @@ export function getAcademicService(client: AxiosInstance) {
       upto = "chapter",
       paperId,
       status = "active",
+      stream,
     }: {
       classId?: string;
       upto?: "subject" | "chapter" | "topic";
       paperId?: string;
       status?: "active" | "all";
+      stream?: string;
     }) => {
       const r = await client.get<IAcademicTreeRespponse>(
         `${baseUrl}/academic-tree`,
         {
-          params: { classId, upto, paperId, status },
+          params: { classId, upto, paperId, status, stream },
         },
       );
       return r.data.items;

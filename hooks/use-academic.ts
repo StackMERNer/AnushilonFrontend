@@ -20,20 +20,23 @@ export const useAcademicTree = ({
   upto = "chapter",
   paperId,
   status,
+  stream,
 }: {
   classId?: string;
   upto?: "subject" | "chapter" | "topic";
   paperId?: string;
   status?: "active" | "all";
+  stream?: string;
 }) => {
   return useQuery({
-    queryKey: ["academic-tree", classId, upto, paperId, status],
+    queryKey: ["academic-tree", classId, upto, paperId, status, stream],
     queryFn: async () => {
       const data = await academicService.getAcademicTree({
         classId,
         upto,
         paperId,
         status,
+        stream,
       });
       return data;
     },
