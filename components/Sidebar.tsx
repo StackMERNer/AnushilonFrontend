@@ -149,7 +149,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                 )}
             >
                 {/* Brand Header */}
-                <div className={clsx('flex items-center gap-3 mb-8 px-1 shrink-0', collapsed ? 'lg:flex-col lg:gap-2' : 'justify-between')}>
+                <div className={clsx('flex items-center gap-3 mb-4 px-1 shrink-0', collapsed ? 'lg:flex-col lg:gap-2' : 'justify-between')}>
                     <div
                         onClick={closeMobileMenu}
                         className="flex items-center gap-3 cursor-pointer min-w-0"

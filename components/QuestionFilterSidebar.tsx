@@ -176,8 +176,9 @@ export default function QuestionFilterSidebar({
                 </div>
             </SectionCard>}
             {/* 3. Question type */}
-            <SectionCard title="প্রশ্নের ধরন">
+            {questionTypes && <SectionCard title="প্রশ্নের ধরন">
                 <div className="space-y-1">
+
                     {questionTypes?.map((t) => {
                         const checked = searchParams.get("type") === t.value;
                         return (
@@ -194,7 +195,7 @@ export default function QuestionFilterSidebar({
                         );
                     })}
                 </div>
-            </SectionCard>
+            </SectionCard>}
 
             {((sourcsData?.boardYears?.length || 0) > 0) && (
                 <SectionCard title="সাল">

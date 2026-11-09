@@ -7,7 +7,7 @@ import { toBnDigits } from "@/lib/helpers";
 export default async function ChapterProgressList({ subjectId }: { subjectId: string }) {
     const rows = await createStudyService(createServerApiClient()).getSubjectProgress(subjectId);
     return (
-        <ul className="space-y-3 px-5">
+        <ul className="space-y-3 px-5 pb-5">
             {rows.map((r) => {
                 const studiedPct = r.total ? (r.studied / r.total) * 100 : 0;
                 const masteredPct = r.total ? (r.mastered / r.total) * 100 : 0;
