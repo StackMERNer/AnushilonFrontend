@@ -77,7 +77,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
 
     const studentNavItems: MenuItem[] = [
         { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard, image: '/images/dashboard.svg' },
-        { label: 'মক পরীক্ষা', href: '/mock-exam', icon: FilePlus, image: '/images/mock-exam.svg' },
+        // { label: 'মক পরীক্ষা', href: '/mock-exam', icon: FilePlus, image: '/images/mock-exam.svg' },
         {
             label: 'রিভিউ',
             href: '/review',

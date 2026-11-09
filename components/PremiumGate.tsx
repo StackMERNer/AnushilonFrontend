@@ -27,12 +27,12 @@ export function PremiumGate({
                 onClick={handleUpgradeClick}
                 className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-xl bg-background/60"
             >
-                <span className="flex items-center gap-1 rounded-full bg-amber-500 px-2.5 py-1 text-[11px] font-semibold text-white shadow">
+                <span className="flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[11px] font-semibold text-white shadow">
                     <Lock className="h-3 w-3" />
-                    প্রিমিয়াম
+                    আপগ্রেড করো
                 </span>
                 <span className="text-[11px] text-muted-foreground">
-                    আনলক করতে সাবস্ক্রাইব করুন
+                    আনলক করতে সাবস্ক্রিপশন নাও
                 </span>
             </button>
         </div>

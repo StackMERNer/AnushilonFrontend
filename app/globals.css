@@ -137,6 +137,7 @@
   --paper-alt: #ffffff;
 
   --line: #e9e6f0;
+  --table-border: #262527;
 
   /* Typography */
   --ink: #19142a;
@@ -219,6 +220,7 @@
   --paper-alt: #191426;
 
   --line: #302a40;
+  --table-border: #d5d0e0;
 
   /* Typography */
   --ink: #f4f0fc;
@@ -294,7 +296,7 @@
 .paper-sections td,
 .question-card th,
 .question-card td {
-  border: 1px solid #000;
+  border: 1px solid var(--table-border);
   padding: 4px 6px;
   vertical-align: middle;
   text-align: left;

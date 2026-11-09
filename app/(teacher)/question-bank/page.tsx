@@ -17,9 +17,9 @@ const QuestionBankPage = () => {
     }
     return (
         <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 mx-auto pt-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 mx-auto py-5">
                 {subjects?.map((subject) => (
-                    <div onClick={() => handleSubjectClick(subject._id)} key={subject._id} className="flex flex-col items-center gap-3 px-5 py-4
+                    <div onClick={() => handleSubjectClick(subject._id)} key={subject._id} className="flex flex-col items-center gap-3 px-5 py-6
                         rounded-2xl cursor-pointer
                         bg-white hover:bg-neutral-50
                         dark:bg-transparent dark:hover:bg-white/3
