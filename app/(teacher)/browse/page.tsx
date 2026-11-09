@@ -23,7 +23,7 @@ const BrowseSubjects = () => {
                         flex items-center gap-3 px-5 py-4
                         rounded-2xl cursor-pointer
                         bg-white hover:bg-neutral-50
-                        dark:bg-transparent dark:hover:bg-white/[0.03]
+                        dark:bg-transparent dark:hover:bg-white/3
                         border-2 border-b-4
                         border-neutral-200 dark:border-[#24253a]
                         transition-all duration-150
