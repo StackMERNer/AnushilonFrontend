@@ -199,7 +199,7 @@ export default function QuestionFilterSidebar({
             </SectionCard>}
 
             {((sourcsData?.boardYears?.length || 0) > 0) && (
-                <SectionCard title="সাল">
+                <SectionCard title="সাল অনুযায়ী ফিল্টার">
                     <PremiumGate locked={!hasSubscription} onUpgradeClick={handleUpgradeClick}>
                         <YearDropdown
                             years={sourcsData?.boardYears || []}
@@ -215,7 +215,7 @@ export default function QuestionFilterSidebar({
             )}
             {/* 4. Board */}
             {((sourcsData?.boards.length || 0) > 0) && (
-                <SectionCard title="বোর্ড">
+                <SectionCard title="বোর্ড অনুযায়ী ফিল্টার">
                     <PremiumGate locked={!hasSubscription} onUpgradeClick={handleUpgradeClick}>
                         <div className="space-y-1">
                             {sourcsData?.boards.map((b) => {
@@ -241,7 +241,7 @@ export default function QuestionFilterSidebar({
             )}
             {/* 4. Schools */}
             {((sourcsData?.schools.length || 0) > 0) && (
-                <SectionCard title="স্কুল">
+                <SectionCard title="স্কুল অনুযায়ী ফিল্টার">
                     <PremiumGate locked={!hasSubscription} onUpgradeClick={handleUpgradeClick}>
                         <div className="space-y-1">
                             {sourcsData?.schools.map((b) => {
