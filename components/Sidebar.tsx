@@ -79,6 +79,12 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
         { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard, image: '/images/dashboard.svg' },
         // { label: 'মক পরীক্ষা', href: '/mock-exam', icon: FilePlus, image: '/images/mock-exam.svg' },
         {
+            label: 'অধ্যায় ভিত্তিক অনুশীলন',
+            href: '/browse',
+            icon: FileText,
+            image: '/images/progress.svg'
+        },
+        {
             label: 'রিভিউ',
             href: '/review',
             icon: BookOpen,
@@ -90,12 +96,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
         //     icon: FileText,
         //     image: '/images/progress.svg'
         // },
-        {
-            label: 'অধ্যায় ভিত্তিক শিখো',
-            href: '/browse',
-            icon: FileText,
-            image: '/images/progress.svg'
-        },
+
         {
             label: 'প্রশ্নব্যাংক',
             href: '/question-bank',

@@ -47,7 +47,7 @@ const formatDate = (date: Date) => {
 
 const PaymentHistoryPageContent = () => {
   const { data: payments, isLoading } = usePaymentHistory();
-  console.log('payments', payments);
+
   if (isLoading) {
     return (
       <div className="py-10 text-center text-muted-foreground">
@@ -67,13 +67,13 @@ const PaymentHistoryPageContent = () => {
           </h3>
 
           <p className="mt-1 text-sm text-muted-foreground">
-            আপনার কোনো পেমেন্টের তথ্য এখানে দেখা যাবে।
+            তোমার পেমেন্টের তথ্য এখানে দেখা যাবে।
           </p>
           <Link
             href="/plans"
-            className="mt-4 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="mt-4 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium transition-colors hover:bg-primary/90"
           >
-            একটি প্ল্যান কিনুন
+            প্ল্যান দেখো
           </Link>
         </div>
       </div>

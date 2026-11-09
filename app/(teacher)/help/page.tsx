@@ -4,15 +4,15 @@ import { MessageCircle } from "lucide-react";
 const HelpPage = () => {
     return (
         <div className="mx-auto max-w-3xl px-4 py-10">
-            <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
+            <div className="rounded-2xl border p-6 shadow-sm sm:p-8">
                 <div className="mb-8 text-center">
                     <h1 className="text-2xl font-semibold tracking-tight">
-                        আমাদের সাথে যোগাযোগ করুন
+                        আমাদের সাথে যোগাযোগ করো
                     </h1>
 
                     <p className="mt-2 text-sm text-muted-foreground">
                         অনুশীলন ব্যবহার করতে কোনো সমস্যা হলে বা কোনো প্রশ্ন
-                        থাকলে আমাদের সাথে যোগাযোগ করুন। আমরা আপনাকে সাহায্য
+                        থাকলে আমাদের সাথে যোগাযোগ করো। আমরা আপনাকে সাহায্য
                         করতে সর্বোচ্চ চেষ্টা করব।
                     </p>
                 </div>
@@ -31,7 +31,7 @@ const HelpPage = () => {
 
                             <div>
                                 <h2 className="font-medium">
-                                    Facebook-এ যোগাযোগ করুন
+                                    Facebook-এ যোগাযোগ করো
                                 </h2>
 
                                 <p className="mt-1 text-sm text-muted-foreground">
@@ -45,7 +45,7 @@ const HelpPage = () => {
 
                 <p className="mt-6 text-center text-xs text-muted-foreground">
                     অনুশীলন সম্পর্কিত যেকোনো সমস্যা, প্রশ্ন বা পরামর্শের জন্য
-                    নির্দ্বিধায় আমাদের সাথে যোগাযোগ করুন।
+                    নির্দ্বিধায় আমাদের সাথে যোগাযোগ করো।
                 </p>
             </div>
         </div>
