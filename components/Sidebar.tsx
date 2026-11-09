@@ -27,11 +27,12 @@ import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import Image from 'next/image';
 import { getClassNameBn } from '@/lib/constants';
+import { useDueCount } from '@/hooks/use-due-count';
 
 export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
     const pathname = usePathname();
     const { mobileMenuOpen, closeMobileMenu, collapsed, toggleCollapsed } = useSidebar();
-
+    const { data: countData } = useDueCount();
     const isActive = (href: string) => {
         if (href === '/dashboard' && (pathname === '/dashboard' || pathname === '/')) {
             return true;
@@ -88,7 +89,8 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
             label: 'রিভিউ',
             href: '/review',
             icon: BookOpen,
-            image: '/images/review.svg'
+            image: '/images/review.svg',
+            badge: countData?.count?.toString()
         },
         // {
         //     label: 'আমার প্রগ্রেস',
@@ -216,7 +218,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                                         className={clsx(
                                             'ml-auto text-[10.5px] px-2 py-0.5 rounded-full font-semibold',
                                             collapsed && 'lg:hidden',
-                                            active ? 'bg-white/20 text-white' : 'bg-destructive text-white'
+                                            active ? 'bg-white/20 text-white' : 'bg-primary text-white'
                                         )}
                                     >
                                         {item.badge}
