@@ -109,11 +109,12 @@ const QuestionCard = ({
             </div>
 
             <div className="flex items-start gap-3">
-                <p className="font-semibold text-slate-700 dark:text-slate-300">
-                    {toBnDigits(questionNo)}.
-                </p>
+
 
                 <div className="space-y-2 flex-1 min-w-0">
+                    {/* <p className="font-semibold text-slate-700 dark:text-slate-300">
+                        {toBnDigits(questionNo)}.
+                    </p> */}
                     {question.context && (
                         <RichTextRenderer
                             content={question.context}
@@ -123,7 +124,7 @@ const QuestionCard = ({
 
                     {question.question && (
                         <RichTextRenderer
-                            content={question.question}
+                            content={`${toBnDigits(questionNo)}. ` + question.question}
                             className="font-semibold wrap-break-word pr-16"
                         />
                     )}
@@ -163,19 +164,19 @@ const QuestionCard = ({
                                                 disabled={revealed}
                                                 onClick={() => setSelected(i)}
                                                 className={clsx(
-                                                    "flex w-full items-start gap-2 rounded-lg border p-2 text-left wrap-break-word transition-colors",
+                                                    "flex w-full items-start gap-2 rounded-lg border px-2 py-3 text-left wrap-break-word transition-colors bg-neutral-100 dark:bg-neutral-800 dark:text-white",
                                                     !revealed &&
-                                                    "border-transparent hover:border-slate-300 hover:bg-slate-50 dark:hover:border-slate-700 dark:hover:bg-slate-800",
+                                                    " hover:border-neutral-300 hover:bg-neutral-50 dark:hover:border-slate-700 dark:hover:bg-slate-800",
                                                     revealed &&
                                                     isCorrect &&
-                                                    "border-green-500 bg-green-50 dark:bg-green-950/30",
+                                                    " ",
                                                     revealed &&
                                                     isWrongPick &&
-                                                    "border-red-500 bg-red-50 dark:bg-red-950/30",
+                                                    " ",
                                                     revealed &&
                                                     !isCorrect &&
                                                     !isWrongPick &&
-                                                    "border-transparent opacity-60"
+                                                    "border-transparent opacity-90"
                                                 )}
                                             >
                                                 <span
@@ -224,13 +225,6 @@ const QuestionCard = ({
                                                 : "ভুল উত্তর"}
                                         </span>
                                     )}
-                                    {/* <button
-                                        type="button"
-                                        onClick={() => setSelected(null)}
-                                        className="text-xs text-slate-500 underline underline-offset-2 hover:text-slate-800 dark:hover:text-slate-200"
-                                    >
-                                        আবার চেষ্টা করো
-                                    </button> */}
                                 </div>
                             )}
 
