@@ -37,8 +37,9 @@ export default function QuestionFilterSidebar({
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
 
+    const { data: user } = useUserProfile();
 
-    const { data: academicTree } = useAcademicTree({ classId: "6a6e31bdd2ea30ebd6a29ded", upto: "topic" });
+    const { data: academicTree } = useAcademicTree({ classId: user?.class._id, stream: user?.stream, upto: "topic" });
     const { data: questionTypes } = useQuestionTypes(selectedChapterId);
 
     const setParams = (updates: {
@@ -96,7 +97,7 @@ export default function QuestionFilterSidebar({
         setParams({ subject: selectedSubjectId, chapter: chapter._id, topics: [], boards: [], schools: [], selectedOnly: undefined });
     };
 
-    const { data: user } = useUserProfile();
+
     const hasEverPurchasedSubjectSubscription =
         (user?.subjectWiseSubscription?.length ?? 0) > 0;
 
@@ -130,18 +131,18 @@ export default function QuestionFilterSidebar({
         <div className={clsx("space-y-4", isPending && "opacity-50 pointer-events-none")}>
             {/* 1. Subject → Chapter */}
             <SectionCard
-                title="বিষয় ও অধ্যায়"
-                hint={selectedChapter ? selectedChapter.name : selectedSubject ? "অধ্যায় নির্বাচন করুন" : undefined}
+                title="অধ্যায়"
+                hint={selectedChapter ? selectedChapter.name : selectedSubject ? "অধ্যায় নির্বাচন করো" : undefined}
             >
                 {!academicTree ? (
                     <SkeletonBlock />
                 ) : (
                     <div className="space-y-3">
-                        <SubjectDropdown
+                        {/* <SubjectDropdown
                             subjects={academicTree}
                             selectedId={selectedSubjectId}
                             onSelect={handleSubjectSelect}
-                        />
+                        /> */}
                         {selectedSubject && (
                             <ChapterDropdown
                                 chapters={chapters}
@@ -399,7 +400,7 @@ function SubjectDropdown({
                 className={clsx(
                     "absolute left-0 right-0 z-20 mt-1.5 overflow-hidden rounded-xl border border-border bg-background p-1.5 shadow-xl transition-all duration-200 ease-out",
                     open
-                        ? "max-h-64 opacity-100 scale-100"
+                        ? "opacity-100 scale-100"
                         : "max-h-0 opacity-0 scale-95 pointer-events-none p-0 border-0"
                 )}
             >

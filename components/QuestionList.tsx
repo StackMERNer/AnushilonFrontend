@@ -15,29 +15,33 @@ import { apiClient } from "@/lib/api/api-client";
 import { hasActiveSubscription } from "@/lib/helpers";
 import { createPaperService } from "@/services/paper.service";
 import { IFilterdQuestion } from "@/types/question";
-import { LayoutGrid, Menu, Rows } from "lucide-react";
+import { Menu } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { MobileFilterTrigger } from "./FilterDrawerWrapper";
 import { PremiumGate } from "./PremiumGate";
 import QuestionCard from "./QuestionCard";
+import { ThemeToggle } from "./theme-toggle";
+import { Label } from "./ui/label";
+import { Checkbox } from "./ui/checkbox";
 
 export default function QuestionList({
     questions,
     totalPages,
     currentPage,
+    questionType
 }: {
     questions: IFilterdQuestion[];
     total: number;
     totalPages: number;
     currentPage: number;
+    questionType?: string;
     resetParams: {
         subjectId: string;
         chapterId: string;
         classId?: string;
     };
 }) {
-    const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
     const [columns, setColumns] = useState<1 | 2>(() => {
         if (typeof window !== "undefined") {
             const savedLayout = localStorage.getItem("question_layout");
@@ -54,15 +58,6 @@ export default function QuestionList({
     const hasSubscription = (user ? hasActiveSubscription(user) : false) || hasEverPurchasedSubjectSubscription;
     const pathname = usePathname();
     const searchParams = useSearchParams();
-
-    const paperService = createPaperService(apiClient);
-
-
-
-    const updateColumns = (cols: 1 | 2) => {
-        setColumns(cols);
-        localStorage.setItem("question_layout", String(cols));
-    };
 
     const goToPage = (page: number) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -94,7 +89,7 @@ export default function QuestionList({
     };
 
     const listContainerRef = useRef<HTMLDivElement>(null);
-
+    const [showMcqAns, setShowMcqAns] = useState<boolean>(false);
 
     // Single Batch MathJax Rendering Effect
     useEffect(() => {
@@ -111,10 +106,12 @@ export default function QuestionList({
         }
     }, [questions, currentPage]);
 
+    // const hasMcqQuestions = questions.some((q) => (q.type === "mcq" || q.type === "en_mcq"));
+
     return (
         <div className="pb-4" ref={listContainerRef}>
             {/* Top Header */}
-            <div className="flex justify-between items-center sticky top-0 z-10 mb-3 py-5 px-2 border rounded-lg">
+            <div className="flex justify-between items-center sticky top-0 z-10 mb-3 py-2 px-2 border rounded-lg bg-white dark:bg-neutral-800 mt-2">
                 <button
                     onClick={toggleMobileMenu}
                     className="p-2 rounded-xl bg-card border border-border lg:hidden text-foreground"
@@ -123,13 +120,15 @@ export default function QuestionList({
                     <Menu className="w-5 h-5" />
                 </button>
 
-                <div className="flex items-center gap-2">
-                    {/* View Switcher: Hidden on Mobile */}
-                    <div className="hidden md:flex items-center gap-1 border rounded-lg p-1 bg-slate-50">
+                {(questionType === "mcq" || questionType === "en_mcq") && <div className="flex items-center justify-center gap-2">
+                    <Checkbox id="mcqAns" checked={!showMcqAns} onCheckedChange={(value) => setShowMcqAns(!value)} /> <Label htmlFor="mcqAns" className="text-xs font-semibold text-green-700 dark:text-green-400">MCQ প্র্যাকটিস মোড</Label>
+                </div>}
 
-                    </div>
+
+                <div className="flex items-center gap-2">
                     <MobileFilterTrigger />
                 </div>
+                <ThemeToggle />
             </div>
 
             {/* Questions Grid */}
@@ -150,6 +149,7 @@ export default function QuestionList({
                                 key={q._id}
                                 question={q}
                                 questionNo={(currentPage - 1) * 20 + index + 1}
+                                showMcqAnswer={showMcqAns}
                             />
                         );
                     })}

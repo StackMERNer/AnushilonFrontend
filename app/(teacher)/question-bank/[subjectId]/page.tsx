@@ -63,13 +63,13 @@ async function QuestionListLoader(props: {
                 questions={questionsResponse.items}
                 total={questionsResponse.totalItems}
                 totalPages={questionsResponse.totalPages}
+                questionType={props.type}
                 currentPage={props.page}
                 resetParams={{
                     subjectId: props.subjectId,
                     chapterId: props.chapterId,
                 }}
             />
-            <></>
         </FreshDataGate>
     );
 }
