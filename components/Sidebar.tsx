@@ -218,7 +218,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                                         className={clsx(
                                             'ml-auto text-[10.5px] px-2 py-0.5 rounded-full font-semibold',
                                             collapsed && 'lg:hidden',
-                                            active ? 'bg-white/20 text-white' : 'bg-primary text-white'
+                                            active ? 'dark:bg-white/20 dark:text-white' : 'bg-primary text-white'
                                         )}
                                     >
                                         {item.badge}
