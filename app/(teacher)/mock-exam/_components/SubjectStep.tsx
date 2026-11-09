@@ -33,12 +33,13 @@ export default function SubjectStep({ subjects, drafts, onOpen, onContinue }: Pr
                                 : "border-slate-200 bg-white shadow-[0_3px_0_rgba(15,23,42,0.06)] hover:border-slate-300"
                                 }`}
                         >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={getSubjectIconByName(sub.name)}
                                 alt=""
                                 width={26}
                                 height={26}
-                                className="h-[26px] w-[26px] shrink-0 object-contain"
+                                className="h-6.5 w-6.5 shrink-0 object-contain"
                             />
                             <span className="flex-1 text-sm font-semibold text-slate-800">
                                 {sub.name}
