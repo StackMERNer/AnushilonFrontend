@@ -51,7 +51,6 @@ async function QuestionListLoader(props: {
     const [questionsResponse, paperData] = await Promise.all([
         questionService.getFilteredQuestions({
             page: props.page,
-            paper: props.paperId,
             questionType: props.type || undefined,
             selectedSubject: props.subjectId,
             selectedChapter: props.chapterId,
@@ -77,8 +76,6 @@ async function QuestionListLoader(props: {
         <FreshDataGate>
             <QuestionList
                 key={paperData.updatedAt?.toString()}
-                paperId={props.paperId}
-                initialSelectedIds={initialSelectedIds}
                 questions={questionsResponse.items}
                 total={questionsResponse.totalItems}
                 totalPages={questionsResponse.totalPages}
@@ -135,9 +132,7 @@ export default async function CreateQuestionPaperPage({ searchParams, params }: 
                 {/* Desktop Sidebar / Mobile Drawer Content */}
                 <FilterDrawerContent filterTitle="ফিল্টার করুন">
                     <QuestionFilterSidebar
-                        classId={classId}
                         boards={[]}
-                        paperId={paperId}
                         selectedSubject={selectedCubjectId}
                         selectedChapter={selectedChapterId}
                         selectedTopics={topicIds}

@@ -77,9 +77,7 @@ export default function QuestionFilterSidebar({
     const toggleBoard = (boardId: string) => setParams({ boards: toggleInList(selectedBoards, boardId) });
     const toggleSchool = (schoolId: string) => setParams({ schools: toggleInList(selectedSchools, schoolId) });
     const currentType = searchParams.get("type");
-    const selectedOnly = String(searchParams.get("selectedOnly") === "true");
     const setType = (value: string) => setParams({ type: currentType === value ? undefined : value, boards: [], schools: [], year: undefined, selectedOnly: undefined });
-    const toggleSelectedOnly = (value: string) => setParams({ selectedOnly: selectedOnly === value ? undefined : String(value) });
 
     const { data: sourcsData } = useSources({ subjectId: selectedSubjectId, chapterId: selectedChapterId, questionType: currentType });
     // console.log('currentType', currentType);
@@ -177,27 +175,6 @@ export default function QuestionFilterSidebar({
                     })}
                 </div>
             </SectionCard>}
-
-            {/* 3. Question type */}
-            <SectionCard title="কুইক ফিল্টার">
-                <div className="space-y-1">
-                    {(() => {
-                        const checked = selectedOnly === "true";
-                        return (
-                            <label
-                                key={'selectedOnly'}
-                                className={clsx(
-                                    "flex items-center gap-2.5 text-sm cursor-pointer rounded-xl px-2.5 py-2 transition-colors",
-                                    checked ? "bg-teal-tint" : "hover:bg-muted"
-                                )}
-                            >
-                                <Checkbox checked={checked} onCheckedChange={(checked) => toggleSelectedOnly(String(checked))} />
-                                নির্বাচিত প্রশ্নসমূহ
-                            </label>
-                        );
-                    })()}
-                </div>
-            </SectionCard>
             {/* 3. Question type */}
             <SectionCard title="প্রশ্নের ধরন">
                 <div className="space-y-1">
@@ -346,7 +323,7 @@ function SectionCard({
     children: React.ReactNode;
 }) {
     return (
-        <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+        <div className="rounded-2xl border border-border dark:bg-neutral-900 p-4 space-y-3">
             <div className="flex items-center gap-2">
                 <h3 className="font-semibold text-sm text-foreground">{title}</h3>
                 {hint && <span className="ml-auto text-[11px] text-teal truncate max-w-[45%]">{hint}</span>}

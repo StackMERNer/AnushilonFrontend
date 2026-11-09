@@ -5,8 +5,6 @@ import QuestionList from "@/components/QuestionList";
 import QuestionListSkeleton from "@/components/QuestionListSkeleton";
 import { createQuestionBankService } from "@/services/question-bank.service";
 import { createServerApiClient } from "@/lib/api/api-server";
-import { createPaperService } from "@/services/paper.service";
-import { IPopulatedQuestionPaper } from "@/types/question-paper";
 import FreshDataGate from "@/components/FreshDataGate";
 
 
@@ -41,7 +39,6 @@ async function QuestionListLoader(props: {
 }) {
     const serverClient = createServerApiClient();
     const questionBankService = createQuestionBankService(serverClient);
-    const paperService = createPaperService(serverClient);
 
     // Fetch both questions and current paper state concurrently
     const [questionsResponse] = await Promise.all([
@@ -59,10 +56,6 @@ async function QuestionListLoader(props: {
         }),
         // paperService.getPaperById(props.paperId).catch(() => ({ sections: [] } as Partial<IPopulatedQuestionPaper>)),
     ]);
-
-    console.log('questionsResponse', questionsResponse);
-
-
 
     return (
         <FreshDataGate>

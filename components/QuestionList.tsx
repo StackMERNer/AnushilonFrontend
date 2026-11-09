@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import {
     Pagination,
     PaginationContent,
@@ -11,27 +10,22 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useSidebar } from "@/context/SidebarContext";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import { apiClient } from "@/lib/api/api-client";
-import { hasActiveSubscription, toBnDigits } from "@/lib/helpers";
+import { hasActiveSubscription } from "@/lib/helpers";
 import { createPaperService } from "@/services/paper.service";
 import { IFilterdQuestion } from "@/types/question";
-import { useMutation } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
-import { Eye, LayoutGrid, Menu, Rows } from "lucide-react";
+import { LayoutGrid, Menu, Rows } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 import { MobileFilterTrigger } from "./FilterDrawerWrapper";
-import QuestionCard from "./QuestionCard";
-import { PressableButton } from "./ui/pressable-button";
 import { PremiumGate } from "./PremiumGate";
-import { useUserProfile } from "@/hooks/useUserProfile";
+import QuestionCard from "./QuestionCard";
 
 export default function QuestionList({
     questions,
     totalPages,
     currentPage,
-    resetParams,
 }: {
     questions: IFilterdQuestion[];
     total: number;
@@ -120,7 +114,7 @@ export default function QuestionList({
     return (
         <div className="pb-4" ref={listContainerRef}>
             {/* Top Header */}
-            <div className="flex justify-between items-center border-b sticky top-0 z-10 mb-3 py-3 px-2 bg-white">
+            <div className="flex justify-between items-center sticky top-0 z-10 mb-3 py-5 px-2 border rounded-lg">
                 <button
                     onClick={toggleMobileMenu}
                     className="p-2 rounded-xl bg-card border border-border lg:hidden text-foreground"
@@ -132,28 +126,7 @@ export default function QuestionList({
                 <div className="flex items-center gap-2">
                     {/* View Switcher: Hidden on Mobile */}
                     <div className="hidden md:flex items-center gap-1 border rounded-lg p-1 bg-slate-50">
-                        <button
-                            type="button"
-                            onClick={() => updateColumns(1)}
-                            className={`p-1.5 rounded transition-colors ${columns === 1
-                                ? "bg-white text-slate-900 shadow-sm font-semibold"
-                                : "text-slate-500 hover:text-slate-900"
-                                }`}
-                            title="১ কলাম"
-                        >
-                            <Rows className="w-4 h-4" />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => updateColumns(2)}
-                            className={`p-1.5 rounded transition-colors ${columns === 2
-                                ? "bg-white text-slate-900 shadow-sm font-semibold"
-                                : "text-slate-500 hover:text-slate-900"
-                                }`}
-                            title="২ কলাম"
-                        >
-                            <LayoutGrid className="w-4 h-4" />
-                        </button>
+
                     </div>
                     <MobileFilterTrigger />
                 </div>
@@ -177,7 +150,6 @@ export default function QuestionList({
                                 key={q._id}
                                 question={q}
                                 questionNo={(currentPage - 1) * 20 + index + 1}
-
                             />
                         );
                     })}

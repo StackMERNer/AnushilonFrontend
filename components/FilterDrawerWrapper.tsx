@@ -69,7 +69,7 @@ export function FilterDrawerContent({ children, filterTitle = "ফিল্ট�
 
             {/* Mobile Drawer / Desktop Sticky Sidebar */}
             <aside
-                className={`fixed top-0 right-0 z-50 h-screen w-80 sm:w-96 bg-card border-l-2 border-dashed border-border p-4 transform transition-transform duration-300 ease-in-out overflow-y-auto lg:translate-x-0 lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-80 shrink-0 print:hidden ${isOpen ? "translate-x-0" : "translate-x-full"
+                className={`fixed top-0 right-0 z-50 h-screen w-80 sm:w-96 border-l-2 border p-4 transform transition-transform duration-300 ease-in-out overflow-y-auto lg:translate-x-0 lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-80 shrink-0 print:hidden ${isOpen ? "translate-x-0" : "translate-x-full"
                     }`}
             >
                 {/* Mobile Drawer Header */}

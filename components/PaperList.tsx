@@ -20,7 +20,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { MobileFilterTrigger } from "./FilterDrawerWrapper";
 import PaperCard from "./PaperCard";
-import { hasActiveSubjectSubscription, hasActiveSubscription, toBnDigits } from "@/lib/helpers";
+import { hasActiveSubscription, toBnDigits } from "@/lib/helpers";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useUserProfile } from "@/hooks/useUserProfile";

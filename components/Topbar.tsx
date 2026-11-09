@@ -27,6 +27,7 @@ export function Topbar() {
         "/add-questions",
         "/my-papers",
         "/content-library",
+        "/question-bank/",
     ];
 
 
