@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   description:
     "অনুশীলন (Anushilon) — SSC, HSC and Admission Preparation Platform",
-  applicationName: "Proshnokosh",
+  applicationName: "Anushilon",
   openGraph: {
     title: "অনুশীলন (Anushilon) — সফলতার নির্ভরযোগ্য সূত্র",
     description:
@@ -83,7 +83,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": "https://anushilon.net/#site",
       name: "অনুশীলন",
-      alternateName: "Proshnokosh",
+      alternateName: "Anushilon",
       url: "https://anushilon.net",
       inLanguage: "bn",
       publisher: { "@id": "https://anushilon.net/#org" },

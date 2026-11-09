@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     title: { absolute: "অনুশীলন (Anushilon) — ৬ষ্ঠ থেকে ১০ম শ্রেণির প্রশ্নপত্র তৈরি" },
     description:
         "অনুশীলন (Anushilon) বাংলাদেশের স্কুল শিক্ষকদের জন্য অনলাইনে প্রশ্নপত্র তৈরির প্ল্যাটফর্ম। ৬ষ্ঠ থেকে ১০ম শ্রেণির বিভিন্ন বিষয়ের MCQ, সৃজনশীল ও সংক্ষিপ্ত প্রশ্ন বেছে নিয়ে কয়েক মিনিটেই প্রশ্নপত্র তৈরি করুন এবং প্রিন্ট-রেডি PDF ডাউনলোড করুন।",
-    applicationName: "Proshnokosh",
+    applicationName: "Anushilon",
     keywords: [
         "অনুশীলন",
-        "Proshnokosh",
+        "Anushilon",
 
         "প্রশ্নপত্র তৈরি",
         "অনলাইনে প্রশ্নপত্র তৈরি",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
         description:
             "প্রশ্ন ব্যাংক থেকে প্রশ্ন বেছে নিয়ে সহজেই প্রশ্নপত্র তৈরি করুন এবং প্রিন্ট-রেডি PDF ডাউনলোড করুন।",
         url: "https://anushilon.net",
-        siteName: "Proshnokosh | অনুশীলন",
+        siteName: "Anushilon | অনুশীলন",
         locale: "bn_BD",
         type: "website",
         images: [ogImage],
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
 
     twitter: {
         card: "summary_large_image",
-        title: "Proshnokosh । অনুশীলন — সফলতার নির্ভরযোগ্য সূত্র ",
+        title: "Anushilon । অনুশীলন — সফলতার নির্ভরযোগ্য সূত্র ",
         description:
             "শিক্ষকদের জন্য সহজ ডিজিটাল প্রশ্নপত্র তৈরির প্ল্যাটফর্ম।",
         images: ["/og.png"],
@@ -442,7 +442,7 @@ const MarketingPage = () => {
             {/* Footer */}
             <footer className="border-t border-border py-8">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 text-xs text-muted-foreground sm:flex-row lg:px-10">
-                    <span className="font-tiro font-semibold text-foreground">অনুশীলন | Proshnokosh</span>
+                    <span className="font-tiro font-semibold text-foreground">অনুশীলন | Anushilon</span>
                     <span>© ২০২৬ অনুশীলন। সর্বস্বত্ব সংরক্ষিত।</span>
                 </div>
             </footer>

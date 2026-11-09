@@ -19,7 +19,7 @@ const HelpPage = () => {
 
                 <div className="flex justify-center">
                     <a
-                        href="https://www.facebook.com/proshnokosh/"
+                        href="https://www.facebook.com/profile.php?id=61564362088603"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group w-full rounded-xl border p-5 transition-colors hover:bg-muted/50 sm:max-w-md"

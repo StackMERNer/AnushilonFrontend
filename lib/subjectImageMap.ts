@@ -1,9 +1,30 @@
+const originalSubjectImage: { [key: string]: string } = {
+  "বাংলা ১ম পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794196572/ban11_kwy9qc.svg",
+  "বাংলা ২য় পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794195562/bangla1_ntvzc9.svg",
+  রসায়ন:
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794196846/chemistry_chmiw9.svg",
+  "রসায়ন ১ম পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794196846/chemistry_chmiw9.svg",
+  "রসায়ন ২য় পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794196846/chemistry_chmiw9.svg",
+  জীববিজ্ঞান:
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197073/DNA_icon.svg_xaqsxm.webp",
+  "তথ্য ও যোগাযোগ প্রযুক্তি":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197531/icons8-laptop-96_iww0cf.png",
+  "উচ্চতর গণিত":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197642/higher_math_synmpf.svg",
+  "উচ্চতর গণিত ১ম পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197642/higher_math_synmpf.svg",
+  "উচ্চতর গণিত ২য় পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197642/higher_math_synmpf.svg",
+  "বাংলাদেশ ও বিশ্বপরিচয়":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794198125/Bangladesh-Globe_ffzuir.png",
+};
 const subjectImage: { [name: string]: string } = {
   "পদার্থবিজ্ঞান ১ম পত্র": "/newtons_cradle.png",
-  "রসায়ন ১ম পত্র": "/chemistry.png",
   "জীববিজ্ঞান ১ম পত্র": "/plant_cell_v1.png",
-  "উচ্চতর গণিত ১ম পত্র": "/integral_v1.png",
-  "বাংলা ১ম পত্র": "/bangla_first.png",
   "বাংলা ২য় পত্র (Coming soon)": "/bangla_second.png",
   "তথ্য ও যোগাযোগ প্রযুক্তি": "/ict_monitor.png",
   "পদার্থবিজ্ঞান ২য় পত্র": "/magnet.png",
@@ -15,8 +36,6 @@ const subjectImage: { [name: string]: string } = {
   পদার্থবিজ্ঞান: "/magnet.png",
   রসায়ন: "/chemistry.png",
   জীববিজ্ঞান: "/biology_dna.png",
-  "উচ্চতর গণিত": "/higher_math.png",
-  "বাংলাদেশ ও বিশ্বপরিচয়": "/bangladesh_global.png",
   "বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা": "/history_civics.png",
   বিজ্ঞান: "/microscope.png",
   "ভূগোল ও পরিবেশ": "/geography_globe.png",
@@ -47,5 +66,8 @@ const subjectImage: { [name: string]: string } = {
 };
 
 export const getSubjectIconByName = (name: string) => {
+  if (originalSubjectImage[name]) {
+    return originalSubjectImage[name];
+  }
   return process.env.NEXT_PUBLIC_CDN_URL + subjectImage[name];
 };

@@ -84,12 +84,12 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
             icon: BookOpen,
             image: '/images/review.svg'
         },
-        {
-            label: 'আমার প্রগ্রেস',
-            href: '/progress',
-            icon: FileText,
-            image: '/images/progress.svg'
-        },
+        // {
+        //     label: 'আমার প্রগ্রেস',
+        //     href: '/progress',
+        //     icon: FileText,
+        //     image: '/images/progress.svg'
+        // },
         {
             label: 'অধ্যায় ভিত্তিক শিখো',
             href: '/browse',
