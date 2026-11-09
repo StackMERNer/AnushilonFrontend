@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { toBnDigits } from "@/lib/helpers";
 import RichTextRenderer from "./RichTextRenderer";
@@ -9,15 +9,32 @@ import { QUESTION_TYPE_LABEL_MAP } from "@/lib/constants";
 import { questionLevelMap } from "@/lib/question-paper";
 
 const BN_LETTER_BASE = 2453; // ক
+const typeset = (el: HTMLElement | null) => {
+    const w = typeof window !== "undefined" ? (window as any) : undefined;
+    if (el && w?.MathJax?.Hub) {
+        w.MathJax.Hub.Queue(["Typeset", w.MathJax.Hub, el]);
+    }
+};
 
-const AnswerBox = ({ html, label = "উত্তর" }: { html: string; label?: string }) => (
-    <div className="mt-2 rounded-md  bg-green-50 dark:bg-green-950/30 p-3">
-        <p className="mb-1 text-xs font-semibold text-green-700 dark:text-green-400">
-            {label}
-        </p>
-        <RichTextRenderer content={html} />
-    </div>
-);
+const AnswerBox = ({ html, label = "উত্তর" }: { html: string; label?: string }) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        typeset(ref.current);
+    }, [html]);
+
+    return (
+        <div
+            ref={ref}
+            className="mt-2 rounded-md bg-green-50 dark:bg-green-950/30 p-3"
+        >
+            <p className="mb-1 text-xs font-semibold text-green-700 dark:text-green-400">
+                {label}
+            </p>
+            <RichTextRenderer content={html} />
+        </div>
+    );
+};
 
 const ToggleButton = ({
     open,

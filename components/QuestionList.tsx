@@ -104,9 +104,9 @@ export default function QuestionList({
                 ]);
             }
         }
-    }, [questions, currentPage]);
+    }, [questions, currentPage, showMcqAns]);
 
-    // const hasMcqQuestions = questions.some((q) => (q.type === "mcq" || q.type === "en_mcq"));
+
 
     return (
         <div className="pb-4" ref={listContainerRef}>
