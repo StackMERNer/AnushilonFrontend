@@ -9,7 +9,7 @@ export default function DueBanner() {
     return (
         <Link
             href="/review"
-            className="flex items-center justify-between rounded-xl p-4 max-w-50 dark:bg-primary dark:text-white flex-col bg-neutral-100"
+            className="flex items-center justify-between rounded-xl p-4 max-w-50 bg-primary flex-col text-primary-foreground"
         >
             <p className="text-sm opacity-90">আজকের রিভিউ</p>
             <p className="text-2xl font-semibold">

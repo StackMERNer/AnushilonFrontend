@@ -241,7 +241,8 @@
   --popover: #211a31;
   --popover-foreground: var(--ink);
 
-  --primary: #1b0851;
+  /* --primary: #1b0851; */
+  --primary: #b7a1f0;
   --primary-foreground: #1b0851;
 
   --secondary: #272036;
@@ -382,5 +383,15 @@
     print-color-adjust: exact !important;
     box-shadow: none !important;
     text-shadow: none !important;
+  }
+}
+
+@keyframes button-shine {
+  0%,
+  55% {
+    translate: -150% 0;
+  }
+  100% {
+    translate: 450% 0;
   }
 }

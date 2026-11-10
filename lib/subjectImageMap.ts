@@ -10,9 +10,10 @@ const originalSubjectImage: { [key: string]: string } = {
   "রসায়ন ২য় পত্র":
     "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794196846/chemistry_chmiw9.svg",
   জীববিজ্ঞান:
-    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197073/DNA_icon.svg_xaqsxm.webp",
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794319472/zoology_h7mpaa.svg",
   "তথ্য ও যোগাযোগ প্রযুক্তি":
     "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197531/icons8-laptop-96_iww0cf.png",
+  গণিত: "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794322718/math_kgssx3.svg",
   "উচ্চতর গণিত":
     "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197642/higher_math_synmpf.svg",
   "উচ্চতর গণিত ১ম পত্র":
@@ -21,6 +22,12 @@ const originalSubjectImage: { [key: string]: string } = {
     "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794197642/higher_math_synmpf.svg",
   "বাংলাদেশ ও বিশ্বপরিচয়":
     "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794198125/Bangladesh-Globe_ffzuir.png",
+  পদার্থবিজ্ঞান:
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794323141/physics_ouibm9.svg",
+  "পদার্থবিজ্ঞান ১ম পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794323141/physics_ouibm9.svg",
+  "পদার্থবিজ্ঞান ২য় পত্র":
+    "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794323635/magnet_nurcnj.png",
 };
 const subjectImage: { [name: string]: string } = {
   "পদার্থবিজ্ঞান ১ম পত্র": "/newtons_cradle.png",
@@ -69,5 +76,6 @@ export const getSubjectIconByName = (name: string) => {
   if (originalSubjectImage[name]) {
     return originalSubjectImage[name];
   }
-  return process.env.NEXT_PUBLIC_CDN_URL + subjectImage[name];
+  return "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1794323038/book_pndlnt.svg";
+  // return process.env.NEXT_PUBLIC_CDN_URL + subjectImage[name];
 };
