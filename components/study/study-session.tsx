@@ -166,7 +166,7 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
                         এখন রিভিউ করার মতো কোনো প্রশ্ন নেই 🎉
                     </p>
                     <Link href={homeHref} className={`${PRIMARY_BTN} mt-6`}>
-                        ফিরে যাও
+                        নতুন প্রশ্ন অনুশীলন করো
                     </Link>
                 </div>
             </div>
@@ -178,7 +178,7 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
         return (
             <div className="mx-auto max-w-md px-4 py-16">
                 <div className="rounded-3xl border border-line bg-card p-8 text-center shadow-sm">
-                    <p className="font-display text-2xl font-bold text-foreground">দারুণ! সেশন শেষ ✅</p>
+                    <p className="font-display text-2xl font-bold text-foreground">দারুণ! সেশন শেষ!🎉</p>
                     <p className="mt-2 text-muted-foreground">
                         {toBnDigits(total)}টি প্রশ্ন রিভিউ হয়েছে
                         {againCount > 0 && `, ${toBnDigits(againCount)}বার "আবার" দিয়েছ`}
@@ -197,7 +197,7 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
                             </button>
                         )}
                         <Link href={homeHref} className={SECONDARY_BTN}>
-                            ফিরে যাও
+                            নতুন প্রশ্ন অনুশীলন শুরু করো
                         </Link>
                     </div>
                 </div>

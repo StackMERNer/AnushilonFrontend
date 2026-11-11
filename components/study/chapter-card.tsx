@@ -49,7 +49,7 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
     );
 }
 
-export default function ChapterCard({ chapter: r }: { chapter: IChapterProgress }) {
+export default function ChapterCard({ chapter: r, subjectId }: { chapter: IChapterProgress; subjectId: string }) {
     const groups = useMemo(() => groupTypes(r.types), [r.types]);
     const [panelOpen, setPanelOpen] = useState(false);
     const [picked, setPicked] = useState<string[]>([]); // labels; empty = all types
@@ -89,7 +89,7 @@ export default function ChapterCard({ chapter: r }: { chapter: IChapterProgress 
             <div className="mt-3 flex flex-wrap items-center gap-2">
                 {r.due > 0 && (
                     <Link
-                        href={`/review?chapter=${r.chapterId}`}
+                        href={`/review?chapter=${r.chapterId}&subject=${subjectId}`}
                         className="rounded-xl bg-emerald-600 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
                     >
                         রিভিউ ({toBnDigits(r.due)})
@@ -117,6 +117,7 @@ export default function ChapterCard({ chapter: r }: { chapter: IChapterProgress 
                 >
                     <input type="hidden" name="chapterId" value={r.chapterId} />
                     <input type="hidden" name="count" value={value} />
+                    <input type="hidden" name="subjectId" value={subjectId} />
                     {picked.length > 0 &&
                         chosen.flatMap((g) => g.types).map((t) => (
                             <input key={t} type="hidden" name="types" value={t} />

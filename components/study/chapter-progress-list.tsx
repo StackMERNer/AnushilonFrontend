@@ -8,7 +8,7 @@ export default async function ChapterProgressList({ subjectId }: { subjectId: st
         <ul className="space-y-3 px-5 pb-5">
             {rows.map((r) => (
                 <li key={r.chapterId}>
-                    <ChapterCard chapter={r} />
+                    <ChapterCard subjectId={subjectId} chapter={r} />
                 </li>
             ))}
         </ul>

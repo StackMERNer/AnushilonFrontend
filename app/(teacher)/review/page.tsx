@@ -5,9 +5,9 @@ import { createServerApiClient } from "@/lib/api/api-server";
 export default async function ReviewPage({
     searchParams,
 }: {
-    searchParams: Promise<{ chapter?: string; topic?: string, types?: string }>;
+    searchParams: Promise<{ subject?: string; chapter?: string; topic?: string, types?: string }>;
 }) {
-    const { chapter, topic, types } = await searchParams;
+    const { subject, chapter, topic, types } = await searchParams;
     const study = createStudyService(createServerApiClient());
     const queue = await study.getQueue({ limit: 30, chapter, topic, types });
 
@@ -15,6 +15,7 @@ export default async function ReviewPage({
         key={queue.items[0]?.question._id ?? "empty"}
         items={queue.items}
         totalDue={queue.totalDue}
+        homeHref={subject ? `/browse/${subject}` : "/browse"}
     />;
 
 }
