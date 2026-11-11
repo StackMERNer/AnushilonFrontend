@@ -6,9 +6,11 @@ import { questionLevelMap } from "@/lib/question-paper";
 import { useMathTypeset } from "@/lib/typeset-math";
 import { IFilterdQuestion } from "@/types/question";
 import clsx from "clsx";
-import { Check, Eye, EyeOff, X } from "lucide-react";
+import { Bookmark, Check, Eye, EyeOff, Flag, X } from "lucide-react";
 import { ReactNode, useRef, useState } from "react";
 import RichTextRenderer from "./RichTextRenderer";
+import { useBookmarkToggle } from "@/hooks/use-bookmark-toggle";
+import ReportQuestionModal from "./ReportQuestionModal";
 
 const BN_LETTER_BASE = 2453; // ক
 const bnLetter = (i: number) => String.fromCharCode(BN_LETTER_BASE + i);
@@ -40,6 +42,7 @@ interface Props {
     badges?: ReactNode;
     /** Study mode: parent controls selection and reveal */
     study?: StudyControl;
+    showActions?: boolean;
 }
 
 /* ------------------------------ small pieces ------------------------------ */
@@ -100,12 +103,14 @@ const QuestionCard = ({
     hideOptionLabels,
     badges,
     study,
+    showActions = true,
 }: Props) => {
     const rootRef = useRef<HTMLDivElement>(null);
     const [localSelected, setLocalSelected] = useState<number | null>(null);
     const [showAnswer, setShowAnswer] = useState(false);
     const [openSub, setOpenSub] = useState<Record<number, boolean>>({});
-
+    const [reportOpen, setReportOpen] = useState(false);
+    const bm = useBookmarkToggle(question._id, question.isBookmarked);
     const isMcq =
         (question.type === "mcq" || question.type === "mcq_english") &&
         (question.options?.length ?? 0) > 0;
@@ -156,37 +161,66 @@ const QuestionCard = ({
                 !study && "hover:border-brand/30",
             )}
         >
-            {/* meta */}
-            <div className="mb-3 flex flex-wrap items-center gap-1.5 text-xs">
-                {showQuestionLabel && (
-                    <span className="rounded-full bg-brand-soft px-2.5 py-1 font-semibold text-brand">
-                        {typeLabel}
-                    </span>
-                )}
-                {question.level && (
-                    <span className="rounded-full bg-gold/20 px-2.5 py-1 font-medium text-foreground">
-                        {questionLevelMap[question.level] ?? question.level}
-                    </span>
-                )}
-                {question.difficulty && (
-                    <span className="rounded-full bg-muted px-2.5 py-1 font-medium text-muted-foreground">
-                        {question.difficulty}
-                    </span>
-                )}
-                {badges}
-                {shownSources.map((s, i) => (
-                    <span
-                        key={`${s.name}-${s.year}-${i}`}
-                        className="rounded-full border border-gold/40 bg-gold/15 px-2.5 py-1 font-semibold text-foreground"
-                    >
-                        {s.name}
-                        {s.year ? ` : ${toBnDigits(s.year)}` : ""}
-                    </span>
-                ))}
-                {hiddenSources > 0 && (
-                    <span className="rounded-full bg-muted px-2 py-1 font-medium text-muted-foreground">
-                        +{toBnDigits(hiddenSources)}
-                    </span>
+            <div className="mb-3 flex items-start justify-between gap-2">
+                {/* meta */}
+                <div className="mb-3 flex flex-wrap items-center gap-1.5 text-xs">
+                    {showQuestionLabel && (
+                        <span className="rounded-full bg-brand-soft px-2.5 py-1 font-semibold text-brand">
+                            {typeLabel}
+                        </span>
+                    )}
+                    {question.level && (
+                        <span className="rounded-full bg-gold/20 px-2.5 py-1 font-medium text-foreground">
+                            {questionLevelMap[question.level] ?? question.level}
+                        </span>
+                    )}
+                    {question.difficulty && (
+                        <span className="rounded-full bg-muted px-2.5 py-1 font-medium text-muted-foreground">
+                            {question.difficulty}
+                        </span>
+                    )}
+                    {badges}
+                    {shownSources.map((s, i) => (
+                        <span
+                            key={`${s.name}-${s.year}-${i}`}
+                            className="rounded-full border border-gold/40 bg-gold/15 px-2.5 py-1 font-semibold text-foreground"
+                        >
+                            {s.name}
+                            {s.year ? ` : ${toBnDigits(s.year)}` : ""}
+                        </span>
+                    ))}
+                    {hiddenSources > 0 && (
+                        <span className="rounded-full bg-muted px-2 py-1 font-medium text-muted-foreground">
+                            +{toBnDigits(hiddenSources)}
+                        </span>
+                    )}
+                </div>
+                {showActions && (
+                    <div className="flex shrink-0 items-center gap-0.5">
+                        {bm.failed && <span className="mr-1 text-[11px] text-red">সেভ হয়নি</span>}
+                        <button
+                            type="button"
+                            onClick={bm.toggle}
+                            aria-pressed={bm.bookmarked}
+                            aria-label={bm.bookmarked ? "বুকমার্ক সরাও" : "বুকমার্ক করো"}
+                            title={bm.bookmarked ? "বুকমার্ক সরাও" : "বুকমার্ক করো"}
+                            className={clsx(
+                                "grid size-8 place-items-center rounded-full transition hover:bg-muted active:scale-90",
+                                bm.bookmarked ? "text-gold" : "text-muted-foreground hover:text-foreground",
+                            )}
+                        >
+                            <Bookmark className={clsx("size-4.5", bm.bookmarked && "fill-current")} />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setReportOpen(true)}
+                            aria-label="প্রশ্নে সমস্যা জানাও"
+                            title="প্রশ্নে সমস্যা জানাও"
+                            className="grid size-8 place-items-center rounded-full text-muted-foreground transition hover:bg-red-tint hover:text-red active:scale-90"
+                        >
+                            <Flag className="size-4.5" />
+                        </button>
+                    </div>
                 )}
             </div>
 
@@ -331,6 +365,10 @@ const QuestionCard = ({
                         </div>
                     )
                 ))}
+
+            {reportOpen && (
+                <ReportQuestionModal questionId={question._id} onClose={() => setReportOpen(false)} />
+            )}
         </div>
     );
 };

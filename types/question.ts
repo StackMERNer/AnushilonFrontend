@@ -31,7 +31,7 @@ export interface IQuestion {
     answer: string;
   }[];
   answer?: string;
-
+  isBookmarked?: boolean;
   // Relations to other entities
   subject: string;
   chapter: string;
