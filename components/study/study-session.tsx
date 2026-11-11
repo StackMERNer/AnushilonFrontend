@@ -6,20 +6,21 @@ import { useRouter } from "next/navigation";
 import { useIsMutating } from "@tanstack/react-query";
 import { IStudyItem, Rating } from "@/types/study";
 import { useSubmitReview } from "@/hooks/use-submit-review";
-import RichTextRenderer from "../RichTextRenderer";
-import { QUESTION_TYPE_LABEL_MAP } from "@/lib/constants";
 import { toBnDigits } from "@/lib/helpers";
+import QuestionCard from "@/components/QuestionCard";
 
-const AUTO_KEY = "srs:autoRateMcq";
-const BN_LETTERS = ["ক", "খ", "গ", "ঘ", "ঙ", "চ"];
-const EN_LETTERS = ["A", "B", "C", "D", "E", "F"];
+const PRIMARY_BTN =
+    "inline-flex items-center justify-center rounded-2xl bg-gold px-6 py-3.5 font-bold text-brand-dark shadow-[0_4px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-0.5 active:shadow-none disabled:opacity-50";
+const SECONDARY_BTN =
+    "inline-flex items-center justify-center rounded-2xl border border-line bg-card px-6 py-3.5 font-semibold text-foreground transition hover:bg-accent";
 
 const RATINGS: { value: Rating; label: string; cls: string }[] = [
-    { value: 1, label: "আবার", cls: "bg-red-600 hover:bg-red-700" },
-    { value: 2, label: "কঠিন", cls: "bg-orange-500 hover:bg-orange-600" },
-    { value: 3, label: "ভালো", cls: "bg-green-600 hover:bg-green-700" },
-    { value: 4, label: "সহজ", cls: "bg-blue-600 hover:bg-blue-700" },
+    { value: 1, label: "আবার", cls: "bg-red-500" },
+    { value: 2, label: "কঠিন", cls: "bg-orange-500" },
+    { value: 3, label: "ভালো", cls: "bg-emerald-500" },
+    { value: 4, label: "সহজ", cls: "bg-brand" },
 ];
+const AUTO_KEY = "srs:autoRateMcq";
 
 // ---- localStorage-backed "auto rate" preference (external store) ----
 const autoListeners = new Set<() => void>();
@@ -136,7 +137,7 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
 
             if (!revealed) {
                 if (isAuto && num >= 1 && num <= (q?.options?.length ?? 0)) pick(num - 1);
-                else if (!isAuto && confirm) {
+                else if (!useAuto && confirm) {
                     e.preventDefault();
                     setRevealed(true);
                 }
@@ -156,40 +157,15 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
         window.addEventListener("keydown", f);
         return () => window.removeEventListener("keydown", f);
     }, []);
-
     // ---- empty / finished ----
     if (total === 0) {
         return (
-            <div className="mx-auto max-w-md px-4 py-16 text-center">
-                <p className="text-lg font-medium">এখন রিভিউ করার মতো কোনো প্রশ্ন নেই 🎉</p>
-                <Link href={homeHref} className="mt-6 inline-block rounded-xl bg-gray-900 px-5 py-2.5 text-white">
-                    ফিরে যাও
-                </Link>
-            </div>
-        );
-    }
-
-    if (!current) {
-        const more = totalDue > total;
-        return (
-            <div className="mx-auto max-w-md px-4 py-16 text-center">
-                <p className="text-xl font-semibold">দারুণ! সেশন শেষ ✅</p>
-                <p className="mt-2 text-gray-600">
-                    {toBnDigits(total)}টি প্রশ্ন রিভিউ হয়েছে
-                    {againCount > 0 && `, ${toBnDigits(againCount)}বার "আবার" দিয়েছ`}
-                </p>
-                {saveFailed && <p className="mt-3 text-sm text-red-600">কিছু রিভিউ সেভ হয়নি। ইন্টারনেট চেক করো।</p>}
-                <div className="mt-6 flex justify-center gap-3">
-                    {more && (
-                        <button
-                            disabled={pending > 0}
-                            onClick={() => router.refresh()}
-                            className="rounded-xl bg-green-600 px-5 py-2.5 text-white disabled:opacity-50"
-                        >
-                            আরও রিভিউ করো ({toBnDigits(totalDue - total)})
-                        </button>
-                    )}
-                    <Link href={homeHref} className="rounded-xl border px-5 py-2.5">
+            <div className="mx-auto max-w-md px-4 py-16">
+                <div className="rounded-3xl border border-line bg-card p-8 text-center shadow-sm">
+                    <p className="text-lg font-semibold text-foreground">
+                        এখন রিভিউ করার মতো কোনো প্রশ্ন নেই 🎉
+                    </p>
+                    <Link href={homeHref} className={`${PRIMARY_BTN} mt-6`}>
                         ফিরে যাও
                     </Link>
                 </div>
@@ -197,153 +173,115 @@ export default function StudySession({ items, totalDue, homeHref = "/" }: Props)
         );
     }
 
-    // ---- card ----
-    const letters = q.type === "mcq_english" ? EN_LETTERS : BN_LETTERS;
-    const tags = [
-        ...(q.boards ?? []).map(
-            (b) => `${b.board?.name ?? ""} ${toBnDigits(b.year)}`
-        ),
-        ...(q.schools ?? []).map(
-            (s) => `${s.school?.name ?? ""}${s.year ? ` ${toBnDigits(s.year)}` : ""}`
-        ),
-        ...(q.universities ?? []).map(
-            (u) => `${u.university?.name ?? ""}${u.year ? ` ${toBnDigits(u.year)}` : ""}`
-        ),
-    ].slice(0, 4);
+    if (!current) {
+        const more = totalDue > total;
+        return (
+            <div className="mx-auto max-w-md px-4 py-16">
+                <div className="rounded-3xl border border-line bg-card p-8 text-center shadow-sm">
+                    <p className="font-display text-2xl font-bold text-foreground">দারুণ! সেশন শেষ ✅</p>
+                    <p className="mt-2 text-muted-foreground">
+                        {toBnDigits(total)}টি প্রশ্ন রিভিউ হয়েছে
+                        {againCount > 0 && `, ${toBnDigits(againCount)}বার "আবার" দিয়েছ`}
+                    </p>
+                    {saveFailed && (
+                        <p className="mt-3 text-sm text-red">কিছু রিভিউ সেভ হয়নি। ইন্টারনেট চেক করো।</p>
+                    )}
+                    <div className="mt-6 flex flex-wrap justify-center gap-3">
+                        {more && (
+                            <button
+                                disabled={pending > 0}
+                                onClick={() => router.refresh()}
+                                className={PRIMARY_BTN}
+                            >
+                                আরও রিভিউ করো ({toBnDigits(totalDue - total)})
+                            </button>
+                        )}
+                        <Link href={homeHref} className={SECONDARY_BTN}>
+                            ফিরে যাও
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
+    // ---- card ----
     return (
         <div className="mx-auto w-full max-w-2xl px-4 py-6">
-            <div className="mb-3 flex items-center justify-between gap-3 text-sm">
-                <span className="font-medium">
+            <div className="mb-3 flex items-center justify-between gap-3">
+                <span className="text-sm font-semibold text-foreground">
                     {toBnDigits(done)} / {toBnDigits(total)}
                 </span>
-                <label className="flex cursor-pointer items-center gap-2 text-gray-600">
-                    <input type="checkbox" checked={autoRate} onChange={(e) => toggleAuto(e.target.checked)} />
+
+                <label className="inline-flex cursor-pointer items-center gap-2 text-xs text-muted-foreground sm:text-sm">
+                    <input
+                        type="checkbox"
+                        className="peer sr-only"
+                        checked={autoRate}
+                        onChange={(e) => toggleAuto(e.target.checked)}
+                    />
+                    <span className="relative h-5 w-9 shrink-0 rounded-full bg-muted transition-colors after:absolute after:left-0.5 after:top-0.5 after:size-4 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] peer-checked:bg-brand peer-checked:after:translate-x-4 peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40" />
                     MCQ নিজে থেকে মূল্যায়ন
                 </label>
             </div>
-            <div className="mb-5 h-2 overflow-hidden rounded-full bg-gray-200">
+
+            <div className="mb-5 h-2.5 overflow-hidden rounded-full bg-muted">
                 <div
-                    className="h-full bg-green-500 transition-all"
+                    className="h-full rounded-full bg-linear-to-r from-gold to-brand-light transition-all duration-500"
                     style={{ width: `${(done / total) * 100}%` }}
                 />
             </div>
 
             {saveFailed && (
-                <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+                <p className="mb-3 rounded-xl bg-red-tint px-3 py-2 text-sm text-red">
                     কিছু রিভিউ সেভ হয়নি। ইন্টারনেট চেক করো।
                 </p>
             )}
 
-            <article className="rounded-2xl border p-5 shadow-sm">
-                <div className="mb-3 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-full bg-neutral-100 dark:bg-neutral-900 px-2.5 py-1">
-                        {QUESTION_TYPE_LABEL_MAP[q.type] ?? q.type}
-                    </span>
-                    {current.card.state === "learning" && (
-                        <span className="rounded-full bg-amber-50 dark:bg-amber-800 px-2.5 py-1 text-amber-700">শিখছ</span>
-                    )}
-                    {tags.map((t) => (
-                        <span key={t} className="rounded-full bg-blue-50 px-2.5 py-1 text-blue-700">
-                            {t}
+            <QuestionCard
+                key={q._id}
+                question={q}
+                badges={
+                    current.card.state === "learning" && (
+                        <span className="rounded-full bg-gold/20 px-2.5 py-1 font-medium text-foreground">
+                            শিখছ
                         </span>
-                    ))}
-                </div>
+                    )
+                }
+                study={{ revealed, selected: picked, selectable: isAuto, onSelect: pick }}
+            />
 
-                {q.context && <RichTextRenderer content={q.context} className="mb-3 rounded-lg bg-gray-50 p-3" />}
-                <RichTextRenderer content={q.question} className="text-lg leading-relaxed" />
-
-                {/* options */}
-                {!!q.options?.length && (
-                    <ul className="mt-4 space-y-2">
-                        {q.options.map((opt, i) => {
-                            const state =
-                                picked === null
-                                    ? ""
-                                    : i === correct
-                                        ? "border-green-500 bg-green-50"
-                                        : i === picked
-                                            ? "border-red-500 bg-red-50"
-                                            : "opacity-60";
-                            return (
-                                <li key={i}>
-                                    <button
-                                        type="button"
-                                        disabled={!isAuto || picked !== null}
-                                        onClick={() => pick(i)}
-                                        className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left ${state} ${isAuto && picked === null ? "hover:bg-neutral-50 dark:hover:bg-neutral-800" : ""
-                                            }`}
-                                    >
-                                        <span className="font-medium">{letters[i]}.</span>
-                                        <RichTextRenderer content={opt} />
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ul>
+            {/* actions */}
+            <div className="mt-4">
+                {!revealed && !useAuto && (
+                    <button onClick={() => setRevealed(true)} className={`${PRIMARY_BTN} w-full`}>
+                        উত্তর দেখো
+                    </button>
                 )}
 
-                {/* CQ-style sub questions */}
-                {!!q.questions?.length && (
-                    <ol className="mt-4 space-y-4">
-                        {q.questions.map((sq, i) => (
-                            <li key={i}>
-                                <div className="flex gap-2">
-                                    <span className="font-medium">{BN_LETTERS[i]}.</span>
-                                    <RichTextRenderer content={sq.question} />
-                                </div>
-                                {revealed && (
-                                    <RichTextRenderer
-                                        content={sq.answer}
-                                        className="mt-2 rounded-lg border-l-4 border-green-500 bg-green-50 p-3"
-                                    />
-                                )}
-                            </li>
+                {revealed && useAuto && (
+                    <button onClick={() => advance(autoRating)} className={`${PRIMARY_BTN} w-full`}>
+                        {picked === correct ? "সঠিক! পরবর্তী" : "ভুল হয়েছে — পরবর্তী"}
+                    </button>
+                )}
+
+                {revealed && !useAuto && (
+                    <div className="grid grid-cols-4 gap-2">
+                        {RATINGS.map((r) => (
+                            <button
+                                key={r.value}
+                                onClick={() => rate(r.value)}
+                                className={`flex flex-col items-center gap-0.5 rounded-2xl py-3 font-bold text-white shadow-[0_4px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-0.5 active:shadow-none ${r.cls}`}
+                            >
+                                <span>{r.label}</span>
+                                <span className="hidden text-[10px] font-medium opacity-80 sm:block">
+                                    {toBnDigits(r.value)}
+                                </span>
+                            </button>
                         ))}
-                    </ol>
+                    </div>
                 )}
-
-                {/* general answer / explanation */}
-                {revealed && q.answer && (
-                    <RichTextRenderer
-                        content={q.answer}
-                        className="mt-4 rounded-lg border-l-4 border-green-500 bg-green-50 p-3"
-                    />
-                )}
-
-                {/* actions */}
-                <div className="mt-6">
-                    {!revealed && !isAuto && (
-                        <button
-                            onClick={() => setRevealed(true)}
-                            className="w-full rounded-xl bg-gray-900 py-3 text-white"
-                        >
-                            উত্তর দেখো
-                        </button>
-                    )}
-                    {revealed && useAuto && (
-                        <button
-                            onClick={() => advance(autoRating)}
-                            className="w-full rounded-xl bg-gray-900 py-3 text-white"
-                        >
-                            {picked === correct ? "সঠিক! পরবর্তী" : "ভুল হয়েছে — পরবর্তী"}
-                        </button>
-                    )}
-                    {revealed && !useAuto && (
-                        <div className="grid grid-cols-4 gap-2">
-                            {RATINGS.map((r) => (
-                                <button
-                                    key={r.value}
-                                    onClick={() => rate(r.value)}
-                                    className={`rounded-xl py-3 text-white ${r.cls}`}
-                                >
-                                    {r.label}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </article>
+            </div>
         </div>
     );
 }

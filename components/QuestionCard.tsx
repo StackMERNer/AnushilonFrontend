@@ -1,304 +1,336 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import clsx from "clsx";
-import { toBnDigits } from "@/lib/helpers";
-import RichTextRenderer from "./RichTextRenderer";
-import { IFilterdQuestion } from "@/types/question";
 import { QUESTION_TYPE_LABEL_MAP } from "@/lib/constants";
+import { toBnDigits } from "@/lib/helpers";
 import { questionLevelMap } from "@/lib/question-paper";
+import { useMathTypeset } from "@/lib/typeset-math";
+import { IFilterdQuestion } from "@/types/question";
+import clsx from "clsx";
+import { Check, Eye, EyeOff, X } from "lucide-react";
+import { ReactNode, useRef, useState } from "react";
+import RichTextRenderer from "./RichTextRenderer";
 
 const BN_LETTER_BASE = 2453; // ক
-const typeset = (el: HTMLElement | null) => {
-    const w = typeof window !== "undefined" ? (window as any) : undefined;
-    if (el && w?.MathJax?.Hub) {
-        w.MathJax.Hub.Queue(["Typeset", w.MathJax.Hub, el]);
-    }
+const bnLetter = (i: number) => String.fromCharCode(BN_LETTER_BASE + i);
+
+/** Accepts both IFilterdQuestion (question bank) and IStudyQuestion (study). */
+export type CardQuestion = Omit<IFilterdQuestion, "boards" | "schools" | "universities"> & {
+    boards?: any[];
+    schools?: any[];
+    universities?: any[];
 };
 
-const AnswerBox = ({ html, label = "উত্তর" }: { html: string; label?: string }) => {
-    const ref = useRef<HTMLDivElement>(null);
+export interface StudyControl {
+    revealed: boolean;
+    selected: number | null;
+    /** MCQ options can be tapped */
+    selectable: boolean;
+    onSelect: (i: number) => void;
+}
 
-    useEffect(() => {
-        typeset(ref.current);
-    }, [html]);
+interface Props {
+    question: CardQuestion;
+    questionNo?: number;
+    showQuestionLabel?: boolean;
+    /** Browse: show MCQ correct answer + solution without clicking */
+    showMcqAnswer?: boolean;
+    /** Defaults to true in study mode, false in browse */
+    hideOptionLabels?: boolean;
+    /** Extra pills in the meta row (e.g. "শিখছ") */
+    badges?: ReactNode;
+    /** Study mode: parent controls selection and reveal */
+    study?: StudyControl;
+}
 
-    return (
-        <div
-            ref={ref}
-            className="mt-2 rounded-md bg-green-50 dark:bg-green-950/30 p-3"
-        >
-            <p className="mb-1 text-xs font-semibold text-green-700 dark:text-green-400">
-                {label}
-            </p>
-            <RichTextRenderer content={html} />
-        </div>
-    );
-};
+/* ------------------------------ small pieces ------------------------------ */
 
-const ToggleButton = ({
-    open,
-    onClick,
-    openLabel = "উত্তর লুকাও",
-    closedLabel = "উত্তর দেখো",
-}: {
-    open: boolean;
-    onClick: () => void;
-    openLabel?: string;
-    closedLabel?: string;
-}) => (
+const AnswerBox = ({ html, label = "উত্তর" }: { html: string; label?: string }) => (
+    <div className="mt-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3">
+        <p className="mb-1.5 flex items-center gap-1 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+            <Check className="size-3.5" strokeWidth={3} />
+            {label}
+        </p>
+        <RichTextRenderer content={html} />
+    </div>
+);
+
+const AnswerToggle = ({ open, onClick }: { open: boolean; onClick: () => void }) => (
     <button
         type="button"
         onClick={onClick}
         aria-expanded={open}
-        className="rounded-md border border-slate-300 dark:border-slate-700 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
+        className={clsx(
+            "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-all",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 active:scale-95",
+            open
+                ? "border-line bg-muted text-muted-foreground hover:text-foreground"
+                : "border-brand/25 bg-brand-soft text-brand hover:border-brand/50 hover:bg-brand/10",
+        )}
     >
-        {open ? openLabel : closedLabel}
+        {open ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+        {open ? "উত্তর লুকাও" : "উত্তর দেখো"}
     </button>
 );
+
+type Source = { name: string; year?: number | null };
+const buildSources = (q: CardQuestion): Source[] => {
+    const out: Source[] = [];
+    q.boards?.forEach((b) => {
+        const name = b.board?.acronym || b.board?.name;
+        if (name) out.push({ name, year: b.year });
+    });
+    q.schools?.forEach((s) => {
+        const name = s.school?.name;
+        if (name) out.push({ name, year: s.year });
+    });
+    q.universities?.forEach((u) => {
+        const name = u.university?.name;
+        if (name) out.push({ name, year: u.year });
+    });
+    return out;
+};
+
+/* --------------------------------- card ---------------------------------- */
 
 const QuestionCard = ({
     question,
     questionNo,
     showQuestionLabel = true,
     showMcqAnswer = false,
-}: {
-    question: IFilterdQuestion;
-    questionNo: number;
-    showQuestionLabel?: boolean;
-    /** When true, MCQ correct answer + solution are shown without clicking. */
-    showMcqAnswer?: boolean;
-}) => {
-    const [selected, setSelected] = useState<number | null>(null);
+    hideOptionLabels,
+    badges,
+    study,
+}: Props) => {
+    const rootRef = useRef<HTMLDivElement>(null);
+    const [localSelected, setLocalSelected] = useState<number | null>(null);
     const [showAnswer, setShowAnswer] = useState(false);
-    const [openSubAnswers, setOpenSubAnswers] = useState<Record<number, boolean>>({});
-
-    const typeLabel = QUESTION_TYPE_LABEL_MAP[question.type] ?? question.type;
-    const sources = [
-        ...(question.boards ?? []).map((board) => ({
-            name: board.board.acronym || board.board.name,
-            year: board.year,
-        })),
-        ...(question.schools ?? []).map((school) => ({
-            name: school.school.name,
-            year: school.year,
-        })),
-    ];
-    const optionGridCols = question.options.some((opt) => (opt ?? "").length > 20)
-        ? "grid-cols-1"
-        : "grid-cols-2";
+    const [openSub, setOpenSub] = useState<Record<number, boolean>>({});
 
     const isMcq =
         (question.type === "mcq" || question.type === "mcq_english") &&
-        question.options?.length > 0;
-    const hasSubQuestions = (question.questions?.length ?? 0) > 0;
+        (question.options?.length ?? 0) > 0;
+    const hasSub = (question.questions?.length ?? 0) > 0;
+    const correctIdx = question.correctMcq ?? -1;
 
-    const revealed = showMcqAnswer || selected !== null;
-    const letter = (i: number) =>
-        question.type === "mcq_english"
-            ? String.fromCharCode(65 + i)
-            : String.fromCharCode(BN_LETTER_BASE + i);
+    // one set of derived values for both modes
+    const selected = study ? study.selected : localSelected;
+    const answered = study
+        ? study.revealed || study.selected !== null
+        : showMcqAnswer || localSelected !== null;
+    const canPick = study ? study.selectable && study.selected === null : !answered;
+    const onPick = study ? study.onSelect : setLocalSelected;
+    const hideLabels = hideOptionLabels ?? !!study;
 
-    const toggleSub = (i: number) =>
-        setOpenSubAnswers((prev) => ({ ...prev, [i]: !prev[i] }));
+    // re-typeset math whenever new content appears (next question, reveal, toggles)
+    useMathTypeset(rootRef);
+
+    const typeLabel = QUESTION_TYPE_LABEL_MAP[question.type] ?? question.type;
+    const sources = buildSources(question);
+    const shownSources = study ? sources.slice(0, 3) : sources;
+    const hiddenSources = sources.length - shownSources.length;
+
+    const optionLetter = (i: number) =>
+        question.type === "mcq_english" ? String.fromCharCode(65 + i) : bnLetter(i);
+    const gridCols = (question.options ?? []).some((o) => (o ?? "").length > 20)
+        ? "grid-cols-1"
+        : "grid-cols-1 sm:grid-cols-2";
+
+    const optionState = (i: number) => {
+        if (!answered) return "idle";
+        if (correctIdx >= 0) {
+            if (i === correctIdx) return "correct";
+            if (i === selected) return "wrong";
+            return "dim";
+        }
+        return i === selected ? "picked" : "dim"; // no correct answer stored
+    };
+
+    const questionHtml =
+        questionNo != null ? `${toBnDigits(questionNo)}. ${question.question}` : question.question;
 
     return (
-        <div className="question-card relative p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 select-none transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700">
-            {/* Question metadata */}
-            <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
+        <div
+            ref={rootRef}
+            className={clsx(
+                "question-card relative select-none rounded-2xl border border-line bg-card p-4 text-foreground shadow-sm transition-colors sm:p-5",
+                !study && "hover:border-brand/30",
+            )}
+        >
+            {/* meta */}
+            <div className="mb-3 flex flex-wrap items-center gap-1.5 text-xs">
                 {showQuestionLabel && (
-                    <span className="rounded-full bg-blue-500 text-white px-2 py-1 font-medium">
+                    <span className="rounded-full bg-brand-soft px-2.5 py-1 font-semibold text-brand">
                         {typeLabel}
                     </span>
                 )}
-
                 {question.level && (
-                    <span className="rounded-md bg-yellow-100 dark:bg-yellow-950/60 text-yellow-800 dark:text-yellow-300 px-2 py-1 font-medium">
+                    <span className="rounded-full bg-gold/20 px-2.5 py-1 font-medium text-foreground">
                         {questionLevelMap[question.level] ?? question.level}
                     </span>
                 )}
-
                 {question.difficulty && (
-                    <span className="rounded-md bg-amber-50 dark:bg-amber-950/60 px-2 py-1 text-amber-800 dark:text-amber-300 font-medium">
+                    <span className="rounded-full bg-muted px-2.5 py-1 font-medium text-muted-foreground">
                         {question.difficulty}
+                    </span>
+                )}
+                {badges}
+                {shownSources.map((s, i) => (
+                    <span
+                        key={`${s.name}-${s.year}-${i}`}
+                        className="rounded-full border border-gold/40 bg-gold/15 px-2.5 py-1 font-semibold text-foreground"
+                    >
+                        {s.name}
+                        {s.year ? ` : ${toBnDigits(s.year)}` : ""}
+                    </span>
+                ))}
+                {hiddenSources > 0 && (
+                    <span className="rounded-full bg-muted px-2 py-1 font-medium text-muted-foreground">
+                        +{toBnDigits(hiddenSources)}
                     </span>
                 )}
             </div>
 
-            <div className="flex items-start gap-3">
-
-
-                <div className="space-y-2 flex-1 min-w-0">
-                    {/* <p className="font-semibold text-slate-700 dark:text-slate-300">
-                        {toBnDigits(questionNo)}.
-                    </p> */}
-                    {question.context && (
-                        <RichTextRenderer
-                            content={question.context}
-                            className="font-semibold wrap-break-word pr-16"
-                        />
+            {/* context + question */}
+            {question.context && (
+                <RichTextRenderer
+                    content={question.context}
+                    className="mb-3 rounded-xl bg-muted/60 p-3 wrap-break-word"
+                />
+            )}
+            {question.question && (
+                <RichTextRenderer
+                    content={questionHtml}
+                    className={clsx(
+                        "wrap-break-word font-semibold leading-relaxed",
+                        study ? "text-lg" : "pr-16",
                     )}
+                />
+            )}
 
-                    {question.question && (
-                        <RichTextRenderer
-                            content={`${toBnDigits(questionNo)}. ` + question.question}
-                            className="font-semibold wrap-break-word pr-16"
-                        />
-                    )}
-
-                    {/* Question sources */}
-                    <div className="w-full flex justify-end">
-                        {sources.length > 0 && (
-                            <div className="font-semibold items-center bg-yellow-300 dark:bg-yellow-500/20 text-slate-900 dark:text-yellow-300 border border-yellow-400/30 p-1 rounded-full text-xs">
-                                [{sources.map((source, index) => (
-                                    <span key={`${source.name}-${source.year}-${index}`}>
-                                        {index > 0 && <span className="mr-2">,</span>}
-                                        <span>{source.name}</span>
-                                        {source.year && (
-                                            <>
-                                                <span className="mx-0.5">:</span>
-                                                <span>{toBnDigits(source.year)}</span>
-                                            </>
+            {/* MCQ */}
+            {isMcq && (
+                <>
+                    <ul className={clsx("mt-4 grid gap-2", gridCols)}>
+                        {question.options.map((opt: string, i: number) => {
+                            const state = optionState(i);
+                            return (
+                                <li key={i}>
+                                    <button
+                                        type="button"
+                                        disabled={!canPick}
+                                        onClick={() => onPick(i)}
+                                        className={clsx(
+                                            "flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors disabled:cursor-default",
+                                            state === "idle" && "border-line bg-muted/40",
+                                            state === "idle" &&
+                                            canPick &&
+                                            "hover:border-brand/40 hover:bg-brand-soft/60",
+                                            state === "picked" && "border-brand bg-brand-soft",
+                                            state === "correct" && "border-emerald-500 bg-emerald-500/10",
+                                            state === "wrong" && "border-red-500 bg-red-500/10",
+                                            state === "dim" && "border-transparent bg-muted/30 opacity-60",
                                         )}
-                                    </span>
-                                ))}]
-                            </div>
-                        )}
-                    </div>
-
-                    {/* MCQ options (click to answer) */}
-                    {isMcq && (
-                        <>
-                            <ul className={clsx("grid gap-x-4 gap-y-2 pt-1", optionGridCols)}>
-                                {question.options.map((opt: string, i: number) => {
-                                    const isCorrect = question.correctMcq === i;
-                                    const isWrongPick = selected === i && !isCorrect;
-
-                                    return (
-                                        <li key={i}>
-                                            <button
-                                                type="button"
-                                                disabled={revealed}
-                                                onClick={() => setSelected(i)}
+                                    >
+                                        {!hideLabels && (
+                                            <span
                                                 className={clsx(
-                                                    "flex w-full items-start gap-2 rounded-lg border px-2 py-3 text-left wrap-break-word transition-colors bg-neutral-100 dark:bg-neutral-800 dark:text-white",
-                                                    !revealed &&
-                                                    " hover:border-neutral-300 hover:bg-neutral-50 dark:hover:border-slate-700 dark:hover:bg-slate-800",
-                                                    revealed &&
-                                                    isCorrect &&
-                                                    " ",
-                                                    revealed &&
-                                                    isWrongPick &&
-                                                    " ",
-                                                    revealed &&
-                                                    !isCorrect &&
-                                                    !isWrongPick &&
-                                                    "border-transparent opacity-90"
+                                                    "grid size-6 shrink-0 place-items-center rounded-full border text-xs font-semibold",
+                                                    state === "correct"
+                                                        ? "border-emerald-500 bg-emerald-500 text-white"
+                                                        : state === "wrong"
+                                                            ? "border-red-500 bg-red-500 text-white"
+                                                            : "border-line bg-card text-muted-foreground",
                                                 )}
                                             >
-                                                <span
-                                                    className={clsx(
-                                                        "flex items-start justify-center w-5 h-5 rounded-full border font-semibold shrink-0 transition-colors",
-                                                        revealed && isCorrect
-                                                            ? "bg-green-600 text-white border-green-600"
-                                                            : revealed && isWrongPick
-                                                                ? "bg-red-600 text-white border-red-600"
-                                                                : "border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800"
-                                                    )}
-                                                >
-                                                    {letter(i)}
-                                                </span>
+                                                {optionLetter(i)}
+                                            </span>
+                                        )}
 
-                                                <div
-                                                    className={clsx(
-                                                        "flex-1 min-w-0 text-slate-700 dark:text-slate-300",
-                                                        revealed &&
-                                                        isCorrect &&
-                                                        "font-medium text-slate-900 dark:text-white"
-                                                    )}
-                                                >
-                                                    <RichTextRenderer content={opt} />
-                                                </div>
-                                            </button>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-
-                            {/* Result + retry (only when the user picked it themselves) */}
-                            {selected !== null && !showMcqAnswer && (
-                                <div className="flex items-center gap-3 pt-1 text-sm">
-                                    {question.correctMcq != null && (
-                                        <span
+                                        <div
                                             className={clsx(
-                                                "font-semibold",
-                                                selected === question.correctMcq
-                                                    ? "text-green-600 dark:text-green-400"
-                                                    : "text-red-600 dark:text-red-400"
+                                                "min-w-0 flex-1 wrap-break-word",
+                                                state === "correct" && "font-medium",
                                             )}
                                         >
-                                            {selected === question.correctMcq
-                                                ? "সঠিক উত্তর!"
-                                                : "ভুল উত্তর"}
-                                        </span>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* Solution / explanation */}
-                            {revealed && question.answer && (
-                                <AnswerBox html={question.answer} label="সমাধান" />
-                            )}
-                        </>
-                    )}
-
-                    {/* CQ sub-questions with per-question answer toggle */}
-                    {hasSubQuestions && (
-                        <ul className="space-y-3">
-                            {question.questions?.map((subQ, i: number) => (
-                                <li
-                                    key={i}
-                                    className="wrap-break-word text-slate-700 dark:text-slate-300"
-                                >
-                                    <div className="flex items-start gap-2">
-                                        <span className="flex items-center justify-center w-5 h-5 rounded-full border shrink-0 border-gray-800 dark:border-gray-200">
-                                            {String.fromCharCode(BN_LETTER_BASE + i)}
-                                        </span>
-
-                                        <div className="flex-1 min-w-0">
-                                            <RichTextRenderer content={subQ.question} />
-
-                                            {subQ.answer && (
-                                                <div className="mt-2">
-                                                    <ToggleButton
-                                                        open={!!openSubAnswers[i]}
-                                                        onClick={() => toggleSub(i)}
-                                                    />
-                                                </div>
-                                            )}
-
-                                            {openSubAnswers[i] && subQ.answer && (
-                                                <AnswerBox html={subQ.answer} />
-                                            )}
+                                            <RichTextRenderer content={opt} />
                                         </div>
-                                    </div>
+
+                                        {state === "correct" && (
+                                            <Check className="size-5 shrink-0 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
+                                        )}
+                                        {state === "wrong" && (
+                                            <X className="size-5 shrink-0 text-red-500" strokeWidth={3} />
+                                        )}
+                                    </button>
                                 </li>
-                            ))}
-                        </ul>
+                            );
+                        })}
+                    </ul>
+
+                    {/* browse: verdict after the student's own pick */}
+                    {!study && localSelected !== null && !showMcqAnswer && correctIdx >= 0 && (
+                        <p
+                            className={clsx(
+                                "mt-2 text-sm font-semibold",
+                                localSelected === correctIdx
+                                    ? "text-emerald-600 dark:text-emerald-400"
+                                    : "text-red-500",
+                            )}
+                        >
+                            {localSelected === correctIdx ? "সঠিক উত্তর!" : "ভুল উত্তর"}
+                        </p>
                     )}
 
-                    {/* Every other type: single show-answer button */}
-                    {!isMcq && !hasSubQuestions && question.answer && (
-                        <div>
-                            <ToggleButton
-                                open={showAnswer}
-                                onClick={() => setShowAnswer((v) => !v)}
-                            />
+                    {answered && question.answer && <AnswerBox html={question.answer} label="সমাধান" />}
+                </>
+            )}
+
+            {/* CQ sub-questions */}
+            {hasSub && (
+                <ul className="mt-4 space-y-4">
+                    {question.questions!.map((subQ, i) => {
+                        const open = study ? study.revealed : !!openSub[i];
+                        return (
+                            <li key={i} className="wrap-break-word">
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-brand-soft text-xs font-bold text-brand">
+                                        {bnLetter(i)}
+                                    </span>
+                                    <div className="min-w-0 flex-1">
+                                        <RichTextRenderer content={subQ.question} />
+
+                                        {!study && subQ.answer && (
+                                            <div className="mt-2">
+                                                <AnswerToggle
+                                                    open={!!openSub[i]}
+                                                    onClick={() =>
+                                                        setOpenSub((p) => ({ ...p, [i]: !p[i] }))
+                                                    }
+                                                />
+                                            </div>
+                                        )}
+                                        {open && subQ.answer && <AnswerBox html={subQ.answer} />}
+                                    </div>
+                                </div>
+                            </li>
+                        );
+                    })}
+                </ul>
+            )}
+
+            {/* everything else: one answer */}
+            {!isMcq &&
+                question.answer &&
+                (study ? (
+                    study.revealed && <AnswerBox html={question.answer} />
+                ) : (
+                    !hasSub && (
+                        <div className="mt-3">
+                            <AnswerToggle open={showAnswer} onClick={() => setShowAnswer((v) => !v)} />
                             {showAnswer && <AnswerBox html={question.answer} />}
                         </div>
-                    )}
-                </div>
-            </div>
+                    )
+                ))}
         </div>
     );
 };
