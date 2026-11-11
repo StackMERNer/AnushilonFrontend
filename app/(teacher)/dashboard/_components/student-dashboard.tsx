@@ -49,21 +49,9 @@ const StudentDashboard = () => {
 
     const summary = summaryQ.data;
     const isNew = !!summary && summary.totalStudied === 0;
-    const firstName = user?.name?.trim().split(' ')[0];
 
     return (
         <div className="flex-1 space-y-6 p-4 sm:p-8 lg:p-[20px_40px_50px]">
-            {/* <header>
-                {user ? (
-                    <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
-                        {greeting()}
-                        {firstName ? `, ${firstName}` : ''}
-                    </h1>
-                ) : (
-                    <div className="h-9 w-56 animate-pulse rounded-lg bg-muted" />
-                )}
-            </header> */}
-
             {summaryQ.isLoading && <Skeleton className="h-44" />}
             {summaryQ.isError && (
                 <div className="rounded-2xl border border-line bg-card p-4 text-sm">

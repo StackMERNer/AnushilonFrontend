@@ -8,6 +8,7 @@ import { IStudyItem, Rating } from "@/types/study";
 import { useSubmitReview } from "@/hooks/use-submit-review";
 import { toBnDigits } from "@/lib/helpers";
 import QuestionCard from "@/components/QuestionCard";
+import confetti from "canvas-confetti";
 
 const PRIMARY_BTN =
     "inline-flex items-center justify-center rounded-2xl bg-gold px-6 py-3.5 font-bold text-brand-dark shadow-[0_4px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-0.5 active:shadow-none disabled:opacity-50";
@@ -124,6 +125,22 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
         setRevealed(true);
         if (useAuto) submit(i === correct ? 3 : 1, true);
     };
+
+    useEffect(() => {
+        if (total === 0 || current) return;
+
+        // Small delay to let the completion screen render first
+        const timer = setTimeout(() => {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.65 },
+                colors: ["#FBBF24", "#F59E0B", "#10B981", "#6366F1", "#EC4899"],
+            });
+        }, 200);
+
+        return () => clearTimeout(timer);
+    }, [total, current]);
 
     // keyboard shortcuts (handler kept in a ref so it always sees fresh state)
     const keyHandler = useRef<(e: KeyboardEvent) => void>(() => { });

@@ -21,6 +21,7 @@
     "@tiptap/react": "^3.31.0",
     "@tiptap/starter-kit": "^3.31.0",
     "axios": "^1.19.0",
+    "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cn": "^0.2.6",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/ms": "^2.1.0",
     "@types/node": "^20",
     "@types/react": "^19",

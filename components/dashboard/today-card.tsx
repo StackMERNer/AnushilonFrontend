@@ -25,7 +25,7 @@ export function TodayCard({ s }: { s: IDashboardSummary }) {
             }
             : {
                 eyebrow: "আজকের রিভিউ",
-                title: "সব শেষ! 🎉",
+                title: "চমৎকার! আজকের রিভিউ সম্পন্ন! 🎉",
                 sub: "নতুন প্রশ্ন শেখার জন্য একটি বিষয় বেছে নাও।",
                 cta: "নতুন প্রশ্ন শুরু করো",
                 href: "/browse",
@@ -47,7 +47,7 @@ export function TodayCard({ s }: { s: IDashboardSummary }) {
 
                 {s.lastStudied && (
                     <Link
-                        href={`/browse/${s.lastStudied.subjectId}`}
+                        href={`/review?chapter=${s.lastStudied.chapterId}?subject=${s.lastStudied.subjectId}`}
                         className="min-w-0 truncate text-sm text-white/80 underline-offset-4 hover:text-white hover:underline"
                     >
                         চালিয়ে যাও: {s.lastStudied.subjectName} › {s.lastStudied.chapterName} →
