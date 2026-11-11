@@ -5,7 +5,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import StudentOnboardingGate from '@/components/onboarding/StudentOnboardingGate';
 
 export const metadata: Metadata = {
-    title: 'অনুশীলন - শিক্ষক ড্যাশবোর্ড',
+    title: 'অনুশীলন - ড্যাশবোর্ড',
     description: 'সফলতার নির্ভরযোগ্য সূত্র  তৈরি করুন',
     robots: { index: false }
 };

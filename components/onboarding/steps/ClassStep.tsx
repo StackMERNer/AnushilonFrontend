@@ -1,10 +1,11 @@
-import { useClasses } from '@/hooks/use-academic'; // Or your preferred toast library
+import { useClasses } from '@/hooks/use-academic';
 import { apiClient } from '@/lib/api/api-client';
 import { createUserService } from '@/services/user.service';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
+import { PressButton } from '@/components/ui/press-button'; // Adjust path if needed
 
 // IDs of classes that require stream selection
 const STREAM_REQUIRED_CLASS_IDS = [
@@ -42,10 +43,15 @@ const ClassOnboardingStep: React.FC<ClassOnboardingStepProps> = ({
         setIsSubmitting(true);
         try {
             const userService = createUserService(apiClient);
+            const selectedClass = classes?.find((c) => c._id === classId);
 
             await userService.updateProfile({
-                // Adjust these field names to match your IUser interface
-                ...(classId && { class: classId }),
+                ...(selectedClass && {
+                    class: {
+                        _id: selectedClass._id,
+                        name: selectedClass.name,
+                    },
+                }),
                 ...(stream && { stream }),
             });
 
@@ -65,24 +71,20 @@ const ClassOnboardingStep: React.FC<ClassOnboardingStepProps> = ({
         }
     };
 
-    // Handle class item click
-    const handleSelectClass = async (classId: string) => {
-        setSelectedClassId(classId);
+    // Handle continue button click
+    const handleProceed = async () => {
+        if (step === 'class') {
+            if (!selectedClassId) return;
 
-        // Check if selected class requires stream selection
-        if (STREAM_REQUIRED_CLASS_IDS.includes(classId)) {
-            setStep('stream');
-        } else {
-            // If stream not required, complete the onboarding step immediately
-            await handleUpdateProfile(classId);
-        }
-    };
-
-    // Handle stream item click
-    const handleSelectStream = async (streamId: string) => {
-        setSelectedStream(streamId);
-        if (selectedClassId) {
-            await handleUpdateProfile(selectedClassId, streamId);
+            // Check if selected class requires stream selection
+            if (STREAM_REQUIRED_CLASS_IDS.includes(selectedClassId)) {
+                setStep('stream');
+            } else {
+                await handleUpdateProfile(selectedClassId);
+            }
+        } else if (step === 'stream') {
+            if (!selectedStream || !selectedClassId) return;
+            await handleUpdateProfile(selectedClassId, selectedStream);
         }
     };
 
@@ -102,27 +104,38 @@ const ClassOnboardingStep: React.FC<ClassOnboardingStepProps> = ({
         );
     }
 
-    return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 relative">
-            {/* Back button (shown when on stream step) */}
-            {step === 'stream' && (
-                <button
-                    onClick={() => setStep('class')}
-                    disabled={isSubmitting}
-                    className="absolute top-6 left-6 p-2 rounded-full hover:bg-neutral-800 transition-colors cursor-pointer text-white disabled:opacity-50"
-                    aria-label="Go back"
-                >
-                    <ArrowLeft className="w-6 h-6" />
-                </button>
-            )}
+    const isProceedDisabled =
+        isSubmitting ||
+        (step === 'class' && !selectedClassId) ||
+        (step === 'stream' && !selectedStream);
 
-            <div className="w-full max-w-md flex flex-col items-center">
+    return (
+        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-between p-4 relative">
+            {/* Top Bar: Back button */}
+            <div className="w-full max-w-md flex items-center justify-between pt-4">
+                {step === 'stream' ? (
+                    <button
+                        onClick={() => {
+                            setStep('class');
+                            setSelectedStream(null);
+                        }}
+                        disabled={isSubmitting}
+                        className="p-2 rounded-full hover:bg-neutral-800 transition-colors cursor-pointer text-white disabled:opacity-50"
+                        aria-label="Go back"
+                    >
+                        <ArrowLeft className="w-6 h-6" />
+                    </button>
+                ) : (
+                    <div />
+                )}
+            </div>
+
+            {/* Center Content */}
+            <div className="w-full max-w-md flex flex-col items-center my-auto">
                 {/* Mascot Header */}
                 <div className="flex items-center gap-4 mb-8">
-
                     {/* Speech Bubble */}
                     <div className="relative bg-neutral-900 border border-neutral-700 rounded-2xl px-5 py-3 text-lg font-medium shadow-lg">
-                        {/* Bubble arrow tip */}
                         <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-0 h-0 border-y-8 border-y-transparent border-r-8 border-r-neutral-900" />
                         <p>
                             {step === 'class'
@@ -136,31 +149,56 @@ const ClassOnboardingStep: React.FC<ClassOnboardingStepProps> = ({
                 <div className="w-full flex flex-col gap-3">
                     {step === 'class' ? (
                         /* Render Classes */
-                        classes?.map((c) => (
-                            <button
-                                key={c._id}
-                                onClick={() => handleSelectClass(c._id)}
-                                disabled={isSubmitting}
-                                className="w-full py-4 px-6 rounded-2xl bg-neutral-900 border border-neutral-800 hover:border-neutral-600 text-xl text-center cursor-pointer transition-all duration-200 hover:scale-[0.98] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                            >
-                                <span>{c.name}</span>
-                            </button>
-                        ))
+                        classes?.map((c) => {
+                            const isSelected = selectedClassId === c._id;
+                            return (
+                                <button
+                                    key={c._id}
+                                    onClick={() => setSelectedClassId(c._id)}
+                                    disabled={isSubmitting}
+                                    className={`w-full py-4 px-6 rounded-2xl border text-xl text-center cursor-pointer transition-all duration-200 hover:scale-[0.98] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 ${isSelected
+                                            ? 'bg-brand/20 border-brand text-white shadow-md'
+                                            : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'
+                                        }`}
+                                >
+                                    <span>{c.name}</span>
+                                </button>
+                            );
+                        })
                     ) : (
                         /* Render Streams */
-                        STREAMS.map((s) => (
-                            <button
-                                key={s.id}
-                                onClick={() => handleSelectStream(s.id)}
-                                disabled={isSubmitting}
-                                className="w-full py-4 px-6 rounded-2xl bg-neutral-900 border border-neutral-800 hover:border-neutral-600 text-xl cursor-pointer transition-all duration-200 hover:scale-[0.98] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                            >
-                                <span className="text-2xl">{s.icon}</span>
-                                <span>{s.label}</span>
-                            </button>
-                        ))
+                        STREAMS.map((s) => {
+                            const isSelected = selectedStream === s.id;
+                            return (
+                                <button
+                                    key={s.id}
+                                    onClick={() => setSelectedStream(s.id)}
+                                    disabled={isSubmitting}
+                                    className={`w-full py-4 px-6 rounded-2xl border text-xl cursor-pointer transition-all duration-200 hover:scale-[0.98] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 ${isSelected
+                                            ? 'bg-brand/20 border-brand text-white shadow-md'
+                                            : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'
+                                        }`}
+                                >
+                                    <span className="text-2xl">{s.icon}</span>
+                                    <span>{s.label}</span>
+                                </button>
+                            );
+                        })
                     )}
                 </div>
+            </div>
+
+            {/* Bottom Proceed Action Button */}
+            <div className="w-full max-w-md pb-6 pt-2">
+                <PressButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full"
+                    onClick={handleProceed}
+                    disabled={isProceedDisabled}
+                >
+                    {isSubmitting ? 'সংরক্ষণ হচ্ছে...' : 'এগিয়ে যাও'}
+                </PressButton>
             </div>
         </div>
     );

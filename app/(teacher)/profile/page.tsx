@@ -88,7 +88,7 @@ const ProfilePage = () => {
                     <div>
                         <p className="text-xs text-muted-foreground">অ্যাকাউন্ট টাইপ</p>
                         <p className="text-sm font-medium">
-                            {user.role === "admin" ? "অ্যাডমিন" : "শিক্ষক"}
+                            {user.role === "admin" ? "অ্যাডমিন" : "শিক্ষার্থী"}
                         </p>
                     </div>
                 </div>

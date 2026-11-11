@@ -16,9 +16,19 @@ import {
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
+function greeting() {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 12) return 'শুভ সকাল';
+    if (h >= 12 && h < 16) return 'শুভ দুপুর';
+    if (h >= 16 && h < 18) return 'শুভ বিকেল';
+    if (h >= 18 && h < 20) return 'শুভ সন্ধ্যা';
+    return 'শুভ রাত্রি';
+}
+
+
 export function Topbar() {
     const pathname = usePathname();
-    const { data: userProfile } = useUserProfile();
+    const { data: user, isLoading } = useUserProfile();
     const { toggleMobileMenu } = useSidebar();
 
     const isDashboard = pathname === "/dashboard" || pathname === "/";
@@ -37,7 +47,9 @@ export function Topbar() {
         return null;
     }
 
-    const isAdmin = userProfile?.role === "admin";
+    const isAdmin = user?.role === "admin";
+
+    const firstName = user?.name?.trim().split(' ')[0];
 
     return (
         <div className="flex items-center justify-between gap-4 p-4 sm:px-8">
@@ -50,14 +62,22 @@ export function Topbar() {
                 <Menu className="h-5 w-5" />
             </button>
 
-            {/* Spacer */}
+
             <div className="flex-1">
                 {isDashboard && null}
+                {(isDashboard && user) ? (
+                    <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
+                        {greeting()}
+                        {firstName ? `, ${firstName}` : ''}
+                    </h1>
+                ) : (
+                    isLoading ? <div className="h-9 w-56 animate-pulse rounded-lg bg-muted" /> : null
+                )}
             </div>
 
             <ThemeToggle />
             {/* Profile */}
-            {userProfile && (
+            {user && (
                 <DropdownMenu>
                     <DropdownMenuTrigger
                         className="rounded-xl outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary"
@@ -65,7 +85,7 @@ export function Topbar() {
                     >
                         <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-primary/20 bg-primary/10">
                             <Image
-                                src={userProfile.photoURL!}
+                                src={user.photoURL!}
                                 alt="Profile"
                                 fill
                                 sizes="36px"
@@ -81,11 +101,11 @@ export function Topbar() {
                     >
                         {!isAdmin && <div className="px-2 py-2">
                             <p className="truncate text-sm font-medium">
-                                {userProfile.name}
+                                {user.name}
                             </p>
 
                             <p className="truncate text-xs text-muted-foreground">
-                                {userProfile.email}
+                                {user.email}
                             </p>
                         </div>}
                         {isAdmin && <DropdownMenuItem>

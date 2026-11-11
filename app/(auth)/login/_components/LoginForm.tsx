@@ -104,7 +104,7 @@ export default function LoginForm() {
                 <div className="text-center">
                     <div className="flex flex-col justify-center items-center gap-1">
                         <Logo />
-                        <h1 className="text-3xl text-gray-800 font-li-shohid">
+                        <h1 className="text-3xl  font-kobita">
                             অনুশীলন
                         </h1>
                     </div>
