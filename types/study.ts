@@ -3,6 +3,15 @@ import { IFilterdQuestion } from "./question";
 export type Rating = 1 | 2 | 3 | 4; // again, hard, good, easy
 type Named = { _id: string; name: string };
 
+export interface ITypeProgress extends IProgressRow {
+  type: string;
+}
+export interface IChapterProgress extends IProgressRow {
+  chapterId: string;
+  name: string;
+  types: ITypeProgress[];
+}
+
 export interface IStudyQuestion extends Omit<
   IFilterdQuestion,
   "boards" | "schools" | "universities"
@@ -32,10 +41,7 @@ export interface IProgressRow {
   mastered: number;
   due: number;
 }
-export interface IChapterProgress extends IProgressRow {
-  chapterId: string;
-  name: string;
-}
+
 export interface ITopicProgress extends IProgressRow {
   topicId: string;
   name: string;

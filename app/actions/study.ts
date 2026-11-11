@@ -7,11 +7,17 @@ export async function startNewCardsAction(formData: FormData) {
   const chapterId = String(formData.get("chapterId") ?? "");
   const topicId = String(formData.get("topicId") ?? "") || undefined;
   const count = Math.min(100, Math.max(1, Number(formData.get("count")) || 10));
+  const types = formData.getAll("types").map(String).filter(Boolean);
 
   await createStudyService(createServerApiClient()).startNew({
     chapterId,
     topicId,
     count,
+    types,
   });
-  redirect(`/review?chapter=${chapterId}${topicId ? `&topic=${topicId}` : ""}`);
+
+  const qs = new URLSearchParams({ chapter: chapterId });
+  if (topicId) qs.set("topic", topicId);
+  if (types.length) qs.set("types", types.join(","));
+  redirect(`/review?${qs}`);
 }

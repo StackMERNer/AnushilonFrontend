@@ -58,7 +58,7 @@ interface Props {
     homeHref?: string;
 }
 
-export default function StudySession({ items, totalDue, homeHref = "/" }: Props) {
+export default function StudySession({ items, totalDue, homeHref = "/dashboard" }: Props) {
     const router = useRouter();
     const pending = useIsMutating();
     const { mutate } = useSubmitReview();

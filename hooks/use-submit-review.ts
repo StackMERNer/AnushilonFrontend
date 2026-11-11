@@ -11,6 +11,7 @@ export function useSubmitReview() {
     retry: 2,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["dashboard"] });
+      qc.invalidateQueries({ queryKey: ["due-count"] });
       // also needs to invalidate whatever key your useDueCount hook uses (sidebar badge)
     },
   });
