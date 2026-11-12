@@ -200,7 +200,7 @@ export default function ChapterCard({ chapter: r, subjectId }: { chapter: IChapt
             {groups.length > 0 && (
                 <details className="group mt-3 border-t border-line pt-3">
                     <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-medium text-foreground">
-                        ধরন অনুযায়ী অগ্রগতি
+                        প্রশ্নের টাইপ ভিত্তিক অগ্রগতি
                         <ChevronDown className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
                     </summary>
 

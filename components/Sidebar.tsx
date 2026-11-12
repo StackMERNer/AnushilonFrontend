@@ -65,7 +65,7 @@ const getStudentNav = (dueCount?: number): MenuItem[] => [
         badge: dueCount ? String(dueCount) : undefined, // hide the badge when 0 / undefined
     },
     { label: 'প্রশ্নব্যাংক', href: '/question-bank', icon: File, image: '/img/icons/quests.svg' },
-    { label: 'বুকমার্ক', href: '/bookmarks', icon: Bookmark, image: '/img/icons/bookmark.svg' },
+    { label: 'বুকমার্ক', href: '/bookmarks', icon: Bookmark, image: '/img/icons/heart.svg' },
     { label: 'পেমেন্ট হিস্টোরি', href: '/payment-history', icon: Clock, image: '/img//icons/calculator.svg' },
     // { label: 'সহায়তা', href: '/help', icon: HelpCircle, image: '/images/help.svg' },
 ];

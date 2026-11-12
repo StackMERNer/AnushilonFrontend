@@ -1,16 +1,16 @@
 "use client";
 
+import { useBookmarkToggle } from "@/hooks/use-bookmark-toggle";
 import { QUESTION_TYPE_LABEL_MAP } from "@/lib/constants";
 import { toBnDigits } from "@/lib/helpers";
 import { questionLevelMap } from "@/lib/question-paper";
 import { useMathTypeset } from "@/lib/typeset-math";
 import { IFilterdQuestion } from "@/types/question";
 import clsx from "clsx";
-import { Bookmark, Check, Eye, EyeOff, Flag, X } from "lucide-react";
+import { Check, Eye, EyeOff, Flag, Heart, X } from "lucide-react";
 import { ReactNode, useRef, useState } from "react";
-import RichTextRenderer from "./RichTextRenderer";
-import { useBookmarkToggle } from "@/hooks/use-bookmark-toggle";
 import ReportQuestionModal from "./ReportQuestionModal";
+import RichTextRenderer from "./RichTextRenderer";
 
 const BN_LETTER_BASE = 2453; // ক
 const bnLetter = (i: number) => String.fromCharCode(BN_LETTER_BASE + i);
@@ -209,7 +209,7 @@ const QuestionCard = ({
                                 bm.bookmarked ? "text-gold" : "text-muted-foreground hover:text-foreground",
                             )}
                         >
-                            <Bookmark className={clsx("size-4.5", bm.bookmarked && "fill-current")} />
+                            <Heart className={clsx("size-4.5", bm.bookmarked && "fill-current")} />
                         </button>
                         <button
                             type="button"
