@@ -228,7 +228,7 @@ const BookletPage = () => {
             setError(
                 e instanceof Error && e.message === "TOO_MANY_PAGES"
                     ? `সর্বোচ্চ ${bn(MAX_PAGES)} পাতার পিডিএফ দেওয়া যাবে।`
-                    : "পিডিএফটি প্রসেস করা যায়নি। ফাইলটি ঠিক আছে কিনা দেখুন।"
+                    : "পিডিএফটি প্রসেস করা যায়নি। ফাইলটি ঠিক আছে কিনা দেখো।"
             );
         } finally {
             setLoading(false);
@@ -516,7 +516,7 @@ const BookletPage = () => {
                                 ) : (
                                     <Columns2 className="size-4" />
                                 )}
-                                পিডিএফ তৈরি করুন
+                                পিডিএফ তৈরি করো
                             </button>
                         </div>
                     </div>

@@ -47,7 +47,7 @@ export function TodayCard({ s }: { s: IDashboardSummary }) {
 
                 {s.lastStudied && (
                     <Link
-                        href={`/review?chapter=${s.lastStudied.chapterId}?subject=${s.lastStudied.subjectId}`}
+                        href={`/review?chapter=${s.lastStudied.chapterId}&subject=${s.lastStudied.subjectId}`}
                         className="min-w-0 truncate text-sm text-white/80 underline-offset-4 hover:text-white hover:underline"
                     >
                         চালিয়ে যাও: {s.lastStudied.subjectName} › {s.lastStudied.chapterName} →

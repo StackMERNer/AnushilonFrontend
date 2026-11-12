@@ -65,7 +65,7 @@ export default function LoginForm() {
             }, 2000);
         } catch {
             setError(
-                "লিংক কপি করা যায়নি। Address bar থেকে লিংকটি কপি করুন।"
+                "লিংক কপি করা যায়নি। Address bar থেকে লিংকটি কপি করো।"
             );
         }
     };
@@ -135,7 +135,7 @@ export default function LoginForm() {
                                 <p className="mt-1 text-xs leading-5 text-gray-600">
                                     Google দিয়ে লগইন করতে উপরের <span className="font-semibold">⋯ </span>
                                     মেনুতে ক্লিক করে <span className="font-semibold">Open in browser </span>
-                                    অপশনে ট্যাপ করুন। অথবা এই পেজের লিংকটি কপি করে Chrome-এ খুলুন।
+                                    অপশনে ট্যাপ করো। অথবা এই পেজের লিংকটি কপি করে Chrome-এ খুলুন।
                                 </p>
                             </div>
                         </div>

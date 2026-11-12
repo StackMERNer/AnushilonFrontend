@@ -594,7 +594,7 @@ function SectionOrderPanel() {
 // function FileDrop({ hint, onFile }: { hint: string; onFile: (url: string) => void }) {
 //     return (
 //         <label className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-border bg-background px-3 py-4 text-center text-xs text-muted-foreground hover:border-primary/50">
-//             <span>ছবি আপলোড করতে এখানে ক্লিক করুন</span>
+//             <span>ছবি আপলোড করতে এখানে ক্লিক করো</span>
 //             <span className="text-[10px]">{hint}</span>
 //             <input
 //                 type="file"

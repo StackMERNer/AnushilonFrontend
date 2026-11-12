@@ -391,7 +391,7 @@ function SubjectDropdown({
         <div ref={rootRef} className="relative">
             <button type="button" onClick={() => setOpen((o) => !o)} className="dropdown-trigger" data-open={open}>
                 <span className={clsx("text-sm truncate", selected ? "text-teal font-semibold" : "text-muted-foreground")}>
-                    {selected ? selected.name : "বিষয় নির্বাচন করুন"}
+                    {selected ? selected.name : "বিষয় নির্বাচন করো"}
                 </span>
                 <DownChevron open={open} />
             </button>
@@ -482,7 +482,7 @@ function ChapterDropdown({
                     {selected
                         ? selected.name
                         : chapters.length
-                            ? "অধ্যায় নির্বাচন করুন"
+                            ? "অধ্যায় নির্বাচন করো"
                             : "এই বিষয়ে কোনো অধ্যায় নেই"}
                 </span>
 
@@ -578,7 +578,7 @@ function YearDropdown({
                 )}
             >
                 <span className={selectedYear ? "text-foreground" : "text-muted-foreground"}>
-                    {selectedYear || "সাল নির্বাচন করুন"}
+                    {selectedYear || "সাল নির্বাচন করো"}
                 </span>
 
                 <svg

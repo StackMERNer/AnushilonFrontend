@@ -309,7 +309,7 @@ export default function ContentFilterSidebar() {
             )}
             <div className="space-y-2">
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    শ্রেণি নির্বাচন করুন
+                    শ্রেণি নির্বাচন করো
                 </label>
                 {isLoading ? (
                     <SkeletonBlock />
@@ -357,7 +357,7 @@ export default function ContentFilterSidebar() {
                     </div>
                 ) : !classId ? (
                     <div className="p-4 text-center text-xs text-muted-foreground border border-dashed rounded-lg">
-                        একটি শ্রেণি নির্বাচন করুন
+                        একটি শ্রেণি নির্বাচন করো
                     </div>
                 ) : (
                     <div className="space-y-1">
@@ -517,7 +517,7 @@ function ClassDropdown({
                         selected ? 'text-teal font-semibold' : 'text-muted-foreground'
                     )}
                 >
-                    {selected ? selected.name : 'শ্রেণী নির্বাচন করুন'}
+                    {selected ? selected.name : 'শ্রেণী নির্বাচন করো'}
                 </span>
                 <DownChevron open={open} />
             </button>

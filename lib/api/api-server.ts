@@ -12,6 +12,7 @@ export function createServerApiClient() {
       config.headers["x-token-type"] = "session";
     }
     config.headers["x-internal-secret"] = process.env.INTERNAL_SECRET!;
+    config.headers["x-app-name"] = "anushilon";
 
     return config;
   });

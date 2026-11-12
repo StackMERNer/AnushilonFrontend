@@ -81,7 +81,7 @@ const PaymentHistoryPageContent = () => {
   }
 
   return (
-    <div className="space-y-4 max-w-2xl mx-auto px-2">
+    <div className="space-y-4 max-w-2xl mx-auto px-2 pb-4">
       {payments.map((payment) => {
         const status = statusConfig[payment.paymentStatus];
 

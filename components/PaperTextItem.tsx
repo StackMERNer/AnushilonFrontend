@@ -48,7 +48,7 @@ export default function PaperTextItem({
         <div className={clsx("relative min-h-6 pb-2 print:pb-0", !hasText && "print:min-h-0")}>
             {!hasText && (
                 <span className="absolute inset-x-0 top-0 pointer-events-none text-center text-gray-500 print:hidden border border-dashed border-gray-300 rounded-md py-0.5">
-                    টেক্সট যুক্ত করুন
+                    টেক্সট যুক্ত করো
                 </span>
             )}
             <div

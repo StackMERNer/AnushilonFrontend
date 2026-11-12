@@ -96,7 +96,7 @@ export default function SalesSummaryPage() {
                 <div className="md:flex justify-between w-full items-start">
                     <div className="mb-2 items-center gap-2 text-xs font-semibold uppercase text-indigo-600">
                         <h1 className="text-md font-bold tracking-tight text-slate-950 sm:text-3xl">বিক্রয় সারসংক্ষেপ</h1>
-                        <p className="mt-1.5 max-w-2xl text-sm text-slate-500">অনুমোদিত পেমেন্টের আয়, লেনদেন এবং সাবস্ক্রিপশন বিক্রয় বিশ্লেষণ করুন।</p>
+                        <p className="mt-1.5 max-w-2xl text-sm text-slate-500">অনুমোদিত পেমেন্টের আয়, লেনদেন এবং সাবস্ক্রিপশন বিক্রয় বিশ্লেষণ করো।</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
                         <button onClick={() => refetch()} disabled={isFetching} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50"><RefreshCw size={15} className={isFetching ? "animate-spin" : ""} /> রিফ্রেশ</button>
@@ -136,7 +136,7 @@ export default function SalesSummaryPage() {
                 <p className="mt-3 text-xs leading-5 text-slate-400">চার্টে গত ১২ মাসের বিক্রয় দেখানো হয়; শুধু অনুমোদিত (verified), মুছে না ফেলা BDT পেমেন্ট গণনা করা হয়। তারিখ UTC অনুযায়ী ফিল্টার করা হয়।</p>
             </section>
 
-            {isError ? <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">বিক্রয়ের তথ্য লোড করা যায়নি। API route, admin permission এবং server logs পরীক্ষা করুন। <button onClick={() => refetch()} className="font-semibold underline">আবার চেষ্টা করুন</button></div> : <>
+            {isError ? <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">বিক্রয়ের তথ্য লোড করা যায়নি। API route, admin permission এবং server logs পরীক্ষা করো। <button onClick={() => refetch()} className="font-semibold underline">আবার চেষ্টা করো</button></div> : <>
                 <section className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                     <Metric
                         title="এই মাসের আয়"

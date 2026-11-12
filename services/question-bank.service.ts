@@ -2,7 +2,7 @@ import { PaginatedResponse } from "@/types/pagination";
 import { IFilterdQuestion } from "@/types/question";
 import { AxiosError, AxiosInstance } from "axios";
 export function createQuestionBankService(client: AxiosInstance) {
-  const baseUrl = "/question-bank";
+  const baseUrl = "/questions";
   return {
     getFilteredQuestions: async (filters: {
       page: number;
@@ -18,7 +18,7 @@ export function createQuestionBankService(client: AxiosInstance) {
     }) => {
       try {
         const response = await client.get<PaginatedResponse<IFilterdQuestion>>(
-          `${baseUrl}/filtered`,
+          `${baseUrl}/list`,
           {
             params: {
               page: filters.page,

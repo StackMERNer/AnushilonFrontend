@@ -157,7 +157,7 @@ export default function PrintPaperRenderer({
 
             <div className="flex items-center justify-center w-full print:hidden pb-2">
                 <PressableButton variant={'outline'} href={`/my-papers/${paper._id}/add-questions?class=${paper.class._id}&subject=${paper.subjects[0].subject._id}&chapter=${paper.subjects[0].chapters[0]._id}`} size={'sm'} >
-                    + আরও প্রশ্ন যুক্ত করুন
+                    + আরও প্রশ্ন যুক্ত করো
                 </PressableButton>
             </div>
 

@@ -136,7 +136,7 @@ export default function QuestionList({
                 <p className="text-slate-500 py-10 text-center">
                     কোন প্রশ্ন পাওয়া যায়নি।
                     <br />
-                    {/* <PressableButton href={`/my-papers/${paperId}/add-questions?class=${resetParams.classId}&subject=${resetParams.subjectId}&chapter=${resetParams.chapterId}`}>ফিল্টার রিসেট করুন</PressableButton> */}
+                    {/* <PressableButton href={`/my-papers/${paperId}/add-questions?class=${resetParams.classId}&subject=${resetParams.subjectId}&chapter=${resetParams.chapterId}`}>ফিল্টার রিসেট করো</PressableButton> */}
                 </p>
             ) : (
                 <div

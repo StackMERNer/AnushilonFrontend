@@ -54,7 +54,7 @@ const PlansContent = ({ showFree = false }: { showFree?: boolean }) => {
                                 className="bg-primary text-white  block w-full py-3 px-6 rounded-md text-center font-medium mt-6"
                             >
 
-                                সিলেক্ট করুন
+                                সিলেক্ট করো
                             </Link>}
                         </div>
                     ))}

@@ -65,7 +65,7 @@ export default function QuestionPaperList({
         } catch (error) {
             // console.error("Failed to delete paper:", error);
             const errorResponse = error as AxiosError<{ message: string }>;
-            const msg = errorResponse.response?.data?.message ?? errorResponse.message ?? "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।";
+            const msg = errorResponse.response?.data?.message ?? errorResponse.message ?? "কিছু ভুল হয়েছে। আবার চেষ্টা করো।";
             toast.error(msg);
         }
     };
@@ -174,14 +174,14 @@ export default function QuestionPaperList({
                         কোনো প্রশ্নপত্র পাওয়া যায়নি
                     </h3>
                     <p className="mt-1 text-sm text-gray-500 max-w-sm">
-                        নতুন প্রশ্নপত্র তৈরি করতে নিচে ক্লিক করুন।
+                        নতুন প্রশ্নপত্র তৈরি করতে নিচে ক্লিক করো।
                     </p>
                     <div className="mt-6">
                         <Link
                             href="/create-paper"
                             className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-md shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2"
                         >
-                            + নতুন প্রশ্নপত্র তৈরি করুন
+                            + নতুন প্রশ্নপত্র তৈরি করো
                         </Link>
                     </div>
                 </div>

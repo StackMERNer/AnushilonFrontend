@@ -110,7 +110,7 @@ export default async function CreateQuestionPaperPage({ searchParams, params }: 
                 </main>
 
                 {/* Desktop Sidebar / Mobile Drawer Content */}
-                <FilterDrawerContent filterTitle="ফিল্টার করুন">
+                <FilterDrawerContent filterTitle="ফিল্টার করো">
                     <QuestionFilterSidebar
                         boards={[]}
                         selectedSubject={subjectId}

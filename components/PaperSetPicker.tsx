@@ -19,7 +19,7 @@ export const PaperSetPicker = () => {
                     className="flex items-center justify-between w-full border border-border rounded-lg px-3 py-1.5 text-sm hover:bg-accent"
                     onClick={() => setOpen((o) => !o)}
                 >
-                    <span>{setCount ? `${toBnDigits(setCount)} সেট` : "সেট তৈরী করুন"}</span>
+                    <span>{setCount ? `${toBnDigits(setCount)} সেট` : "সেট তৈরী করো"}</span>
                     <Shuffle size={14} />
                 </button>
 

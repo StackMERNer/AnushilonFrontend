@@ -45,7 +45,7 @@ const ClassSubjectCard = ({
             <div className="mb-4">
                 <h2 className="text-lg font-bold">{classItem.name}</h2>
                 <p className="text-sm text-muted-foreground">
-                    আপনার প্রয়োজনীয় বিষয় নির্বাচন করুন
+                    আপনার প্রয়োজনীয় বিষয় নির্বাচন করো
                 </p>
             </div>
 
@@ -148,7 +148,7 @@ const SelectSubjectsPage = () => {
 
     const handleContinue = () => {
         if (selectedSubjects.length === 0) {
-            alert("কমপক্ষে একটি বিষয় নির্বাচন করুন।");
+            alert("কমপক্ষে একটি বিষয় নির্বাচন করো।");
             return;
         }
 
@@ -181,7 +181,7 @@ const SelectSubjectsPage = () => {
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-bold">
-                    বিষয় নির্বাচন করুন
+                    বিষয় নির্বাচন করো
                 </h1>
 
                 <p className="mt-2 text-muted-foreground">
@@ -231,7 +231,7 @@ const SelectSubjectsPage = () => {
                             onClick={handleContinue}
                             className="rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                            পেমেন্ট করুন
+                            পেমেন্ট করো
                         </button>
                     </div>
                 </div>

@@ -86,7 +86,7 @@ const PaymentMethods = () => {
         setResponseMessage("");
 
         if (!planType || (!selectedPlan && !isCustomPlan)) {
-            setErrorMessage("অনুগ্রহ করে একটি সঠিক প্লান নির্বাচন করুন।");
+            setErrorMessage("অনুগ্রহ করে একটি সঠিক প্লান নির্বাচন করো।");
             return;
         }
 
@@ -128,7 +128,7 @@ const PaymentMethods = () => {
             console.error(error);
 
             setErrorMessage(
-                "পেমেন্ট এর তথ্য জমা দিতে সমস্যা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।"
+                "পেমেন্ট এর তথ্য জমা দিতে সমস্যা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করো।"
             );
         } finally {
             setLoading(false);
@@ -143,7 +143,7 @@ const PaymentMethods = () => {
             <div className="min-h-screen flex items-center justify-center px-4">
                 <div className="w-full max-w-md bg-white dark:bg-neutral-900 shadow-lg rounded-xl p-6 text-center">
                     <h1 className="text-xl font-bold">
-                        সঠিক প্লান নির্বাচন করুন
+                        সঠিক প্লান নির্বাচন করো
                     </h1>
 
                     <p className="text-muted-foreground mt-2">
@@ -152,7 +152,7 @@ const PaymentMethods = () => {
 
                     <Link href="/plans">
                         <Button className="mt-6 w-full">
-                            প্লান দেখুন
+                            প্লান দেখো
                         </Button>
                     </Link>
                 </div>
@@ -279,14 +279,14 @@ const PaymentMethods = () => {
 
                     <div className="p-4">
                         <h2 className="font-bold text-lg mb-4">
-                            {paymentMethod} দিয়ে পেমেন্ট করুন
+                            {paymentMethod} দিয়ে পেমেন্ট করো
                         </h2>
 
                         <div className="space-y-4">
                             {/* Payment Number */}
                             <div>
                                 <p className="text-sm mb-2">
-                                    নিচের নম্বরে Send Money করুন:
+                                    নিচের নম্বরে Send Money করো:
                                 </p>
 
                                 <div className="flex items-center gap-2">
@@ -318,7 +318,7 @@ const PaymentMethods = () => {
                                 <strong>
                                     {toBnDigits(paymentAmount)} টাকা
                                 </strong>{" "}
-                                Send Money করুন। পেমেন্টের পর নিচের{" "}
+                                Send Money করো। পেমেন্টের পর নিচের{" "}
                                 <strong>
                                     Transaction ID অথবা যে{" "}
                                     {paymentMethod} নম্বর থেকে টাকা পাঠিয়েছেন
@@ -420,7 +420,7 @@ const PaymentMethods = () => {
                         target="_blank"
                         className="underline"
                     >
-                        আমাদের ফেসবুক পেইজে যোগাযোগ করুন
+                        আমাদের ফেসবুক পেইজে যোগাযোগ করো
                     </Link>
                     ।
                 </p>

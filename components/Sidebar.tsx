@@ -158,7 +158,7 @@ function SubscriptionCard({
         <Link
             href="/plans"
             onClick={onNavigate}
-            title="প্ল্যান দেখুন"
+            title="প্ল্যান দেখো"
             className="mx-auto hidden size-11 place-items-center rounded-xl bg-gradient-to-b from-[#f8d77a] to-[#d9961f] text-brand-dark shadow-md transition hover:brightness-110 lg:grid"
         >
             <Crown className="size-5" />
@@ -207,7 +207,7 @@ function SubscriptionCard({
 
                             <PressButton variant="secondary" size="sm" className="mt-4 w-full text-[12px]">
                                 <Link href="/plans" onClick={onNavigate}>
-                                    অন্যান্য প্ল্যান দেখুন →
+                                    অন্যান্য প্ল্যান দেখো →
                                 </Link>
                             </PressButton>
                         </div>

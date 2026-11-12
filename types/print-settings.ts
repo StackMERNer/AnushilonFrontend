@@ -131,7 +131,7 @@ export interface PrintSettings {
 
   // লেকচার শীট সেটিংস
   sheet: {
-    enabled: boolean; // "শীট তৈরী করুন" mode
+    enabled: boolean; // "শীট তৈরী করো" mode
     showInstructor: boolean;
     showLectureNumber: boolean;
     showLectureTopic: boolean;

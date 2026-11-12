@@ -132,7 +132,7 @@ const InstituteForm = ({
                 disabled={isSubmitting}
                 className="w-full"
               >
-                {isSubmitting ? 'সেভ হচ্ছে...' : 'সেভ করুন'}
+                {isSubmitting ? 'সেভ হচ্ছে...' : 'সেভ করো'}
               </PressableButton>
             </div>
           </form>

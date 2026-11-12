@@ -6,7 +6,7 @@ import StudentOnboardingGate from '@/components/onboarding/StudentOnboardingGate
 
 export const metadata: Metadata = {
     title: 'অনুশীলন - ড্যাশবোর্ড',
-    description: 'সফলতার নির্ভরযোগ্য সূত্র  তৈরি করুন',
+    description: 'সফলতার নির্ভরযোগ্য সূত্র  তৈরি করো',
     robots: { index: false }
 };
 

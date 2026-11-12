@@ -12,7 +12,7 @@ export function QuickCreate() {
     return (
         <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="font-tiro text-lg font-normal">দ্রুত তৈরি করুন</h3>
+                <h3 className="font-tiro text-lg font-normal">দ্রুত তৈরি করো</h3>
             </div>
             <div className="grid grid-cols-2 gap-2.5">
                 {SUBJECTS.map((sub) => (

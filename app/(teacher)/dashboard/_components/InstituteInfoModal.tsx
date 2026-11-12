@@ -130,7 +130,7 @@ const InstituteInfoModal = ({
 
                         <p className="mt-1.5 text-[13px] sm:text-sm leading-5 text-gray-500">
                             প্রশ্নপত্রে আপনার প্রতিষ্ঠানের তথ্য দেখানোর জন্য
-                            নিচের তথ্যগুলো পূরণ করুন।
+                            নিচের তথ্যগুলো পূরণ করো।
                         </p>
                     </div>
 
@@ -185,7 +185,7 @@ const InstituteInfoModal = ({
                                 "
                             >
                                 <option value="">
-                                    প্রতিষ্ঠানের ধরন নির্বাচন করুন
+                                    প্রতিষ্ঠানের ধরন নির্বাচন করো
                                 </option>
                                 <option value="coaching">
                                     কোচিং সেন্টার
@@ -277,7 +277,7 @@ const InstituteInfoModal = ({
                             >
                                 {isSubmitting
                                     ? 'সেভ হচ্ছে...'
-                                    : 'তথ্য সংরক্ষণ করুন'}
+                                    : 'তথ্য সংরক্ষণ করো'}
                             </PressableButton>
                         </div>
 

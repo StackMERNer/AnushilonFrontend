@@ -14,7 +14,7 @@ const BrowseSubjects = () => {
     });
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 max-w-2xl mx-auto pb-6">
             {subjects?.map((subject) => (
                 <Link
                     key={subject._id}

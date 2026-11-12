@@ -8,7 +8,7 @@ const ToolsPage = () => {
             <div className="grid md:grid-cols-4 grid-cols-2">
                 <Link href='/tools/booklet'>
                     <Card className='p-3 rounded-lg border cursor-pointer'>
-                        বুকলেট তৈরি করুন
+                        বুকলেট তৈরি করো
                     </Card>
                 </Link>
             </div>

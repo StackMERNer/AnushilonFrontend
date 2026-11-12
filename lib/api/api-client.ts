@@ -10,5 +10,6 @@ apiClient.interceptors.request.use(async (config) => {
     const token = await user.getIdToken();
     config.headers.Authorization = `Bearer ${token}`;
   }
+  config.headers["x-app-name"] = "anushilon";
   return config;
 });

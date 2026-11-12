@@ -92,8 +92,8 @@ export default function PaperFilterSidebar({
         <div className={clsx("space-y-4", isPending && "opacity-50 pointer-events-none")}>
             {/* 1. Class → Subject → Chapter */}
             <SectionCard
-                title="ফিল্টার করুন"
-                hint={selectedChapter ? selectedChapter.name : selectedSubject ? "অধ্যায় ভিত্তিক ফিল্টার করুন" : selectedClass ? selectedClass.name : undefined}
+                title="ফিল্টার করো"
+                hint={selectedChapter ? selectedChapter.name : selectedSubject ? "অধ্যায় ভিত্তিক ফিল্টার করো" : selectedClass ? selectedClass.name : undefined}
             >
                 {!classes ? (
                     <SkeletonBlock />
@@ -290,7 +290,7 @@ function ClassDropdown({
         <div ref={rootRef} className="relative">
             <button type="button" onClick={() => setOpen((o) => !o)} className="dropdown-trigger" data-open={open}>
                 <span className={clsx("text-sm truncate", selected ? "text-teal font-semibold" : "text-muted-foreground")}>
-                    {selected ? selected.name : "শ্রেণী ভিত্তিক করুন"}
+                    {selected ? selected.name : "শ্রেণী ভিত্তিক করো"}
                 </span>
                 <DownChevron open={open} />
             </button>
@@ -364,7 +364,7 @@ function SubjectDropdown({
         <div ref={rootRef} className="relative">
             <button type="button" onClick={() => setOpen((o) => !o)} className="dropdown-trigger" data-open={open}>
                 <span className={clsx("text-sm truncate", selected ? "text-teal font-semibold" : "text-muted-foreground")}>
-                    {selected ? selected.name : "বিষয় ভিত্তিক করুন"}
+                    {selected ? selected.name : "বিষয় ভিত্তিক করো"}
                 </span>
                 <DownChevron open={open} />
             </button>

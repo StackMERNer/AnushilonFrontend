@@ -18,7 +18,7 @@ export default function Error({
                 onClick={() => reset()}
                 className="px-3 py-1 bg-red-600 text-white rounded text-sm"
             >
-                আবার চেষ্টা করুন
+                আবার চেষ্টা করো
             </button> */}
         </div>
     );

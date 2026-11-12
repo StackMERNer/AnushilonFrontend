@@ -131,7 +131,7 @@ const PaperCard = ({ paper, onDelete, allowDelete }: PaperCardProps) => {
                                     className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
                                 >
                                     <ListTree className="w-3.5 h-3.5" />
-                                    বিষয় ও অধ্যায় দেখুন
+                                    বিষয় ও অধ্যায় দেখো
                                     {totalChapters > 0 && (
                                         <span className="text-[10px] text-slate-400">
                                             ({toBnDigits(totalChapters)})
@@ -212,7 +212,7 @@ const PaperCard = ({ paper, onDelete, allowDelete }: PaperCardProps) => {
                         href={`/my-papers/${paper._id}/add-questions?class=${paper.class._id}&subject=${subjects[0]?.subject?._id || ""}&chapter=${subjects[0]?.chapters?.[0]?._id || ""}`}
                         className="flex-1 gap-1.5 w-full bg-primary"
                     >
-                        <span>প্রশ্ন যুক্ত করুন</span>
+                        <span>প্রশ্ন যুক্ত করো</span>
                         <Plus className="w-3.5 h-3.5" />
                     </PressableButton>
 
@@ -221,7 +221,7 @@ const PaperCard = ({ paper, onDelete, allowDelete }: PaperCardProps) => {
                         className="flex-1 gap-1.5 w-full "
                         variant="secondary"
                     >
-                        <span>প্রশ্নপত্র দেখুন</span>
+                        <span>প্রশ্নপত্র দেখো</span>
                         <Eye className="w-3.5 h-3.5" />
                     </PressableButton>
                 </div>

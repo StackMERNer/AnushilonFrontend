@@ -215,7 +215,7 @@ export default function AdminPaymentsPage() {
                                 onClick={() => setViewingSubjectsPayment(null)}
                                 className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-slate-700"
                             >
-                                বন্ধ করুন
+                                বন্ধ করো
                             </button>
                         </div>
                     </div>
@@ -228,7 +228,7 @@ export default function AdminPaymentsPage() {
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">পেমেন্টসমূহ</h1>
                         <p className="mt-1.5 max-w-2xl text-sm leading-6 text-slate-500">
-                            সাবস্ক্রিপশন পেমেন্ট অনুরোধগুলো পরিচালনা ও পর্যালোচনা করুন
+                            সাবস্ক্রিপশন পেমেন্ট অনুরোধগুলো পরিচালনা ও পর্যালোচনা করো
                         </p>
                     </div>
 
@@ -304,7 +304,7 @@ export default function AdminPaymentsPage() {
                     </div>
 
                     <p className="mt-3 text-xs leading-5 text-slate-400">
-                        💡 ফোন নম্বর বা ট্রানজ্যাকশন আইডি লিখে <kbd className="rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-slate-600">Enter</kbd> প্রেস করুন।
+                        💡 ফোন নম্বর বা ট্রানজ্যাকশন আইডি লিখে <kbd className="rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-slate-600">Enter</kbd> প্রেস করো।
                     </p>
                 </div>
 
@@ -372,7 +372,7 @@ export default function AdminPaymentsPage() {
                                                         onClick={() => setViewingSubjectsPayment(payment)}
                                                         className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-2.5 py-2 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-50"
                                                     >
-                                                        <Eye size={13} /> বিষয়সমূহ দেখুন
+                                                        <Eye size={13} /> বিষয়সমূহ দেখো
                                                     </button>
                                                 )}
                                             </div>
@@ -503,7 +503,7 @@ export default function AdminPaymentsPage() {
                                                             onClick={() => setViewingSubjectsPayment(payment)}
                                                             className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50/70 px-2.5 py-1.5 text-[11px] font-medium text-indigo-700 transition-colors hover:bg-indigo-100"
                                                         >
-                                                            <Eye size={12} /> বিষয়সমূহ দেখুন ({payment.selectedSubjects.length})
+                                                            <Eye size={12} /> বিষয়সমূহ দেখো ({payment.selectedSubjects.length})
                                                         </button>
                                                     )}
                                                 </td>
@@ -547,7 +547,7 @@ export default function AdminPaymentsPage() {
                                                             </button>
                                                             <button
                                                                 onClick={() => setSelectedPayment(payment)}
-                                                                title="এডিট করুন"
+                                                                title="এডিট করো"
                                                                 className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
                                                             >
                                                                 <Edit size={16} />
@@ -565,7 +565,7 @@ export default function AdminPaymentsPage() {
                                                             <span className="text-xs text-slate-400">প্রসেস সম্পন্ন</span>
                                                             <button
                                                                 onClick={() => setSelectedPayment(payment)}
-                                                                title="এডিট করুন"
+                                                                title="এডিট করো"
                                                                 className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
                                                             >
                                                                 <Edit size={16} />

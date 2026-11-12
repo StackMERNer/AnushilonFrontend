@@ -35,10 +35,10 @@ export default async function NodeManagerPage({
                             <div className="max-w-4xl mx-auto py-6 space-y-6">
                                 <div className="space-y-1 text-center sm:text-left">
                                     <h1 className="font-bold tracking-tight text-foreground flex items-center justify-center sm:justify-start gap-2">
-                                        <span>শ্রেণি নির্বাচন করুন</span>
+                                        <span>শ্রেণি নির্বাচন করো</span>
                                     </h1>
                                     <p className="text-xs sm:text-sm text-muted-foreground">
-                                        কন্টেন্ট বা ফাইলসমূহ দেখতে নিচের যেকোনো একটি শ্রেণি নির্বাচন করুন।
+                                        কন্টেন্ট বা ফাইলসমূহ দেখতে নিচের যেকোনো একটি শ্রেণি নির্বাচন করো।
                                     </p>
                                 </div>
 
@@ -66,7 +66,7 @@ export default async function NodeManagerPage({
                                                             {node.name}
                                                         </h2>
                                                         <span className="text-[11px] text-muted-foreground">
-                                                            সকল বিষয় দেখুন
+                                                            সকল বিষয় দেখো
                                                         </span>
                                                     </div>
                                                 </div>

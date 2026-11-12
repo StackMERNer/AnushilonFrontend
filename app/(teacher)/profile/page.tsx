@@ -25,7 +25,7 @@ const ProfilePage = () => {
             queryClient.clear();
             router.replace("/");
         } catch (error) {
-            toast.error("লগআউট করতে ব্যর্থ। আবার চেষ্টা করুন।");
+            toast.error("লগআউট করতে ব্যর্থ। আবার চেষ্টা করো।");
         }
     }
     if (isLoading) {
@@ -109,7 +109,7 @@ const ProfilePage = () => {
                     </div>
                 )}
             </div>
-            <button className='w-full bg-destructive py-3 rounded-lg text-white' onClick={handleLogout}>লগআউট করুন</button>
+            <button className='w-full bg-destructive py-3 rounded-lg text-white' onClick={handleLogout}>লগআউট করো</button>
         </CardContent>
     </Card>
 

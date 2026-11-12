@@ -200,7 +200,7 @@ export default function CreatePaperPage() {
                                             className="class-select"
                                         >
                                             <option value="" disabled>
-                                                নির্বাচন করুন
+                                                নির্বাচন করো
                                             </option>
                                             {classes?.map((c: any) => (
                                                 <option key={c._id} value={c._id}>
@@ -228,7 +228,7 @@ export default function CreatePaperPage() {
                         {/* Subject / chapter selection */}
                         <div className="paper-body">
                             {!selectedClass ? (
-                                <EmptyNote text="বিষয় ও অধ্যায় নির্বাচন করতে প্রথমে শ্রেণী নির্ধারণ করুন।" />
+                                <EmptyNote text="বিষয় ও অধ্যায় নির্বাচন করতে প্রথমে শ্রেণী নির্ধারণ করো।" />
                             ) : (
                                 <>
                                     <div className="flex items-baseline justify-between gap-2 mb-3 flex-wrap">
@@ -238,7 +238,7 @@ export default function CreatePaperPage() {
                                         <span className="text-xs text-muted-foreground">
                                             {selectedSubjectIds.length
                                                 ? `${toBnDigits(selectedSubjectIds.length)} টি বিষয় নির্বাচিত`
-                                                : "বিষয় ক্লিক করে অধ্যায় নির্ধারণ করুন"}
+                                                : "বিষয় ক্লিক করে অধ্যায় নির্ধারণ করো"}
                                         </span>
                                     </div>
 
@@ -360,7 +360,7 @@ export default function CreatePaperPage() {
                         isLoading={createPaperMutation.isPending}
                         disabled={!canSubmit}
                     >
-                        <span>{createPaperMutation.isPending ? "তৈরী হচ্ছে..." : "পরবর্তী ধাপ (প্রশ্ন যুক্ত করুন)"}</span>
+                        <span>{createPaperMutation.isPending ? "তৈরী হচ্ছে..." : "পরবর্তী ধাপ (প্রশ্ন যুক্ত করো)"}</span>
                     </PressableButton>
                 </form>
             </div>
@@ -568,7 +568,7 @@ function ChapterSelectionModal({
                 <div className="flex items-center justify-between p-4 border-b border-border bg-card">
                     <div>
                         <h3 className="text-base font-semibold text-foreground">{subject.name}</h3>
-                        <p className="text-xs text-muted-foreground">অধ্যায় নির্বাচন করুন</p>
+                        <p className="text-xs text-muted-foreground">অধ্যায় নির্বাচন করো</p>
                     </div>
                     <button
                         type="button"
@@ -590,7 +590,7 @@ function ChapterSelectionModal({
                             onClick={onToggleSelectAll}
                             className="text-xs font-semibold text-teal hover:underline"
                         >
-                            {isAllSelected ? "সব অনির্বাচিত করুন" : "সব সিলেক্ট করুন"}
+                            {isAllSelected ? "সব অনির্বাচিত করো" : "সব সিলেক্ট করো"}
                         </button>
                     </div>
                 )}
