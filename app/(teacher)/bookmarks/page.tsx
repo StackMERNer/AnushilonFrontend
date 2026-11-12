@@ -32,9 +32,6 @@ export default async function BookmarksPage({
     return (
         <div className="mx-auto w-full max-w-4xl flex-1 space-y-5 p-4 sm:p-8 lg:px-10 lg:pb-12 lg:pt-5">
             <header>
-                <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
-                    বুকমার্ক করা প্রশ্ন
-                </h1>
                 {data.totalItems > 0 && (
                     <p className="mt-1 text-sm text-muted-foreground">
                         মোট {toBnDigits(data.totalItems)}টি প্রশ্ন সংরক্ষিত আছে
