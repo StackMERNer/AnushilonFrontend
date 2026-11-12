@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
+import { StreakBadge } from "./streak-badge";
 
 function greeting() {
     const h = new Date().getHours();
@@ -99,6 +100,8 @@ export function Topbar() {
                 )}
             </div>
 
+            <StreakBadge />
+            {/* Theme Toggle */}
             <ThemeToggle />
 
             {/* Profile */}
