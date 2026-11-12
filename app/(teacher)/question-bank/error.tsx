@@ -1,15 +1,14 @@
 "use client";
 import { useRouter } from 'next/navigation';
-import React from 'react'
 
-const ErroPage = () => {
+const ErrorPage = () => {
     const router = useRouter();
     return (
-        <div>
-            something went wrong
+        <div className='flex flex-col items-center justify-center h-screen gap-4'>
+            <h1 className='text-2xl font-bold'>Something went wrong!</h1>
             <button onClick={() => router.refresh()}>try again</button>
         </div>
     )
 }
 
-export default ErroPage
+export default ErrorPage

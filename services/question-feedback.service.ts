@@ -1,3 +1,5 @@
+import { PaginatedResponse } from "@/types/pagination";
+import { IFilterdQuestion } from "@/types/question";
 import { AxiosError, AxiosInstance } from "axios";
 
 export function createQuestionFeedbackService(client: AxiosInstance) {
@@ -21,5 +23,9 @@ export function createQuestionFeedbackService(client: AxiosInstance) {
       reasons: string[];
       message?: string;
     }) => run<{ ok: true }>(client.post("/reports", body)),
+    listBookmarks: (params: { page: number; limit?: number }) =>
+      run<PaginatedResponse<IFilterdQuestion>>(
+        client.get("/bookmarks", { params }),
+      ),
   };
 }
