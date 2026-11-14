@@ -58,7 +58,7 @@ const PaymentHistoryPageContent = () => {
 
   if (!payments?.length) {
     return (
-      <div className="flex min-h-75 items-center justify-center rounded-xl border border-dashed max-w-5xl mx-auto px-2">
+      <div className="flex min-h-75 items-center justify-center rounded-xl border max-w-3xl mx-auto px-2 mt-4">
         <div className="text-center">
           <CreditCard className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
 
