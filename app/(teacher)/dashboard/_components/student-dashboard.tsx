@@ -2,7 +2,6 @@
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useDashboardSubjects, useDashboardSummary } from '@/hooks/use-study-dashboard';
 import { useState } from 'react';
-import InstituteInfoModal from './InstituteInfoModal';
 import ms from 'ms';
 import { TodayCard } from '@/components/dashboard/today-card';
 import { StatsRow } from '@/components/dashboard/stats-row';
@@ -76,12 +75,6 @@ const StudentDashboard = () => {
             )}
 
             {summary && !isNew && <WeeklyActivity days={summary.last7Days} />}
-
-            <InstituteInfoModal
-                open={showInstituteModal}
-                onCompleted={handleCompleted}
-                onSkip={handleSkip}
-            />
         </div>
     );
 };

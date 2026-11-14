@@ -209,7 +209,7 @@ const QuestionCard = ({
                                 bm.bookmarked ? "text-gold" : "text-muted-foreground hover:text-foreground",
                             )}
                         >
-                            <Heart className={clsx("size-4.5", bm.bookmarked && "fill-current")} />
+                            <Heart className={clsx("size-4.5", bm.bookmarked && "fill-red-500")} />
                         </button>
                         <button
                             type="button"
