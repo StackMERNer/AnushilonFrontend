@@ -347,6 +347,7 @@ const QuestionCard = ({
                                             </div>
                                         )}
                                         {open && subQ.answer && <AnswerBox html={subQ.answer} />}
+                                        {open && !subQ.answer && <p className="text-sm text-muted-foreground">প্রশ্নটির উত্তর এখনও যুক্ত হয় নি।</p>}
                                     </div>
                                 </div>
                             </li>
