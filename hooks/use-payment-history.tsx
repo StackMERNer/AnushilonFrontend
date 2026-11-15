@@ -11,3 +11,12 @@ export function usePaymentHistory() {
         },
     })
 }
+export function usePendingPaments() {
+    const service = createPaymentService(apiClient);
+    return useQuery({
+        queryKey: ["user-pending-payment-history"],
+        queryFn: async () => {
+            return (await service.getUserPendingPayments()).data;
+        },
+    })
+}

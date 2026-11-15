@@ -32,6 +32,9 @@ export interface IPaymentRecord {
   }[];
   statusMessage?: string;
 
+  autoVerified?: boolean;
+  isDeleted: boolean;
+  targetUserId?: string;
   createdAt: Date;
   updatedAt: Date;
   paymentStatus: "pending" | "verified" | "rejected" | "invalid";
@@ -70,14 +73,25 @@ export type IPaymentPayload = Omit<
   | "createdAt"
   | "updatedAt"
   | "email"
+  | "isDeleted"
 >;
+
+interface IRecordPaymentResponse {
+  autoVerified: boolean;
+  payment: IPaymentRecord;
+  message: string;
+}
 
 export function createPaymentService(client: AxiosInstance) {
   const base = "/payments";
   return {
-    recordPayment: (data: IPaymentPayload) => client.post(base, data),
+    recordPayment: (data: IPaymentPayload) =>
+      client.post<IRecordPaymentResponse>(base, data).then((r) => r.data),
     getUserPaymentHistory: () =>
       client.get<IPaymentRecord[]>(`${base}/history`),
+    getUserPendingPayments: () =>
+      client.get<IPaymentRecord[]>(`${base}/pending`),
+
     getAllPayments: ({
       page,
       limit,

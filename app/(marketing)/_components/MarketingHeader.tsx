@@ -72,12 +72,12 @@ export function MarketingHeader() {
 
                 {/* Right actions */}
                 <div className="flex items-center gap-2 sm:gap-3">
-                    <span
+                    {/* <span
                         className="hidden items-center gap-1 rounded-full border border-gold/40 bg-gold/15 px-3 py-1.5 text-sm font-bold text-foreground lg:flex"
                         title="প্রতিদিন অনুশীলন করে স্ট্রিক ধরে রাখো"
                     >
                         <Flame className="size-4 fill-red text-red" /> স্ট্রিক
-                    </span>
+                    </span> */}
 
                     {!loading && !user && (
                         <>

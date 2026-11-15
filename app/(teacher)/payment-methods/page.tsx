@@ -1,19 +1,29 @@
 "use client";
 
 import CopyToClipboard from "@/components/global/copy-to-clipboard";
+import PendingPaymentsBanner from "@/components/PendingPaymentsBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { apiClient } from "@/lib/api/api-client";
-import { getMaxPrice, plansInfo, PlanType } from "@/lib/constants";
+import { facebookPageUrl, getMaxPrice, plansInfo, PlanType } from "@/lib/constants";
 import { createPaymentService } from "@/services/payment.service";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
+
+export const PER_SUBJECT_PRICING = 100;
+export const SUBJECT_YEARLY_DURATION = 365;
 const BKASH_NUMBER = "01894178289";
 const NAGAD_NUMBER = "01894178289";
+
+import { createUserService } from "@/services/user.service";
+import { toast } from "sonner"; // or whichever toast lib you use
+
+type SelectedUser = { _id: string; name: string; email: string };
 
 const BKASH_LOGO =
     "https://res.cloudinary.com/dc5li4dua/image/upload/v1764752717/anushilon/BKash-bKash-Logo.wine_ug4m05.png";
@@ -22,128 +32,182 @@ const NAGAD_LOGO =
     "https://res.cloudinary.com/dg8g7l3sq/image/upload/v1790873963/02067786-19ea-4124-ac4c-1c7f9093257f.png";
 
 type PaymentMethod = "bKash" | "nagad";
+type EditablePlan = PlanType | "custom";
+
+// Initial values come from the URL selection, used once
+const getInitialAmount = (plan: EditablePlan | null, subjectCount: number) => {
+    if (plan === "subject_yearly") {
+        return Math.min(subjectCount * PER_SUBJECT_PRICING, getMaxPrice());
+    }
+    return plansInfo.find((p) => p.type === plan)?.price ?? 0;
+};
+
+const getInitialDuration = (plan: EditablePlan | null) => {
+    if (plan === 'subject_yearly') {
+        return SUBJECT_YEARLY_DURATION
+    }
+    return plansInfo.find((p) => p.type === plan)?.durationDays ?? 0;
+}
 
 const PaymentMethods = () => {
     const searchParams = useSearchParams();
-    const planType = searchParams.get("plan") as PlanType | null;
+    const { data: user, refetch: refetchUserProfile } = useUserProfile();
+    const isAdmin = user?.role === "admin";
 
-    const { data: user } = useUserProfile();
-
+    const urlPlan = searchParams.get("plan") as EditablePlan | null;
     const subjectsParam = searchParams.get("subjects");
 
-    const selectedSubjects = useMemo(() => {
-        if (planType !== "subject_yearly" || !subjectsParam) {
-            return [];
-        }
+    // Constant, derived from the URL only
+    const selectedSubjects = useMemo(
+        () =>
+            subjectsParam
+                ? subjectsParam.split(",").map((item) => ({
+                    subjectId: item.split("_")[0],
+                    price: PER_SUBJECT_PRICING,
+                }))
+                : [],
+        [subjectsParam]
+    );
 
-        return subjectsParam.split(",").map((item) => {
-            const [subjectId, price] = item.split("_");
+    // ---- Single sources of truth (initialized once from the URL) ----
+    const [plan, setPlan] = useState<EditablePlan | null>(urlPlan);
+    const [amount, setAmount] = useState(() =>
+        String(getInitialAmount(urlPlan, subjectsParam ? subjectsParam.split(",").length : 0) || "")
+    );
+    const [durationDays, setDurationDays] = useState(() =>
+        String(getInitialDuration(urlPlan) || "")
+    );
 
-            return {
-                subjectId,
-                price: 100,
-            };
-        });
-    }, [planType, subjectsParam]);
+    // ---- Admin: buy for another user ----
+    const [buyForOther, setBuyForOther] = useState(false);
+    const [searchEmail, setSearchEmail] = useState("");
+    const [selectedUser, setSelectedUser] = useState<SelectedUser | null>(null);
 
-    const isCustomPlan = planType === "subject_yearly";
+    const canEdit = isAdmin && buyForOther;
 
-    const customPlanPrice = useMemo(() => {
-        const maxPrice = getMaxPrice();
-        const customPrice = selectedSubjects.reduce(
-            (total, subject) => total + subject.price,
-            0
-        );
-        return customPrice > maxPrice ? maxPrice : customPrice;
-    }, [selectedSubjects]);
-
-    const [paymentMethod, setPaymentMethod] =
-        useState<PaymentMethod>("bKash");
-
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("bKash");
     const [transactionId, setTransactionId] = useState("");
     const [senderNumber, setSenderNumber] = useState("");
     const [loading, setLoading] = useState(false);
     const [responseMessage, setResponseMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const selectedPlan = useMemo(
-        () => plansInfo.find((plan) => plan.type === planType),
-        [planType]
-    );
+    const selectedPlan = plansInfo.find((p) => p.type === plan);
+    const paymentAmount = Number(amount) || 0;
 
-    const paymentAmount = isCustomPlan
-        ? customPlanPrice
-        : selectedPlan?.price ?? 0;
+    const planLabel =
+        plan === "custom"
+            ? "কাস্টম"
+            : plan === "subject_yearly"
+                ? "বিষয়ভিত্তিক সাবস্ক্রিপশন"
+                : selectedPlan?.name;
 
-    const currentPaymentNumber =
-        paymentMethod === "bKash" ? BKASH_NUMBER : NAGAD_NUMBER;
+    const hasValidPlan =
+        plan === "custom"
+            ? isAdmin
+            : plan === "subject_yearly"
+                ? selectedSubjects.length > 0
+                : !!selectedPlan;
 
-    const currentPaymentLogo =
-        paymentMethod === "bKash" ? BKASH_LOGO : NAGAD_LOGO;
+    const currentPaymentNumber = paymentMethod === "bKash" ? BKASH_NUMBER : NAGAD_NUMBER;
+    const currentPaymentLogo = paymentMethod === "bKash" ? BKASH_LOGO : NAGAD_LOGO;
+
+    const handleToggleBuyForOther = (checked: boolean) => {
+        setBuyForOther(checked);
+        if (!checked) {
+            setSelectedUser(null);
+            setSearchEmail("");
+        }
+    };
+
+    const handleSearchWithEmail = () => {
+        if (!searchEmail.trim()) return;
+        createUserService(apiClient)
+            .getUserByEmailOrId(searchEmail.trim())
+            .then((found) => {
+                if (found) {
+                    setSelectedUser({ _id: found._id, name: found.name!, email: found.email });
+                } else {
+                    toast.error("ইউজার পাওয়া যায় নি।");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                toast.error("ইউজার খুঁজতে সমস্যা হয়েছে।");
+            });
+    };
 
     const handlePaymentSubmit = async () => {
         setErrorMessage("");
         setResponseMessage("");
 
-        if (!planType || (!selectedPlan && !isCustomPlan)) {
-            setErrorMessage("অনুগ্রহ করে একটি সঠিক প্লান নির্বাচন করো।");
+        if (!plan || !hasValidPlan) {
+            setErrorMessage("অনুগ্রহ করে একটি সঠিক প্লান নির্বাচন করুন।");
             return;
         }
-
-        if (!transactionId.trim() && !senderNumber.trim()) {
-            setErrorMessage(
-                `Transaction ID অথবা যে ${paymentMethod} নম্বর থেকে টাকা পাঠিয়েছেন সেটি দিন।`
-            );
-            return;
-        }
-
         if (!user) {
             setErrorMessage("পেমেন্ট করার জন্য আপনাকে লগইন করতে হবে।");
+            return;
+        }
+        if (canEdit && !selectedUser) {
+            setErrorMessage("কোন ইউজারের জন্য ক্রয় করছেন তা সিলেক্ট করুন।");
+            return;
+        }
+        if (!transactionId.trim()) {
+            setErrorMessage("Transaction ID জমা দিন।");
+            return;
+        }
+        if (!Number.isFinite(paymentAmount) || paymentAmount < 0) {
+            setErrorMessage("সঠিক পরিমাণ দিন।");
+            return;
+        }
+        const duration = Number(durationDays);
+        if (canEdit && (!Number.isInteger(duration) || duration <= 0)) {
+            setErrorMessage("সঠিক মেয়াদ (দিন) দিন।");
             return;
         }
 
         try {
             setLoading(true);
-
-            const service = createPaymentService(apiClient);
-
-            await service.recordPayment({
-                plan: planType,
+            const response = await createPaymentService(apiClient).recordPayment({
+                plan,
                 amount: paymentAmount,
-                selectedSubjects: isCustomPlan
-                    ? selectedSubjects
-                    : undefined,
+                selectedSubjects: plan === "subject_yearly" ? selectedSubjects : undefined,
                 paymentMethod,
-                transactionId: transactionId.trim() || undefined,
+                transactionId: transactionId.trim(),
                 phoneNumber: senderNumber.trim() || undefined,
+                // Only sent when the admin toggle is on; the backend rejects these from non-admins
+                ...(canEdit ? { targetUserId: selectedUser!._id, durationDays: duration } : {}),
             });
 
-            setResponseMessage(
-                "আপনার পেমেন্টের তথ্য জমা হয়েছে। পেমেন্টটি যাচাই করার পর আপনার প্লান সক্রিয় করা হবে।"
-            );
+            setResponseMessage(response.message);
+
+            if (response.autoVerified && (!canEdit || selectedUser?._id === user._id)) {
+                refetchUserProfile();
+            }
 
             setTransactionId("");
             setSenderNumber("");
+            if (canEdit) {
+                setSelectedUser(null);
+                setSearchEmail("");
+            }
         } catch (error) {
-            console.error(error);
-
             setErrorMessage(
-                "পেমেন্ট এর তথ্য জমা দিতে সমস্যা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করো।"
+                (error instanceof AxiosError && error.response?.data?.message) ||
+                "পেমেন্ট এর তথ্য জমা দিতে সমস্যা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।"
             );
         } finally {
             setLoading(false);
         }
     };
 
-    const hasValidPlan =
-        selectedPlan || (isCustomPlan && selectedSubjects.length > 0);
-
-    if (!hasValidPlan) {
+    if (!hasValidPlan && !isAdmin) {
         return (
             <div className="min-h-screen flex items-center justify-center px-4">
                 <div className="w-full max-w-md bg-white dark:bg-neutral-900 shadow-lg rounded-xl p-6 text-center">
                     <h1 className="text-xl font-bold">
-                        সঠিক প্লান নির্বাচন করো
+                        সঠিক প্লান নির্বাচন করুন
                     </h1>
 
                     <p className="text-muted-foreground mt-2">
@@ -152,7 +216,7 @@ const PaymentMethods = () => {
 
                     <Link href="/plans">
                         <Button className="mt-6 w-full">
-                            প্লান দেখো
+                            প্লান দেখুন
                         </Button>
                     </Link>
                 </div>
@@ -161,19 +225,19 @@ const PaymentMethods = () => {
     }
 
     return (
-        <div className="min-h-screen flex justify-center items-center py-10 px-4">
-            <div className="w-full max-w-xl bg-white dark:bg-neutral-900 shadow-lg rounded-xl p-5">
+        <div className="min-h-screen flex flex-col justify-center items-center py-10 md:px-4 px-1">
+            <div className="max-w-xl pb-4">
+                <PendingPaymentsBanner />
+            </div>
+            <div className="w-full max-w-xl bg-white dark:bg-neutral-900 shadow-md rounded-xl md:p-5 p-2 border">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h1 className="text-2xl font-bold">
-                            অনুশীলন
+                            প্রশ্নকোষ
                         </h1>
-
-                        <p className="text-sm text-muted-foreground mt-1">
-                            {isCustomPlan
-                                ? "বিষয়ভিত্তিক সাবস্ক্রিপশন"
-                                : `${selectedPlan?.name} প্লান`}
+                        <p className="text-muted-foreground mt-1">
+                            {planLabel ?? "প্লান নির্বাচন করুন"}
                         </p>
                     </div>
 
@@ -182,8 +246,9 @@ const PaymentMethods = () => {
                     </div>
                 </div>
 
+
                 {/* Selected Subjects */}
-                {isCustomPlan && (
+                {plan === "subject_yearly" && selectedSubjects.length > 0 && (
                     <div className="mb-6 rounded-xl border bg-muted/30 p-4">
                         <div className="flex items-center justify-between mb-3">
                             <h2 className="font-semibold">
@@ -279,14 +344,14 @@ const PaymentMethods = () => {
 
                     <div className="p-4">
                         <h2 className="font-bold text-lg mb-4">
-                            {paymentMethod} দিয়ে পেমেন্ট করো
+                            {paymentMethod} দিয়ে পেমেন্ট করুন
                         </h2>
 
                         <div className="space-y-4">
                             {/* Payment Number */}
                             <div>
                                 <p className="text-sm mb-2">
-                                    নিচের নম্বরে Send Money করো:
+                                    নিচের নম্বরে Send Money করুন:
                                 </p>
 
                                 <div className="flex items-center gap-2">
@@ -301,16 +366,113 @@ const PaymentMethods = () => {
                                 </div>
                             </div>
 
+                            {isAdmin && (
+                                <div className="mb-6 rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/20 p-4 space-y-3">
+                                    <label className="flex items-center gap-3 cursor-pointer font-semibold">
+                                        <input
+                                            type="checkbox"
+                                            className="h-4 w-4"
+                                            checked={buyForOther}
+                                            onChange={(e) => handleToggleBuyForOther(e.target.checked)}
+                                        />
+                                        অন্য ইউজারের জন্য ক্রয়
+                                    </label>
+
+                                    {buyForOther && (
+                                        <div>
+                                            <div className="flex gap-2">
+                                                <Input
+                                                    value={searchEmail}
+                                                    onChange={(e) => setSearchEmail(e.target.value)}
+                                                    onKeyDown={(e) => e.key === "Enter" && handleSearchWithEmail()}
+                                                    placeholder="ইউজারের ইমেইল"
+                                                    className="h-11"
+                                                />
+                                                <Button type="button" onClick={handleSearchWithEmail}>
+                                                    খুঁজুন
+                                                </Button>
+                                            </div>
+
+
+
+                                            {selectedUser && (
+                                                <div className="mt-3 flex items-center justify-between rounded-lg bg-white dark:bg-neutral-900 border p-3">
+                                                    <div>
+                                                        <p className="font-medium">{selectedUser.name}</p>
+                                                        <p className="text-sm text-muted-foreground">{selectedUser.email}</p>
+                                                    </div>
+                                                    <Button type="button" variant="ghost" size="sm" onClick={() => setSelectedUser(null)}>
+                                                        বাদ দিন
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
                             {/* Amount */}
                             <div className="bg-muted/50 rounded-lg p-3">
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center gap-3">
                                     <span>পরিমাণ</span>
-
-                                    <span className="font-bold text-lg">
-                                        {toBnDigits(paymentAmount)} টাকা
-                                    </span>
+                                    {canEdit ? (
+                                        <Input
+                                            type="number"
+                                            min={1}
+                                            value={amount}
+                                            onChange={(e) => setAmount(e.target.value)}
+                                            className="h-10 w-32 text-right font-bold"
+                                        />
+                                    ) : (
+                                        <span className="font-bold text-lg">{toBnDigits(paymentAmount)} টাকা</span>
+                                    )}
                                 </div>
                             </div>
+
+                            {buyForOther && <div className="bg-muted/50 rounded-lg p-3">
+                                <div className="flex justify-between items-center gap-3">
+                                    <label className="font-medium">মেয়াদ</label>
+                                    {canEdit ? <Input
+                                        type="number"
+                                        min={1}
+                                        value={durationDays}
+                                        disabled={!canEdit}
+                                        onChange={(e) => setDurationDays(e.target.value)}
+                                        className="h-10 w-32 text-right font-bold"
+                                    /> :
+                                        <span className="font-bold text-lg">{toBnDigits(Number(durationDays))} দিন</span>}
+                                </div>
+                            </div>}
+
+                            {buyForOther && <div className="bg-muted/50 rounded-lg p-3">
+                                <div className="flex justify-between items-center gap-3">
+                                    <label className="font-medium">প্লান</label>
+                                    <select
+                                        className="h-10  rounded-md border bg-background px-3 disabled:opacity-60"
+                                        value={plan ?? ""}
+                                        disabled={!canEdit}
+                                        onChange={(e) => setPlan(e.target.value as EditablePlan)}
+                                    >
+                                        <option value="" disabled>নির্বাচন করুন</option>
+                                        {plansInfo
+                                            .filter((p) => p.type !== "free")
+                                            .map((p) => (
+                                                <option
+                                                    key={p.type}
+                                                    value={p.type}
+                                                    disabled={p.type === "subject_yearly" && selectedSubjects.length === 0}
+                                                >
+                                                    {p.name}
+                                                </option>
+                                            ))}
+
+                                        <option value="custom">কাস্টম</option>
+                                        {(selectedSubjects.length > 0) && <option value="subject_yearly">বিষয় বিত্তিক বাৎসরিক</option>}
+                                    </select>
+                                </div>
+                            </div>
+                            }
+
 
                             {/* Instructions */}
                             <p className="text-sm text-muted-foreground">
@@ -318,13 +480,23 @@ const PaymentMethods = () => {
                                 <strong>
                                     {toBnDigits(paymentAmount)} টাকা
                                 </strong>{" "}
-                                Send Money করো। পেমেন্টের পর নিচের{" "}
+                                Send Money করুন। পেমেন্টের পর নিচে{" "}
+                                <strong>
+                                    Transaction ID জমা দিন।
+                                </strong>{" "}
+                            </p>
+                            {/* <p className="text-sm text-muted-foreground">
+                                উপরের নম্বরে{" "}
+                                <strong>
+                                    {toBnDigits(paymentAmount)} টাকা
+                                </strong>{" "}
+                                Send Money করুন। পেমেন্টের পর নিচের{" "}
                                 <strong>
                                     Transaction ID অথবা যে{" "}
                                     {paymentMethod} নম্বর থেকে টাকা পাঠিয়েছেন
                                 </strong>{" "}
                                 — যেকোনো একটি তথ্য দিন।
-                            </p>
+                            </p> */}
 
                             {/* Transaction ID */}
                             <div>
@@ -332,7 +504,7 @@ const PaymentMethods = () => {
                                     htmlFor="transactionId"
                                     className="text-sm font-medium"
                                 >
-                                    Transaction ID
+                                    Transaction ID *
                                 </label>
 
                                 <Input
@@ -344,18 +516,19 @@ const PaymentMethods = () => {
                                         )
                                     }
                                     placeholder="Transaction ID লিখুন"
-                                    className="mt-2"
+                                    className="mt-2 h-12"
+                                    required
                                 />
                             </div>
 
                             {/* OR */}
-                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                            {/* <div className="flex items-center gap-3 text-sm text-muted-foreground">
                                 <div className="h-px flex-1 bg-border" />
 
                                 <span>অথবা</span>
 
                                 <div className="h-px flex-1 bg-border" />
-                            </div>
+                            </div> */}
 
                             {/* Sender Number */}
                             <div>
@@ -364,7 +537,7 @@ const PaymentMethods = () => {
                                     className="text-sm font-medium"
                                 >
                                     যে {paymentMethod} নম্বর থেকে টাকা
-                                    পাঠিয়েছেন
+                                    পাঠিয়েছেন (অপশনাল)
                                 </label>
 
                                 <Input
@@ -377,7 +550,7 @@ const PaymentMethods = () => {
                                         )
                                     }
                                     placeholder="01XXXXXXXXX"
-                                    className="mt-2"
+                                    className="mt-2 h-12"
                                 />
                             </div>
                         </div>
@@ -386,14 +559,14 @@ const PaymentMethods = () => {
 
                 {/* Success */}
                 {responseMessage && (
-                    <div className="mt-4 p-3 rounded-lg bg-green-100 text-green-800 text-sm">
+                    <div className="mt-4 p-3 rounded-lg bg-green-100 text-green-800">
                         {responseMessage}
                     </div>
                 )}
 
                 {/* Error */}
                 {errorMessage && (
-                    <div className="mt-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">
+                    <div className="mt-4 p-3 rounded-lg bg-red-50 text-red-700 ">
                         {errorMessage}
                     </div>
                 )}
@@ -408,19 +581,19 @@ const PaymentMethods = () => {
                         }`}
                 >
                     {loading
-                        ? "জমা হচ্ছে..."
-                        : "পেমেন্টের তথ্য জমা দিন"}
+                        ? "সাবমিট হচ্ছে..."
+                        : "সাবমিট করুন"}
                 </button>
 
                 {/* Support */}
                 <p className="text-center text-sm text-muted-foreground mt-5">
                     পেমেন্ট সংক্রান্ত কোনো সমস্যা হলে{" "}
                     <Link
-                        href="https://www.facebook.com/profile.php?id=61594186144680"
+                        href={facebookPageUrl}
                         target="_blank"
                         className="underline"
                     >
-                        আমাদের ফেসবুক পেইজে যোগাযোগ করো
+                        আমাদের ফেসবুক পেইজে যোগাযোগ করুন
                     </Link>
                     ।
                 </p>

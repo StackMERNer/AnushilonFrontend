@@ -150,3 +150,6 @@ export const classNameMap = {
 export const getClassNameBn = (className: string) => {
   return classNameMap[className as keyof typeof classNameMap] || className;
 };
+
+export const facebookPageUrl =
+  "https://www.facebook.com/profile.php?id=61564362088603";
