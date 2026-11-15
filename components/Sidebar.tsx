@@ -7,8 +7,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import { getClassNameBn } from '@/lib/constants';
 import {
     formatBengaliDate,
-    hasActiveSubjectSubscription,
-    hasActiveSubscription,
+    hasActiveSubscription
 } from '@/lib/helpers';
 import clsx from 'clsx';
 import {
@@ -22,12 +21,11 @@ import {
     Crown,
     File,
     FileText,
-    HelpCircle,
     LayoutDashboard,
     LucideIcon,
     Notebook,
     User,
-    X,
+    X
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -141,17 +139,13 @@ function NavLink({
 function SubscriptionCard({
     collapsed,
     onNavigate,
-    hasAnySubscription,
-    hasGlobalSubscription,
+    hasSubscription,
     expiresAt,
-    subjectCount,
 }: {
     collapsed: boolean;
     onNavigate: () => void;
-    hasAnySubscription: boolean;
-    hasGlobalSubscription: boolean;
+    hasSubscription: boolean;
     expiresAt?: string | Date;
-    subjectCount: number;
 }) {
     /* collapsed (desktop): just a crown button */
     const collapsedButton = (
@@ -170,13 +164,13 @@ function SubscriptionCard({
             {collapsed && collapsedButton}
 
             <div className={clsx(collapsed && 'lg:hidden')}>
-                {hasAnySubscription ? (
+                {hasSubscription ? (
                     /* ------------------------- active subscription ------------------------- */
-                    <div className="relative overflow-hidden rounded-2xl border border-gold/30 bg-gradient-to-br from-gold/15 via-brand-soft/60 to-transparent p-4">
+                    <div className="relative overflow-hidden rounded-2xl border border-gold/30 bg-linear-to-br from-gold/15 via-brand-soft/60 to-transparent p-4">
                         <div className="pointer-events-none absolute -right-8 -top-8 size-24 rounded-full bg-gold/15" />
 
                         <div className="relative flex items-center gap-3">
-                            <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-b from-[#f8d77a] to-[#d9961f] text-brand-dark shadow-md">
+                            <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-linear-to-b from-[#f8d77a] to-[#d9961f] text-brand-dark shadow-md">
                                 <Crown className="size-5" />
                             </div>
                             <div className="min-w-0">
@@ -187,22 +181,18 @@ function SubscriptionCard({
 
                         <div className="relative mt-4">
                             <div className="mb-1.5 flex items-center justify-between text-[11px]">
-                                {hasGlobalSubscription && expiresAt ? (
+                                {hasSubscription && expiresAt && (
                                     <>
                                         <span className="text-muted-foreground">মেয়াদ শেষ হবে</span>
                                         <span className="font-semibold text-foreground">
                                             {formatBengaliDate(expiresAt)}
                                         </span>
                                     </>
-                                ) : (
-                                    <span className="text-muted-foreground">
-                                        {subjectCount} টি বিষয়ে সাবস্ক্রিপশন চালু আছে।
-                                    </span>
                                 )}
                             </div>
 
                             <div className="h-2 overflow-hidden rounded-full bg-foreground/10">
-                                <div className="h-full w-full rounded-full bg-gradient-to-r from-gold to-[#f8d77a]" />
+                                <div className="h-full w-full rounded-full bg-linear-to-r from-gold to-[#f8d77a]" />
                             </div>
 
                             <PressButton variant="secondary" size="sm" className="mt-4 w-full text-[12px]">
@@ -252,11 +242,8 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
 
     const navItems = layout === 'student' ? getStudentNav(countData?.count) : ADMIN_NAV;
 
-    const subscribedSubjectCount = (user?.subjectWiseSubscription ?? []).filter((sub) =>
-        hasActiveSubjectSubscription(sub)
-    ).length;
     const hasGlobalSubscription = !!user && hasActiveSubscription(user);
-    const hasAnySubscription = hasGlobalSubscription || subscribedSubjectCount > 0;
+
 
     const userClass = user?.class?.name;
     const userStream = user?.stream;
@@ -337,10 +324,8 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                     <SubscriptionCard
                         collapsed={collapsed}
                         onNavigate={closeMobileMenu}
-                        hasAnySubscription={hasAnySubscription}
-                        hasGlobalSubscription={hasGlobalSubscription}
-                        expiresAt={hasGlobalSubscription ? user?.subscription?.expiresAt : undefined}
-                        subjectCount={subscribedSubjectCount}
+                        hasSubscription={hasGlobalSubscription}
+                        expiresAt={hasGlobalSubscription ? user?.anushilonSubscription?.expiresAt : undefined}
                     />
                 )}
             </aside>

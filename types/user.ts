@@ -14,6 +14,7 @@ export interface ISubjectSubscription {
 export interface IUser extends Document {
   _id: string;
   uid: string;
+  anushilonUid?: string;
   email: string;
   name?: string;
   photoURL?: string;
@@ -22,10 +23,15 @@ export interface IUser extends Document {
     name: string;
   };
   stream?: string;
-  role: "teacher" | "admin" | "student";
-  institute?: IInstitute;
-  subjectWiseSubscription: ISubjectSubscription[];
-  subscription: {
+  role?: "teacher" | "admin";
+  anushilonRole?: "student" | "admin";
+  // institute?: IInstitute;
+  // subjectWiseSubscription: ISubjectSubscription[];
+  // subscription?: {
+  //   startedAt: Date;
+  //   expiresAt: Date;
+  // };
+  anushilonSubscription?: {
     startedAt: Date;
     expiresAt: Date;
   };

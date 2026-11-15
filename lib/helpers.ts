@@ -61,7 +61,7 @@ export const formatDateToDDMMYYYY = (dateStr: string) => {
 };
 
 export function hasActiveSubscription(user: IUser): boolean {
-  const { subscription } = user;
+  const { anushilonSubscription: subscription } = user;
 
   if (!subscription) {
     return false;
