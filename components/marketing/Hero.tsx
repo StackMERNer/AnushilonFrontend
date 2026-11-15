@@ -188,8 +188,8 @@ export function Hero() {
   return (
     <section className="relative isolate overflow-hidden px-4 pt-16 sm:pt-20 lg:pt-24">
       {/* soft glows */}
-      <div className="pointer-events-none absolute left-1/2 top-10 -z-10 size-[26rem] -translate-x-1/2 rounded-full bg-brand-soft/70 blur-3xl sm:size-[34rem] dark:bg-brand-tint" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 bg-gradient-to-t from-gold/25 via-gold/5 to-transparent" />
+      <div className="pointer-events-none absolute left-1/2 top-10 -z-10 size-104 -translate-x-1/2 rounded-full bg-brand-soft/70 blur-3xl sm:size-136 dark:bg-brand-tint" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 bg-linear-to-t from-gold/25 via-gold/5 to-transparent" />
 
       <AnimatedTitle>
         <div className="flex w-full flex-col items-center justify-center gap-2 text-balance py-4 text-center font-display text-[1.75rem] font-bold capitalize leading-normal tracking-tighter sm:py-6 sm:text-4xl sm:leading-snug md:gap-4 md:text-6xl">
@@ -208,11 +208,11 @@ export function Hero() {
 
       {/* CTA */}
       <div className="relative z-10 mx-auto my-8 min-h-28 w-full max-w-80 sm:my-10">
-        {!loading && !user && (
+        {/* {!loading && !user && (
           <AnimatedList variants={list} className="flex flex-col gap-3">
             <AnimatedListItem variants={item}>
               <PressButton variant="primary" className="w-full">
-                <NextLink href="/signup">অনুশীলন শুরু করো</NextLink>
+                <NextLink href="/login?redirect=true">অনুশীলন শুরু করো</NextLink>
               </PressButton>
             </AnimatedListItem>
             <AnimatedListItem variants={item}>
@@ -221,16 +221,16 @@ export function Hero() {
               </PressButton>
             </AnimatedListItem>
           </AnimatedList>
-        )}
-        {!loading && user && (
-          <MotionDiv initial="hidden" whileInView="visible" variants={item} transition={{ delay: 0.5 }}>
-            <PressButton variant="shine" size="lg" className="w-full">
-              <NextLink href="/dashboard" className="truncate">
-                অনুশীলন চালিয়ে যাও
-              </NextLink>
-            </PressButton>
-          </MotionDiv>
-        )}
+        )} */}
+        {/* {!loading && user && ( */}
+        <MotionDiv initial="hidden" whileInView="visible" variants={item} transition={{ delay: 0.5 }}>
+          <PressButton variant="shine" size="lg" className="w-full">
+            <NextLink href="/login?redirect=true" className="truncate">
+              লগিন করো
+            </NextLink>
+          </PressButton>
+        </MotionDiv>
+        {/* )} */}
       </div>
 
       {/* ================= Mobile layout (< md): flowing, no overlap ================= */}

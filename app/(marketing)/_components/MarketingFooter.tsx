@@ -14,8 +14,8 @@ const columns = [
     {
         title: 'একাউন্ট',
         links: [
-            { href: '/signup', label: 'নতুন একাউন্ট' },
-            { href: '/login', label: 'লগ ইন' },
+            { href: '/login?redirect=true', label: 'নতুন একাউন্ট' },
+            { href: '/login?redirect=true', label: 'লগ ইন' },
             { href: '/dashboard', label: 'ড্যাশবোর্ড' },
         ],
     },
@@ -51,7 +51,7 @@ export function MarketingFooter() {
                         প্রতিদিন একটু একটু অনুশীলন করো, XP জেতো আর লিডারবোর্ডে এগিয়ে যাও।
                     </p>
                     <Link
-                        href="/signup"
+                        href="/login?redirect=true"
                         className="mt-6 inline-flex items-center justify-center rounded-full bg-gold px-8 py-3 font-bold text-brand-dark shadow-[0_6px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-1 active:shadow-none"
                     >
                         অনুশীলন শুরু করো
@@ -79,8 +79,8 @@ export function MarketingFooter() {
                         <div key={c.title}>
                             <h3 className="mb-3 text-sm font-bold text-gold">{c.title}</h3>
                             <ul className="space-y-2">
-                                {c.links.map((l) => (
-                                    <li key={l.href}>
+                                {c.links.map((l, i) => (
+                                    <li key={l.href + i}>
                                         <Link href={l.href} className="text-sm text-white/70 transition hover:text-white">
                                             {l.label}
                                         </Link>

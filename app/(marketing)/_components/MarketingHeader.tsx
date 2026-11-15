@@ -88,7 +88,7 @@ export function MarketingHeader() {
                                 লগ ইন
                             </Link>
                             <PressButton variant="primary" className="hidden px-5 sm:inline-flex">
-                                <Link href="/signup">শুরু করো</Link>
+                                <Link href="/login?redirect=true">শুরু করো</Link>
                             </PressButton>
                         </>
                     )}
@@ -140,7 +140,7 @@ export function MarketingHeader() {
                                 {!loading && !user && (
                                     <>
                                         <PressButton variant="primary" className="w-full">
-                                            <Link href="/signup" onClick={() => setOpen(false)}>
+                                            <Link href="/login?redirect=true" onClick={() => setOpen(false)}>
                                                 অনুশীলন শুরু করো
                                             </Link>
                                         </PressButton>

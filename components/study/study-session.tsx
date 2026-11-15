@@ -198,7 +198,7 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
                     <p className="font-display text-2xl font-bold text-foreground">দারুণ! সেশন শেষ!🎉</p>
                     <p className="mt-2 text-muted-foreground">
                         {toBnDigits(total)}টি প্রশ্ন রিভিউ হয়েছে
-                        {againCount > 0 && `, ${toBnDigits(againCount)}বার "আবার" দিয়েছ`}
+                        {againCount > 0 && `, ${toBnDigits(againCount)} টি প্রশ্ন কালকের জন্য রিভিউ তালিকায় রাখা হয়েছে।`}
                     </p>
                     {saveFailed && (
                         <p className="mt-3 text-sm text-red">কিছু রিভিউ সেভ হয়নি। ইন্টারনেট চেক করো।</p>
