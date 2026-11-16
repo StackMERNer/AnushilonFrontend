@@ -40,13 +40,6 @@ export default function QuestionList({
         classId?: string;
     };
 }) {
-    const [columns] = useState<1 | 2>(() => {
-        if (typeof window !== "undefined") {
-            const savedLayout = localStorage.getItem("question_layout");
-            return savedLayout === "1" ? 1 : 2;
-        }
-        return 2;
-    });
 
     const { toggleMobileMenu } = useSidebar();
     const router = useRouter();
@@ -136,8 +129,7 @@ export default function QuestionList({
                 </p>
             ) : (
                 <div
-                    className={`grid gap-3 px-1 grid-cols-1 ${columns === 2 ? "md:grid-cols-2" : "md:grid-cols-1"
-                        }`}
+                    className={`grid gap-3 px-1 grid-cols-1"`}
                 >
                     {questions.map((q, index) => {
                         return (

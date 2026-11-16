@@ -10,6 +10,8 @@ import { toBnDigits } from "@/lib/helpers";
 import QuestionCard from "@/components/QuestionCard";
 import confetti from "canvas-confetti";
 
+
+const nowMs = () => Date.now();
 const PRIMARY_BTN =
     "inline-flex items-center justify-center rounded-2xl bg-gold px-6 py-3.5 font-bold text-brand-dark shadow-[0_4px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-0.5 active:shadow-none disabled:opacity-50";
 const SECONDARY_BTN =
@@ -85,7 +87,7 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
     const autoRating: Rating = picked === correct ? 3 : 1;
 
     useEffect(() => {
-        shownAt.current = Date.now();
+        shownAt.current = nowMs();
     }, [current?.question._id]);
 
     const toggleAuto = (v: boolean) => setAutoPref(v);
@@ -97,7 +99,7 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
                 questionId: current.question._id,
                 rating,
                 auto,
-                timeTakenMs: Date.now() - shownAt.current,
+                timeTakenMs: nowMs() - shownAt.current,
             },
             { onError: () => setSaveFailed(true) },
         );
@@ -142,38 +144,6 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
         return () => clearTimeout(timer);
     }, [total, current]);
 
-    // keyboard shortcuts (handler kept in a ref so it always sees fresh state)
-    const keyHandler = useRef<(e: KeyboardEvent) => void>(() => { });
-
-    // runs after every render, so the ref always holds the latest closure
-    useEffect(() => {
-        keyHandler.current = (e) => {
-            if (!current) return;
-            const confirm = e.key === " " || e.key === "Enter";
-            const num = Number(e.key);
-
-            if (!revealed) {
-                if (isAuto && num >= 1 && num <= (q?.options?.length ?? 0)) pick(num - 1);
-                else if (!useAuto && confirm) {
-                    e.preventDefault();
-                    setRevealed(true);
-                }
-                return;
-            }
-            if (useAuto) {
-                if (confirm) {
-                    e.preventDefault();
-                    advance(autoRating);
-                }
-            } else if (num >= 1 && num <= 4) rate(num as Rating);
-        };
-    });
-
-    useEffect(() => {
-        const f = (e: KeyboardEvent) => keyHandler.current(e);
-        window.addEventListener("keydown", f);
-        return () => window.removeEventListener("keydown", f);
-    }, []);
     // ---- empty / finished ----
     if (total === 0) {
         return (
@@ -291,9 +261,6 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
                                 className={`flex flex-col items-center gap-0.5 rounded-2xl py-3 font-bold text-white shadow-[0_4px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-0.5 active:shadow-none ${r.cls}`}
                             >
                                 <span>{r.label}</span>
-                                <span className="hidden text-[10px] font-medium opacity-80 sm:block">
-                                    {toBnDigits(r.value)}
-                                </span>
                             </button>
                         ))}
                     </div>

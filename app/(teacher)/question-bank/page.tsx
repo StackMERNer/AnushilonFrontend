@@ -2,7 +2,7 @@
 import { useAcademicTree } from '@/hooks/use-academic';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { getSubjectIconByName } from '@/lib/subjectImageMap';
-import { useRouter } from 'next/navigation';
+import { useRouter } from "nextjs-toploader/app";
 
 const QuestionBankPage = () => {
     const { data: user } = useUserProfile();
