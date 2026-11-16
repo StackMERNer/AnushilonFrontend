@@ -8,6 +8,7 @@ import { AuthSessionProvider } from "@/components/providers/auth-session-provide
 import MathJaxProvider from "@/components/providers/MathJaxProvider";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import TopLoader from "@/components/global/top-loader";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -118,6 +119,7 @@ export default function RootLayout({
               <QueryProvider>
                 <MathJaxProvider>
                   <Toaster position="top-center" richColors />
+                  <TopLoader />
                   {children}
                 </MathJaxProvider>
               </QueryProvider>
