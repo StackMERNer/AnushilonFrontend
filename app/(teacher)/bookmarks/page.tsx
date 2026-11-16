@@ -1,11 +1,11 @@
-import { redirect } from "next/navigation";
-import { Bookmark } from "lucide-react";
-import Link from "next/link";
-import { createQuestionFeedbackService } from "@/services/question-feedback.service";
-import { createServerApiClient } from "@/lib/api/api-server";
-import { toBnDigits } from "@/lib/helpers";
 import BookmarksList from "@/components/bookmarks/bookmarks-list";
 import Pagination from "@/components/bookmarks/pagination";
+import { createServerApiClient } from "@/lib/api/api-server";
+import { toBnDigits } from "@/lib/helpers";
+import { createQuestionFeedbackService } from "@/services/question-feedback.service";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata = { title: "বুকমার্ক" };
 
@@ -42,7 +42,7 @@ export default async function BookmarksPage({
             {data.totalItems === 0 ? (
                 <div className="rounded-3xl border border-dashed border-line bg-card p-10 text-center">
                     <span className="mx-auto grid size-14 place-items-center rounded-full bg-gold/20 text-gold">
-                        <Bookmark className="size-7" />
+                        <Image src="/img/icons/heart.svg" width={50} height={50} alt="bookmark" />
                     </span>
                     <p className="mt-4 font-semibold text-foreground">এখনও কোনো প্রশ্ন বুকমার্ক করোনি</p>
                     <p className="mt-1 text-sm text-muted-foreground">
