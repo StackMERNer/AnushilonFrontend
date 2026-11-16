@@ -1,11 +1,4 @@
-
 "use client";
-
-import { useSidebar } from "@/context/SidebarContext";
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { Building2, CreditCard, Menu, User } from "lucide-react";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,9 +6,14 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSidebar } from "@/context/SidebarContext";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { CreditCard, Menu, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { ThemeToggle } from "./theme-toggle";
+import { usePathname } from "next/navigation";
 import { StreakBadge } from "./streak-badge";
+import { ThemeToggle } from "./theme-toggle";
 
 function greeting() {
     const h = new Date().getHours();
@@ -34,7 +32,6 @@ const ROUTE_TITLES: Record<string, string> = {
     "/question-bank": "প্রশ্নব্যাংক",
     "/payment-history": "পেমেন্ট হিস্টোরি",
     "/profile": "প্রোফাইল",
-    "/my-institute": "আমার প্রতিষ্ঠান",
     "/plans": "প্রিমিয়াম প্ল্যান",
     "/admin-dashboard": "অ্যাডমিন ড্যাশবোর্ড",
     "/payments": "পেমেন্টস",
@@ -51,7 +48,7 @@ const HIDE_TOPBAR_PAGES = [
 
 export function Topbar() {
     const pathname = usePathname();
-    const { data: user, isLoading } = useUserProfile();
+    const { data: user } = useUserProfile();
     const { toggleMobileMenu } = useSidebar();
 
     const isDashboard = pathname === "/dashboard" || pathname === "/";
@@ -151,13 +148,6 @@ export function Topbar() {
                             <Link href="/profile" className="flex w-full items-center">
                                 <User className="mr-2 h-4 w-4" />
                                 প্রোফাইল
-                            </Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                            <Link href="/my-institute" className="flex w-full items-center">
-                                <Building2 className="mr-2 h-4 w-4" />
-                                আমার প্রতিষ্ঠান
                             </Link>
                         </DropdownMenuItem>
 
