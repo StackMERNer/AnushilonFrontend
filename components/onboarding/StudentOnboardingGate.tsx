@@ -17,7 +17,7 @@ const StudentOnboardingGate = ({ children }: { children: React.ReactNode }) => {
             </div>
         )
     }
-    if (user && (!user.class || !user.stream)) {
+    if (user && (!user.class)) {
         return <ClassOnboardningStep refetchUser={refetchUser} />
     }
     return children

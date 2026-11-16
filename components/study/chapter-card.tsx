@@ -34,14 +34,14 @@ function groupTypes(rows: ITypeProgress[]): Group[] {
 }
 
 const fresh = (g: Group) => g.total - g.studied;
-const PRESETS = [5, 10, 20, 50];
+const PRESETS = [3, 5, 10, 20, 50];
 
 function SubmitButton({ disabled }: { disabled: boolean }) {
     const { pending } = useFormStatus();
     return (
         <button
             disabled={disabled || pending}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-bold text-brand-dark shadow-[0_3px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-0.5 active:shadow-none disabled:opacity-40"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-bold text-brand-dark shadow-[0_3px_0_0_rgba(0,0,0,0.25)] transition active:translate-y-0.5 active:shadow-none disabled:opacity-40 w-full"
         >
             <Play className="size-4 fill-current" />
             {pending ? "শুরু হচ্ছে…" : "শুরু করো"}
@@ -52,7 +52,13 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
 export default function ChapterCard({ chapter: r, subjectId }: { chapter: IChapterProgress; subjectId: string }) {
     const groups = useMemo(() => groupTypes(r.types), [r.types]);
     const [panelOpen, setPanelOpen] = useState(false);
-    const [picked, setPicked] = useState<string[]>([]); // labels; empty = all types
+    const [picked, setPicked] = useState<string[]>(() => {
+        const mcqGroup = groups.find((g) =>
+            g.types.some((type) => type.toLowerCase() === "mcq")
+        );
+
+        return mcqGroup ? [mcqGroup.label] : [];
+    });
     const [count, setCount] = useState(10);
 
     const studiedPct = r.total ? (r.studied / r.total) * 100 : 0;
@@ -185,8 +191,8 @@ export default function ChapterCard({ chapter: r, subjectId }: { chapter: IChapt
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between gap-3">
-                        <p className="text-xs text-muted-foreground">
+                    <div className="flex items-center flex-col justify-between gap-3">
+                        <p className="text-xs text-muted-foreground self-start">
                             {available > 0
                                 ? `মোট ${toBnDigits(available)}টি নতুন প্রশ্ন আছে`
                                 : "এই ধরনের সব প্রশ্ন শুরু করা হয়েছে"}
