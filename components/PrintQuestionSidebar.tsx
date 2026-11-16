@@ -274,7 +274,7 @@ export default function PrintQuestionSidebar() {
                 <div>
                     <div className="flex items-center justify-between mb-2">
                         <Label>ব্র্যান্ডিং সেটিংস চালু</Label>
-                        <MiniToggle checked={settings.branding.enabled} onChange={(v) => { updateBranding("enabled", v); if (v && !settings.branding.watermarkText) { updateBranding("watermarkText", user?.institute?.name || ""); } }} />
+                        <MiniToggle checked={settings.branding.enabled} onChange={(v) => { updateBranding("enabled", v); if (v && !settings.branding.watermarkText) { updateBranding("watermarkText", ""); } }} />
                     </div>
                     <Label>জলছাপ টেক্সট</Label>
                     <input

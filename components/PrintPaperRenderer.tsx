@@ -106,7 +106,12 @@ export default function PrintPaperRenderer({
         return indexA - indexB;
     });
 
-    const institute = user?.institute;
+    const institute = {
+        name: "প্রতিষ্ঠানের নাম",
+        address: "প্রতিষ্ঠানের ঠিকানা",
+        phone: "প্রতিষ্ঠানের ফোন নম্বর",
+        email: "প্রতিষ্ঠানের ইমেইল",
+    };
     // Assumption: the profile has a `name` field. Change if yours differs.
     const instructorName = (user as any)?.name || "ইন্সট্রাক্টরের নাম";
 

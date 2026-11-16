@@ -1,14 +1,14 @@
 "use client";
 
-import { Building2, Mail, Shield, User } from "lucide-react";
+import { Mail, Shield, User } from "lucide-react";
 import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
 
 const ProfilePage = () => {
     const { data: user, isLoading } = useUserProfile();
@@ -25,6 +25,7 @@ const ProfilePage = () => {
             queryClient.clear();
             router.replace("/");
         } catch (error) {
+            console.log('error', error);
             toast.error("লগআউট করতে ব্যর্থ। আবার চেষ্টা করো।");
         }
     }
@@ -92,22 +93,6 @@ const ProfilePage = () => {
                         </p>
                     </div>
                 </div>
-
-                {user.institute && (
-                    <div className="flex items-center gap-3 px-4 py-3">
-                        <Building2 className="h-4 w-4 text-muted-foreground" />
-
-                        <div>
-                            <p className="text-xs text-muted-foreground">
-                                প্রতিষ্ঠান
-                            </p>
-                            <p className="text-sm font-medium">
-                                {/* Change `name` if your IInstitute uses another field */}
-                                {user.institute.name}
-                            </p>
-                        </div>
-                    </div>
-                )}
             </div>
             <button className='w-full bg-destructive py-3 rounded-lg text-white' onClick={handleLogout}>লগআউট করো</button>
         </CardContent>

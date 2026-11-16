@@ -11,9 +11,7 @@ import {
 } from "@/components/ui/pagination";
 import { useSidebar } from "@/context/SidebarContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { apiClient } from "@/lib/api/api-client";
 import { hasActiveSubscription } from "@/lib/helpers";
-import { createPaperService } from "@/services/paper.service";
 import { IFilterdQuestion } from "@/types/question";
 import { Menu } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -22,8 +20,8 @@ import { MobileFilterTrigger } from "./FilterDrawerWrapper";
 import { PremiumGate } from "./PremiumGate";
 import QuestionCard from "./QuestionCard";
 import { ThemeToggle } from "./theme-toggle";
-import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
+import { Label } from "./ui/label";
 
 export default function QuestionList({
     questions,
@@ -42,7 +40,7 @@ export default function QuestionList({
         classId?: string;
     };
 }) {
-    const [columns, setColumns] = useState<1 | 2>(() => {
+    const [columns] = useState<1 | 2>(() => {
         if (typeof window !== "undefined") {
             const savedLayout = localStorage.getItem("question_layout");
             return savedLayout === "1" ? 1 : 2;
@@ -53,9 +51,7 @@ export default function QuestionList({
     const { toggleMobileMenu } = useSidebar();
     const router = useRouter();
     const { data: user } = useUserProfile();
-    const hasEverPurchasedSubjectSubscription =
-        (user?.subjectWiseSubscription?.length ?? 0) > 0;
-    const hasSubscription = (user ? hasActiveSubscription(user) : false) || hasEverPurchasedSubjectSubscription;
+    const hasSubscription = (user ? hasActiveSubscription(user) : false)
     const pathname = usePathname();
     const searchParams = useSearchParams();
 

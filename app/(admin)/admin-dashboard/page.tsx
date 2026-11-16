@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import {
     ChevronLeft,
     ChevronRight,
     Loader2,
     MoreHorizontal,
 } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 import { useUsers } from "@/hooks/use-users";
 import Image from "next/image";
@@ -178,7 +178,7 @@ const AdminDashboardPage = () => {
                                         </td>
 
                                         {/* Institute */}
-                                        <td className="px-5 py-4">
+                                        {/* <td className="px-5 py-4">
                                             {user.institute ? (
                                                 <div>
                                                     <p className="font-medium">
@@ -194,7 +194,7 @@ const AdminDashboardPage = () => {
                                                     —
                                                 </span>
                                             )}
-                                        </td>
+                                        </td> */}
 
                                         {/* Role */}
                                         <td className="px-5 py-4">

@@ -10,7 +10,7 @@ export function useBookmarkToggle(questionId: string, initial = false) {
   const [bookmarked, setBookmarked] = useState(initial);
   const [failed, setFailed] = useState(false);
 
-  const m = useMutation({
+  const m = useMutation<{ isBookmarked: boolean }, Error, boolean>({
     mutationFn: (next: boolean) =>
       next
         ? service.addBookmark(questionId)

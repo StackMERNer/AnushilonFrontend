@@ -1,10 +1,6 @@
 import FilterDrawerWrapper, { FilterDrawerContent } from "@/components/FilterDrawerWrapper";
 import PaperFilterSidebar from "@/components/PaperFilterSidebar";
-import QuestionPaperList from "@/components/PaperList";
 import QuestionListSkeleton from "@/components/QuestionListSkeleton";
-import { createServerApiClient } from "@/lib/api/api-server";
-import { createPaperService } from "@/services/paper.service";
-import { IFilterdPaper } from "@/types/question-paper";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -20,14 +16,9 @@ const QuestionPapersLoader = async (props: {
     page: number;
     classId?: string;
 }) => {
-    let papers: IFilterdPaper[] = [];
-    const serverApi = createServerApiClient();
-    const paperService = createPaperService(serverApi);
-    const response = await paperService.getPaginatedPapers({ page: props.page, chapter: props.chapterId, subject: props.subjectId, class: props.classId });
-    papers = response?.items || [];
 
     return (
-        <QuestionPaperList papers={papers} currentPage={response.currentPage} total={response.totalItems} totalPages={response.totalPages} />
+        <div>no papers</div>
     );
 };
 

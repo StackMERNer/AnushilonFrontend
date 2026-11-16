@@ -98,10 +98,8 @@ export default function QuestionFilterSidebar({
     };
 
 
-    const hasEverPurchasedSubjectSubscription =
-        (user?.subjectWiseSubscription?.length ?? 0) > 0;
 
-    const hasSubscription = (user ? hasActiveSubscription(user) : false) || hasEverPurchasedSubjectSubscription;
+    const hasSubscription = (user ? hasActiveSubscription(user) : false)
 
 
     const handleUpgradeClick = () => {

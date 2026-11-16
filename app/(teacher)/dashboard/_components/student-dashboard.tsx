@@ -1,51 +1,17 @@
 'use client';
-import { useUserProfile } from '@/hooks/useUserProfile';
-import { useDashboardSubjects, useDashboardSummary } from '@/hooks/use-study-dashboard';
-import { useState } from 'react';
-import ms from 'ms';
-import { TodayCard } from '@/components/dashboard/today-card';
 import { StatsRow } from '@/components/dashboard/stats-row';
 import { SubjectsGrid } from '@/components/dashboard/subjects-grid';
+import { TodayCard } from '@/components/dashboard/today-card';
 import { WeeklyActivity } from '@/components/dashboard/weekly-activity';
-
-const INSTITUTE_SKIP_KEY = 'institute-info-modal-skipped';
-const SKIP_DURATION = ms('3h');
-
+import { useDashboardSubjects, useDashboardSummary } from '@/hooks/use-study-dashboard';
 
 const Skeleton = ({ className = '' }: { className?: string }) => (
     <div className={`animate-pulse rounded-3xl bg-muted ${className}`} />
 );
 
 const StudentDashboard = () => {
-    const { data: user, isLoading: userLoading } = useUserProfile();
     const summaryQ = useDashboardSummary();
     const subjectsQ = useDashboardSubjects();
-
-    const [isSkipped, setIsSkipped] = useState(() => {
-        if (typeof window === 'undefined') return false;
-        const skippedAt = localStorage.getItem(INSTITUTE_SKIP_KEY);
-        if (!skippedAt) return false;
-        const timestamp = Number(skippedAt);
-        if (!Number.isFinite(timestamp)) {
-            localStorage.removeItem(INSTITUTE_SKIP_KEY);
-            return false;
-        }
-        const isStillValid = Date.now() - timestamp < SKIP_DURATION;
-        if (!isStillValid) localStorage.removeItem(INSTITUTE_SKIP_KEY);
-        return isStillValid;
-    });
-
-    const handleSkip = () => {
-        localStorage.setItem(INSTITUTE_SKIP_KEY, Date.now().toString());
-        setIsSkipped(true);
-    };
-    const handleCompleted = () => {
-        localStorage.removeItem(INSTITUTE_SKIP_KEY);
-        setIsSkipped(true);
-    };
-
-    const showInstituteModal = !userLoading && !!user && !user.institute?.name && !isSkipped;
-
     const summary = summaryQ.data;
     const isNew = !!summary && summary.totalStudied === 0;
 
