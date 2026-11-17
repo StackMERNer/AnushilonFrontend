@@ -83,7 +83,7 @@ export function Topbar() {
             <div className="min-w-0 flex-1">
                 {isDashboard ? (
                     user ? (
-                        <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
+                        <h1 className="font-display text-xl font-bold text-foreground sm:text-3xl">
                             {greeting()}
                             {firstName ? `, ${firstName}` : ""}
                         </h1>

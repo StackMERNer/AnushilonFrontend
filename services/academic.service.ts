@@ -32,7 +32,7 @@ export function getAcademicService(client: AxiosInstance) {
       stream?: string;
     }) => {
       const r = await client.get<IAcademicTreeRespponse>(
-        `${baseUrl}/academic-tree`,
+        `${baseUrl}/anushilon/academic-tree`,
         {
           params: { classId, upto, paperId, status, stream },
         },
