@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import clsx from "clsx";
@@ -60,6 +60,9 @@ export default function ChapterCard({ chapter: r, subjectId }: { chapter: IChapt
         return mcqGroup ? [mcqGroup.label] : [];
     });
     const [count, setCount] = useState(10);
+    const [state, formAction] = useActionState(startNewCardsAction, {
+        error: null,
+    });
 
     const studiedPct = r.total ? (r.studied / r.total) * 100 : 0;
     const masteredPct = r.total ? (r.mastered / r.total) * 100 : 0;
@@ -118,7 +121,7 @@ export default function ChapterCard({ chapter: r, subjectId }: { chapter: IChapt
             {/* start panel */}
             {panelOpen && totalFresh > 0 && (
                 <form
-                    action={startNewCardsAction}
+                    action={formAction}
                     className="mt-3 space-y-4 rounded-xl border border-line bg-muted/40 p-3 sm:p-4"
                 >
                     <input type="hidden" name="chapterId" value={r.chapterId} />
@@ -197,6 +200,14 @@ export default function ChapterCard({ chapter: r, subjectId }: { chapter: IChapt
                                 ? `মোট ${toBnDigits(available)}টি নতুন প্রশ্ন আছে`
                                 : "এই ধরনের সব প্রশ্ন শুরু করা হয়েছে"}
                         </p>
+                        {state.error && (
+                            <div
+                                role="alert"
+                                className="rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-400"
+                            >
+                                {state.error}
+                            </div>
+                        )}
                         <SubmitButton disabled={available <= 0 || value <= 0} />
                     </div>
                 </form>
