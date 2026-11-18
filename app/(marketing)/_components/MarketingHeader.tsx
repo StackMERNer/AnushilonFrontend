@@ -4,7 +4,7 @@ import { PressButton } from '@/components/ui/press-button'
 import { useUserProfile } from '@/hooks/useUserProfile'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Flame, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -43,7 +43,7 @@ export function MarketingHeader() {
                     : 'border-transparent bg-background/40 backdrop-blur-sm',
             )}
         >
-            <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-[72px] lg:px-10">
+            <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-18 lg:px-10">
                 {/* Brand */}
                 <Link href="/" className="flex items-center gap-2.5 sm:gap-3" onClick={() => setOpen(false)}>
                     <Logo />
@@ -58,7 +58,7 @@ export function MarketingHeader() {
                 </Link>
 
                 {/* Desktop links */}
-                <div className="hidden items-center gap-1 md:flex">
+                {/* <div className="hidden items-center gap-1 md:flex">
                     {links.map((l) => (
                         <a
                             key={l.href}
@@ -68,7 +68,7 @@ export function MarketingHeader() {
                             {l.label}
                         </a>
                     ))}
-                </div>
+                </div> */}
 
                 {/* Right actions */}
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -79,7 +79,7 @@ export function MarketingHeader() {
                         <Flame className="size-4 fill-red text-red" /> স্ট্রিক
                     </span> */}
 
-                    {!loading && !user && (
+                    {/* {!loading && !user && (
                         <>
                             <Link
                                 href="/login?redirect=true"
@@ -91,12 +91,11 @@ export function MarketingHeader() {
                                 <Link href="/login?redirect=true">শুরু করো</Link>
                             </PressButton>
                         </>
-                    )}
-                    {!loading && user && (
-                        <PressButton variant="primary" className="hidden px-5 sm:inline-flex">
-                            <Link href="/dashboard">ড্যাশবোর্ড</Link>
-                        </PressButton>
-                    )}
+                    )} */}
+
+                    <PressButton variant="primary" className="hidden px-5 sm:inline-flex">
+                        <Link href="/dashboard">{user ? "ড্যাশবোর্ড" : "লগ ইন"}</Link>
+                    </PressButton>
 
                     {/* Mobile toggle */}
                     <button

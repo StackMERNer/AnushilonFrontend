@@ -1,6 +1,5 @@
 'use client'
 import { MotionDiv } from '@/components/motion'
-import { AnimatedList, AnimatedListItem } from '@/components/motion/AnimatedList'
 import { AnimatedTitle } from '@/components/motion/AnimatedTitle'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { Check, Crown, Flame, ListChecks, Trophy, Zap } from 'lucide-react'
@@ -128,7 +127,7 @@ function QuizCard() {
         <span className="text-xs font-semibold text-muted-foreground">প্রশ্ন ৫/১০</span>
         <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-gold to-brand-light"
+            className="h-full rounded-full bg-linear-to-r from-gold to-brand-light"
             initial={{ width: '0%' }}
             animate={{ width: '50%' }}
             transition={{ delay: 1.2, duration: 1, ease: 'easeOut' }}
@@ -163,7 +162,7 @@ function QuizCard() {
       </div>
 
       <motion.div
-        className="absolute -top-4 right-2 flex items-center gap-1 rounded-full bg-gold px-3 py-1 text-sm font-bold text-brand-dark shadow-lg sm:-right-3 sm:right-auto sm:left-auto"
+        className="absolute -top-4 right-2 flex items-center gap-1 rounded-full bg-gold px-3 py-1 text-sm font-bold text-brand-dark shadow-lg sm:right-auto sm:left-auto"
         initial={{ opacity: 0, scale: 0, rotate: -20 }}
         animate={{ opacity: [0, 1, 1, 0], scale: [0, 1.2, 1, 1], y: [0, 0, -4, -14], rotate: [-20, 8, 8, 8] }}
         transition={{ delay: 1.8, duration: 2.4, repeat: Infinity, repeatDelay: 2 }}
@@ -183,7 +182,7 @@ const chips = {
 } as const
 
 export function Hero() {
-  const { data: user, isLoading: loading } = useUserProfile()
+  const { data: user } = useUserProfile()
 
   return (
     <section className="relative isolate overflow-hidden px-4 pt-16 sm:pt-20 lg:pt-24">
@@ -226,7 +225,7 @@ export function Hero() {
         <MotionDiv initial="hidden" whileInView="visible" variants={item} transition={{ delay: 0.5 }}>
           <PressButton variant="shine" size="lg" className="w-full">
             <NextLink href="/login?redirect=true" className="truncate">
-              লগিন করো
+              {user ? "অনুশীলন চালিয়ে যাও" : "লগিন করো"}
             </NextLink>
           </PressButton>
         </MotionDiv>
@@ -261,29 +260,29 @@ export function Hero() {
       </div>
 
       {/* ================= Desktop stage (md+): floating composition ================= */}
-      <div className="relative mx-auto mb-10 hidden h-[430px] max-w-5xl md:block lg:h-[460px]">
+      <div className="relative mx-auto mb-10 hidden h-107.5 max-w-5xl md:block lg:h-115">
         <Float className="inset-x-0 top-6 mx-auto w-80" delay={0} duration={5} y={8}>
           <QuizCard />
         </Float>
 
         {/* tiles */}
         <Float className="left-[6%] top-0 lg:left-[8%]" delay={0.2} duration={4.2} rotate={-12}>
-          <Tile className="size-24 -rotate-12 bg-gradient-to-br from-gold/80 to-gold/20 lg:size-28">
+          <Tile className="size-24 -rotate-12 bg-linear-to-br from-gold/80 to-gold/20 lg:size-28">
             <Image src={TargetSVG} alt="লক্ষ্য" style={{ scale: 0.75 }} />
           </Tile>
         </Float>
         <Float className="right-[6%] top-2 lg:right-[8%]" delay={0.4} duration={4.8} y={14} rotate={12}>
-          <Tile className="size-24 rotate-12 bg-gradient-to-bl from-brand-light/60 to-brand-soft lg:size-28">
+          <Tile className="size-24 rotate-12 bg-linear-to-bl from-brand-light/60 to-brand-soft lg:size-28">
             <Image src={BulbSVG} alt="আইডিয়া" />
           </Tile>
         </Float>
         <Float className="bottom-24 left-[14%] max-lg:hidden" delay={0.6} duration={4.5} rotate={-6}>
-          <Tile className="size-28 -rotate-6 bg-gradient-to-r from-red-tint to-gold/30">
+          <Tile className="size-28 -rotate-6 bg-linear-to-r from-red-tint to-gold/30">
             <Image src={RewardSVG} alt="পুরস্কার" />
           </Tile>
         </Float>
         <Float className="bottom-28 right-[14%] max-lg:hidden" delay={0.8} duration={5.2} rotate={10}>
-          <Tile className="size-28 rotate-6 bg-gradient-to-l from-emerald-400/40 to-emerald-100/40">
+          <Tile className="size-28 rotate-6 bg-linear-to-l from-emerald-400/40 to-emerald-100/40">
             <Image src={ExamAPlusSVG} alt="পরীক্ষা" style={{ scale: 0.7 }} />
           </Tile>
         </Float>
