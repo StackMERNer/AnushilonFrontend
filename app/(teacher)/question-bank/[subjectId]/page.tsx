@@ -40,7 +40,6 @@ async function QuestionListLoader(props: {
     const serverClient = createServerApiClient();
     const questionBankService = createQuestionBankService(serverClient);
 
-    // Fetch both questions and current paper state concurrently
     const [questionsResponse] = await Promise.all([
         questionBankService.getFilteredQuestions({
             page: props.page,
@@ -54,7 +53,6 @@ async function QuestionListLoader(props: {
             year: props.year,
             selectedOnly: props.selectedOnly === "true",
         }),
-        // paperService.getPaperById(props.paperId).catch(() => ({ sections: [] } as Partial<IPopulatedQuestionPaper>)),
     ]);
 
     return (
