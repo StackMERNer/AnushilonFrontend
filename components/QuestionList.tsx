@@ -1,5 +1,7 @@
 "use client";
 
+import BankToolbar from "@/components/bank/bank-toolbar";
+import FunLayer from "@/components/fun/fun-layer";
 import {
     Pagination,
     PaginationContent,
@@ -10,6 +12,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useSidebar } from "@/context/SidebarContext";
+import { usePersistentFlag } from "@/hooks/use-persistent-flag";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { hasActiveSubscription } from "@/lib/helpers";
 import { IFilterdQuestion } from "@/types/question";
@@ -47,6 +50,7 @@ export default function QuestionList({
     const hasSubscription = (user ? hasActiveSubscription(user) : false)
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const [srs, setSrs] = usePersistentFlag("bank:studyMode", false);
 
     const goToPage = (page: number) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -98,7 +102,7 @@ export default function QuestionList({
 
 
     return (
-        <div className="pb-4" ref={listContainerRef}>
+        <div className="pb-20" ref={listContainerRef}>
             {/* Top Header */}
             <div className="flex justify-between items-center sticky top-0 z-10 mb-3 py-2 px-2 border rounded-lg bg-white dark:bg-neutral-800 mt-2">
                 <button
@@ -119,6 +123,24 @@ export default function QuestionList({
                 </div>
                 <ThemeToggle />
             </div>
+            {/* <label className="mb-3 flex cursor-pointer items-center justify-between gap-3 rounded-lg border border-line bg-card px-3 py-2.5">
+                <span className="min-w-0">
+                    <span className="block text-sm font-semibold text-foreground">স্টাডি মোড</span>
+                    <span className="block text-xs text-muted-foreground">
+                        {srs
+                            ? "উত্তর দেখে মূল্যায়ন করলে প্রশ্নটি রিভিউতে যুক্ত হবে"
+                            : "চালু করলে প্রশ্ন মূল্যায়ন করে রিভিউতে যুক্ত করতে পারবে"}
+                    </span>
+                </span>
+                <input
+                    type="checkbox"
+                    className="peer sr-only"
+                    checked={srs}
+                    onChange={(e) => setSrs(e.target.checked)}
+                />
+                <span className="relative h-5 w-9 shrink-0 rounded-full bg-muted transition-colors after:absolute after:left-0.5 after:top-0.5 after:size-4 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] peer-checked:bg-brand peer-checked:after:translate-x-4 peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40" />
+            </label> */}
+            <BankToolbar srs={srs} onSrsChange={setSrs} />
 
             {/* Questions Grid */}
             {questions.length === 0 ? (
@@ -137,12 +159,13 @@ export default function QuestionList({
                                 question={q}
                                 questionNo={(currentPage - 1) * 20 + index + 1}
                                 showMcqAnswer={showMcqAns}
+                                srsEnabled={srs}
                             />
                         );
                     })}
                 </div>
             )}
-
+            {/* <RetrySection /> */}
             {/* Pagination */}
             {totalPages > 1 && (
                 <div className="pt-6">
@@ -204,6 +227,8 @@ export default function QuestionList({
                 </div>
 
             )}
+            {/* <RetryPill /> */}
+            <FunLayer />
         </div>
     );
 }

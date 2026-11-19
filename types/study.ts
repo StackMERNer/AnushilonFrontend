@@ -27,9 +27,25 @@ export interface IStudyQuestion extends Omit<
   }[];
 }
 
+export type RatingIntervals = Record<Rating, number>; // ms until due for each rating
+
+export interface ICardState {
+  state: "learning" | "review";
+  interval: number;
+  mastered: boolean;
+  dueInMs: number;
+}
+
+export interface IReviewResult extends ICardState {
+  dueAt: string;
+  intervals: RatingIntervals;
+  chapterComplete?: { chapterId: string; name: string } | null;
+}
+
 export interface IStudyItem {
   card: { state: "learning" | "review"; interval: number };
   question: IStudyQuestion;
+  intervals?: RatingIntervals;
 }
 export interface IStudyQueue {
   totalDue: number;

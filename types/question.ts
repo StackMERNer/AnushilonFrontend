@@ -1,4 +1,5 @@
 import { IBoard, ISchool } from "./academic";
+import { ICardState, RatingIntervals } from "./study";
 
 export type QuestionLevel =
   | "knowledge"
@@ -64,4 +65,7 @@ export interface IFilterdQuestion extends Omit<
   _id: string;
   boards: IPopulatedQuestionBoard[];
   schools: IPopulatedQuestionSchool[];
+  studyMode?: "auto" | "self" | "none";
+  card?: ICardState | null;
+  intervals?: RatingIntervals | null;
 }

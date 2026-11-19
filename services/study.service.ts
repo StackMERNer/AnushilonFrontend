@@ -1,6 +1,7 @@
 import { AxiosError, AxiosInstance } from "axios";
 import {
   IChapterProgress,
+  IReviewResult,
   IStudyQueue,
   ITopicProgress,
   Rating,
@@ -38,10 +39,7 @@ export function createStudyService(client: AxiosInstance) {
       rating: Rating;
       auto?: boolean;
       timeTakenMs?: number;
-    }) =>
-      run<{ dueAt: string; interval: number; state: string }>(
-        client.post(`${base}/review`, body),
-      ),
+    }) => run<IReviewResult>(client.post(`${base}/review`, body)),
     getSubjectProgress: (subjectId: string) =>
       run<IChapterProgress[]>(
         client.get(`${base}/progress/subject/${subjectId}`),

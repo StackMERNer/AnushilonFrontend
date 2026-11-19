@@ -3,6 +3,7 @@ import { StatsRow } from '@/components/dashboard/stats-row';
 import { SubjectsGrid } from '@/components/dashboard/subjects-grid';
 import { TodayCard } from '@/components/dashboard/today-card';
 import { WeeklyActivity } from '@/components/dashboard/weekly-activity';
+import DailyGoalRing from '@/components/fun/daily-goal-ring';
 import { useDashboardSubjects, useDashboardSummary } from '@/hooks/use-study-dashboard';
 
 const Skeleton = ({ className = '' }: { className?: string }) => (
@@ -29,6 +30,10 @@ const StudentDashboard = () => {
             {summary && <TodayCard s={summary} />}
 
             {summary && !isNew && <StatsRow s={summary} />}
+
+            <div className="rounded-2xl border border-line bg-card p-4">
+                <DailyGoalRing />
+            </div>
 
             {subjectsQ.isLoading ? (
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">

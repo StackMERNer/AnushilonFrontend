@@ -6,11 +6,16 @@ import { toBnDigits } from "@/lib/helpers";
 import { questionLevelMap } from "@/lib/question-paper";
 import { useMathTypeset } from "@/lib/typeset-math";
 import { IFilterdQuestion } from "@/types/question";
+import { Rating } from "@/types/study";
 import clsx from "clsx";
 import { Check, Eye, EyeOff, Flag, Heart, X } from "lucide-react";
 import { ReactNode, useRef, useState } from "react";
 import ReportQuestionModal from "./ReportQuestionModal";
 import RichTextRenderer from "./RichTextRenderer";
+import BankRating from "./study/bank-rating";
+import { recordMcqPick } from "@/lib/bank-session";
+import { touchToday } from "@/lib/daily-goal";
+import { celebrateStreak } from "@/lib/fun";
 
 const BN_LETTER_BASE = 2453; // ক
 const bnLetter = (i: number) => String.fromCharCode(BN_LETTER_BASE + i);
@@ -43,6 +48,8 @@ interface Props {
     /** Study mode: parent controls selection and reveal */
     study?: StudyControl;
     showActions?: boolean;
+    /** Question bank: show study-mode rating buttons */
+    srsEnabled?: boolean;
 }
 
 /* ------------------------------ small pieces ------------------------------ */
@@ -104,6 +111,7 @@ const QuestionCard = ({
     badges,
     study,
     showActions = true,
+    srsEnabled = false,
 }: Props) => {
     const rootRef = useRef<HTMLDivElement>(null);
     const [localSelected, setLocalSelected] = useState<number | null>(null);
@@ -111,6 +119,7 @@ const QuestionCard = ({
     const [openSub, setOpenSub] = useState<Record<number, boolean>>({});
     const [reportOpen, setReportOpen] = useState(false);
     const bm = useBookmarkToggle(question._id, question.isBookmarked);
+
     const isMcq =
         (question.type === "mcq" || question.type === "mcq_english") &&
         (question.options?.length ?? 0) > 0;
@@ -123,8 +132,26 @@ const QuestionCard = ({
         ? study.revealed || study.selected !== null
         : showMcqAnswer || localSelected !== null;
     const canPick = study ? study.selectable && study.selected === null : !answered;
-    const onPick = study ? study.onSelect : setLocalSelected;
+    const onPick = study
+        ? study.onSelect
+        : (i: number) => {
+            setLocalSelected(i);
+            touchToday(question._id);
+            if (correctIdx >= 0) {
+                const r = recordMcqPick(question._id, i === correctIdx);
+                if (r.counted) celebrateStreak(r.streak, r.prevStreak);
+            }
+        };
+
     const hideLabels = hideOptionLabels ?? !!study;
+
+    const hasSubAnswers = !!question.questions?.some((s) => s.answer);
+    const anyRevealed = showAnswer || Object.values(openSub).some(Boolean);
+    // MCQ: after answering. Others: after revealing an answer (or if there's nothing to reveal)
+    const canRate = isMcq ? answered : anyRevealed || !(question.answer || hasSubAnswers);
+    const suggested: Rating | undefined =
+        isMcq && selected !== null && correctIdx >= 0 ? (selected === correctIdx ? 3 : 1) : undefined;
+
 
     // re-typeset math whenever new content appears (next question, reveal, toggles)
     useMathTypeset(rootRef);
@@ -160,6 +187,7 @@ const QuestionCard = ({
                 "question-card relative select-none rounded-2xl border border-line bg-card p-4 text-foreground shadow-sm transition-colors sm:p-5",
                 !study && "hover:border-brand/30",
             )}
+            id={`q-${question._id}`}
         >
             <div className="mb-3 flex items-start justify-between gap-2">
                 {/* meta */}
@@ -254,7 +282,6 @@ const QuestionCard = ({
                                         disabled={!canPick}
                                         onClick={() => {
                                             onPick(i);
-                                            console.log('picking');
                                         }}
                                         className={clsx(
                                             "flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors disabled:cursor-default",
@@ -369,6 +396,16 @@ const QuestionCard = ({
                         </div>
                     )
                 ))}
+            {srsEnabled && !study && question.studyMode !== "none" && question.intervals && (
+                <BankRating
+                    questionId={question._id}
+                    questionNo={questionNo}
+                    card={question.card}
+                    intervals={question.intervals}
+                    canRate={canRate}
+                    suggested={suggested}
+                />
+            )}
 
             {reportOpen && (
                 <ReportQuestionModal questionId={question._id} onClose={() => setReportOpen(false)} />

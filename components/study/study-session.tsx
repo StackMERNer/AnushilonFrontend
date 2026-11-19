@@ -9,6 +9,7 @@ import { useSubmitReview } from "@/hooks/use-submit-review";
 import { toBnDigits } from "@/lib/helpers";
 import QuestionCard from "@/components/QuestionCard";
 import confetti from "canvas-confetti";
+import RatingBar from "./rating-bar";
 
 
 const nowMs = () => Date.now();
@@ -252,7 +253,7 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
                     </button>
                 )}
 
-                {revealed && !useAuto && (
+                {/* {revealed && !useAuto && (
                     <div className="grid grid-cols-4 gap-2">
                         {RATINGS.map((r) => (
                             <button
@@ -264,7 +265,8 @@ export default function StudySession({ items, totalDue, homeHref = "/dashboard" 
                             </button>
                         ))}
                     </div>
-                )}
+                )} */}
+                {revealed && !useAuto && <RatingBar intervals={current.intervals} onRate={rate} />}
             </div>
         </div>
     );
