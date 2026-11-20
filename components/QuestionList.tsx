@@ -102,7 +102,7 @@ export default function QuestionList({
 
 
     return (
-        <div className="pb-20" ref={listContainerRef}>
+        <div className="pb-20  max-w-2xl mx-auto w-full" ref={listContainerRef}>
             {/* Top Header */}
             <div className="flex justify-between items-center sticky top-0 z-10 mb-3 py-2 px-2 border rounded-lg bg-white dark:bg-neutral-800 mt-2">
                 <button

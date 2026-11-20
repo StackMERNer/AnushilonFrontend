@@ -54,7 +54,7 @@ const ADMIN_NAV: MenuItem[] = [
 
 const getStudentNav = (dueCount?: number): MenuItem[] => [
     { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard, image: '/img/icons/learn.svg' },
-    { label: 'অধ্যায় ভিত্তিক অনুশীলন', href: '/browse', icon: FileText, image: '/img/icons/practice.svg' },
+    { label: 'দ্রুত অনুশীলন', href: '/browse', icon: FileText, image: '/img/icons/practice.svg' },
     {
         label: 'রিভিউ',
         href: '/review',

@@ -18,12 +18,6 @@ const PRIMARY_BTN =
 const SECONDARY_BTN =
     "inline-flex items-center justify-center rounded-2xl border border-line bg-card px-6 py-3.5 font-semibold text-foreground transition hover:bg-accent";
 
-const RATINGS: { value: Rating; label: string; cls: string }[] = [
-    { value: 1, label: "আবার", cls: "bg-red-500" },
-    { value: 2, label: "কঠিন", cls: "bg-orange-500" },
-    { value: 3, label: "ভালো", cls: "bg-emerald-500" },
-    { value: 4, label: "সহজ", cls: "bg-brand" },
-];
 const AUTO_KEY = "srs:autoRateMcq";
 
 // ---- localStorage-backed "auto rate" preference (external store) ----
