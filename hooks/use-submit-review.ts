@@ -13,7 +13,7 @@ export function useSubmitReview() {
     retry: 2,
     onSuccess: (res, vars) => {
       qc.invalidateQueries({ queryKey: ["dashboard"] });
-      // also invalidate the key your useDueCount hook uses (sidebar badge)
+      qc.invalidateQueries({ queryKey: ["due-count"] });
       touchToday(vars.questionId);
       if (res.chapterComplete)
         celebrateChapter(
