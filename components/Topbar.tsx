@@ -43,7 +43,7 @@ const HIDE_TOPBAR_PAGES = [
     "/add-questions",
     "/my-papers",
     "/content-library",
-    "/question-bank/",
+    "/question-bank/questions",
 ];
 
 export function Topbar() {
