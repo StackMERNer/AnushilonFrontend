@@ -25,8 +25,8 @@ function greeting() {
     if (h >= 5 && h < 12) return "শুভ সকাল";
     if (h >= 12 && h < 16) return "শুভ দুপুর";
     if (h >= 16 && h < 18) return "শুভ বিকেল";
-    if (h >= 18 && h < 20) return "শুভ সন্ধ্যা";
-    return "শুভ রাত্রি";
+
+    return "শুভ সন্ধ্যা";
 }
 
 // Route title mapping
