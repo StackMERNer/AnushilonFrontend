@@ -14,7 +14,6 @@ export default function ProfileCard({ profile, isActive }: { profile: IProfile; 
     const [renaming, setRenaming] = useState(false);
     const [name, setName] = useState(profile.name);
     const [form, setForm] = useState<null | { track?: ITrack }>(null);
-
     const { switchProfile, switchTrack } = useProfileSwitching();
     const switchTo = () => switchProfile(profile._id);
 

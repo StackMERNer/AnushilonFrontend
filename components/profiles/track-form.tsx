@@ -8,6 +8,7 @@ import { VERSION_BN } from "@/lib/track-label";
 import { toBnDigits } from "@/lib/helpers";
 import type { TrackInput } from "@/services/profile.service";
 import { ITrack } from "@/types/profile";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 const MAX_SUBJECTS = 40;
 
@@ -41,6 +42,8 @@ export default function TrackForm({
     const [version, setVersion] = useState(initial?.version ?? "");
     const [picked, setPicked] = useState<string[]>(initial?.subjects?.map((s) => s._id) ?? []);
     const [q, setQ] = useState("");
+    const { data: user } = useUserProfile();
+    const isAdmin = user?.anushilonRole === "admin";
 
     const groups = useMemo(() => {
         const map = new Map<string, { name: string; order: number; items: NonNullable<typeof opts>["subjects"] }>();
@@ -106,7 +109,7 @@ export default function TrackForm({
                         </div>
                     )}
 
-                    {opts.versions.length > 1 && (
+                    {opts.versions.length > 1 && isAdmin && (
                         <div>
                             <p className="mb-2 text-xs font-semibold text-muted-foreground">ভার্সন</p>
                             <div className="flex flex-wrap gap-2">
