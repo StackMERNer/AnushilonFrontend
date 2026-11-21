@@ -16,6 +16,8 @@ import {
 } from "firebase/auth";
 
 import { auth, googleProvider } from "@/lib/firebase";
+import { clearAccountState } from "@/lib/clear-account-state";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 
 interface AuthContextType {
     user: FirebaseUser | null;
@@ -54,7 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
 
         await signOut(auth);
+        clearAccountState();
 
+        window.location.assign("/");
         localStorage.removeItem("session_last_synced");
     };
 

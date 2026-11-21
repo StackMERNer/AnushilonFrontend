@@ -33,3 +33,7 @@ export const recallTrack = (profileId: string) => {
     return null;
   }
 };
+export const clearProfileCookies = () => {
+  write("profileId", null);
+  write("trackId", null);
+};

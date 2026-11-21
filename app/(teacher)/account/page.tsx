@@ -6,24 +6,21 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AccountPage = () => {
     const { data: user, isLoading } = useUserProfile();
     const { logout } = useAuth();
-    const router = useRouter();
     const queryClient = useQueryClient();
     const handleLogout = async () => {
         if (!window.confirm("আপনি কি লগআউট করতে চান?")) {
             return;
         }
         try {
-
             await logout();
+
             queryClient.clear();
-            router.replace("/");
         } catch (error) {
             console.log('error', error);
             toast.error("লগআউট করতে ব্যর্থ। আবার চেষ্টা করো।");
