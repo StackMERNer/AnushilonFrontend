@@ -5,12 +5,9 @@ import { useAcademicTree } from '@/hooks/use-academic';
 import { useUserProfile } from '@/hooks/useUserProfile';
 
 const BrowseSubjects = () => {
-    const { data: user } = useUserProfile();
-    const { data: subjects } = useAcademicTree({ upto: "topic", enabled: !!user?.profile, trackKey: user?.activeTrackId ?? undefined, });
-
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 max-w-2xl mx-auto pb-6">
-            <SubjectList baseUrl='/browse' subjects={subjects} />
+            <SubjectList baseUrl='/browse' />
         </div>
     );
 };

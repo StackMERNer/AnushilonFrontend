@@ -1,8 +1,12 @@
-import { getSubjectIconByName } from '@/lib/subjectImageMap'
-import { ISubject } from '@/types/academic'
-import Link from 'next/link'
+'use client';
+import { useAcademicTree } from '@/hooks/use-academic';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { getSubjectIconByName } from '@/lib/subjectImageMap';
+import Link from 'next/link';
 
-const SubjectList = ({ baseUrl, subjects }: { baseUrl: string, subjects?: ISubject[] }) => {
+const SubjectList = ({ baseUrl, }: { baseUrl: string, }) => {
+    const { data: user } = useUserProfile();
+    const { data: subjects } = useAcademicTree({ upto: "topic", enabled: !!user?.profile, trackKey: user?.activeTrackId ?? undefined, });
     return (
         <>
             {subjects?.map((subject) => (
