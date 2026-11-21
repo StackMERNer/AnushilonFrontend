@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const ProfilePage = () => {
+const AccountPage = () => {
     const { data: user, isLoading } = useUserProfile();
     const { logout } = useAuth();
     const router = useRouter();
@@ -41,7 +41,7 @@ const ProfilePage = () => {
         );
     }
 
-    return (<div className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-6"> <Card> <CardHeader> <CardTitle>প্রোফাইল</CardTitle> </CardHeader>
+    return (<div className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-6"> <Card> <CardHeader> <CardTitle>অ্যাকাউন্ট</CardTitle> </CardHeader>
         <CardContent className="space-y-6">
             {/* Profile header */}
             <div className="flex items-center gap-4">
@@ -102,4 +102,4 @@ const ProfilePage = () => {
     );
 };
 
-export default ProfilePage;
+export default AccountPage;

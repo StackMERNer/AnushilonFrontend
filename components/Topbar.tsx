@@ -100,7 +100,7 @@ export function Topbar() {
             </button>
 
             {/* Page Title */}
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1 hidden sm:block">
                 {isDashboard ? (
                     user ? (
                         <h1 className="font-display text-xl font-bold text-foreground sm:text-3xl">
@@ -180,9 +180,9 @@ export function Topbar() {
                         <DropdownMenuSeparator />
 
                         <DropdownMenuItem>
-                            <Link href="/profile" className="flex w-full items-center">
+                            <Link href="/account" className="flex w-full items-center">
                                 <User className="mr-2 h-4 w-4" />
-                                প্রোফাইল
+                                অ্যাকাউন্ট
                             </Link>
                         </DropdownMenuItem>
 

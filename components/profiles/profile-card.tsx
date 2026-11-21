@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Check, Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useProfileActions } from "@/hooks/use-profiles";
-import { setProfileIdClient } from "@/lib/profile-cookie";
 import { trackLabel } from "@/lib/track-label";
 import { IProfile, ITrack } from "@/types/profile";
 import TrackForm from "./track-form";

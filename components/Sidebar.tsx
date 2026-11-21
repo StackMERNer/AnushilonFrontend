@@ -272,7 +272,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                         collapsed ? 'justify-between lg:flex-col lg:gap-3' : 'justify-between'
                     )}
                 >
-                    <Link href="/" onClick={closeMobileMenu} className="flex min-w-0 items-center gap-3">
+                    <div onClick={closeMobileMenu} className="flex min-w-0 items-center gap-3">
                         <Logo />
                         <div className={clsx('flex min-w-0 flex-col gap-1', collapsed && 'lg:hidden')}>
                             <span className="truncate text-xl font-bold leading-tight tracking-tight text-foreground">
@@ -284,7 +284,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                                 </span>
                             )}
                         </div>
-                    </Link>
+                    </div>
 
                     {/* Collapse toggle (desktop) */}
                     <button

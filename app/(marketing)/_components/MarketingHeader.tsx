@@ -45,7 +45,7 @@ export function MarketingHeader() {
         >
             <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-18 lg:px-10">
                 {/* Brand */}
-                <Link href="/" className="flex items-center gap-2.5 sm:gap-3" onClick={() => setOpen(false)}>
+                <div className="flex items-center gap-2.5 sm:gap-3" onClick={() => setOpen(false)}>
                     <Logo />
                     <div>
                         <div className="font-kobita text-2xl leading-none text-primary sm:text-[28px] dark:text-brand">
@@ -55,7 +55,7 @@ export function MarketingHeader() {
                             সফলতার নির্ভরযোগ্য সূত্র
                         </div>
                     </div>
-                </Link>
+                </div>
 
                 {/* Desktop links */}
                 {/* <div className="hidden items-center gap-1 md:flex">

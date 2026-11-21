@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
-import { Check, ChevronDown, Settings2, Users } from "lucide-react";
+import { Check, ChevronDown, Plus, Settings2, Users } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -88,10 +88,16 @@ export default function ProfileTrackMenu() {
                 ))}
 
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                {/* <DropdownMenuItem>
                     <Link href="/profiles" className="flex w-full items-center">
                         <Settings2 className="mr-2 h-4 w-4" />
                         প্রোফাইল ও ট্র্যাক পরিচালনা
+                    </Link>
+                </DropdownMenuItem> */}
+                <DropdownMenuItem>
+                    <Link href={`/profiles?add=${profile._id}`} className="flex w-full items-center">
+                        <Plus className="mr-2 h-4 w-4" />
+                        নতুন ট্র্যাক যোগ করো
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>
