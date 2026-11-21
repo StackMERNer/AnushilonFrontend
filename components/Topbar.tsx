@@ -8,12 +8,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSidebar } from "@/context/SidebarContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { CreditCard, Menu, User } from "lucide-react";
+import { Check, CreditCard, Menu, Plus, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { StreakBadge } from "./streak-badge";
 import { ThemeToggle } from "./theme-toggle";
+import { useProfiles } from "@/hooks/use-profiles";
+import { useEffect } from "react";
+import { getProfileIdClient, setProfileIdClient } from "@/lib/profile-cookie";
+import { trackLabel } from "@/lib/track-label";
+import ProfileTrackMenu from "./profile-track-menu";
 
 function greeting() {
     const h = new Date().getHours();
@@ -37,6 +42,7 @@ const ROUTE_TITLES: Record<string, string> = {
     "/payments": "পেমেন্টস",
     "/analytics/sales": "সেলস অ্যানালিটিক্স",
     "/subjects": "বিষয়সমূহ",
+    "/profiles": "প্রোফাইল ও ট্র্যাক"
 };
 
 const HIDE_TOPBAR_PAGES = [
@@ -49,6 +55,8 @@ const HIDE_TOPBAR_PAGES = [
 export function Topbar() {
     const pathname = usePathname();
     const { data: user } = useUserProfile();
+    const { data: pdata } = useProfiles();
+    const activeId = user?.profile?._id;
     const { toggleMobileMenu } = useSidebar();
 
     const isDashboard = pathname === "/dashboard" || pathname === "/";
@@ -56,10 +64,22 @@ export function Topbar() {
         pathname.startsWith(page)
     );
 
+    useEffect(() => {
+        if (activeId && getProfileIdClient() !== activeId) setProfileIdClient(activeId);
+    }, [activeId]);
+
+    const switchTo = (id: string) => {
+        if (id === activeId) return;
+        setProfileIdClient(id);
+        window.location.assign("/dashboard"); // full reload resets every cache and local store
+    };
+
+    const displayName = user?.profile?.name ?? user?.name;
+    const firstName = displayName?.trim().split(" ")[0]; // greeting uses the profile's name
+
     if (hideTopbar) return null;
 
     const isAdmin = user?.role === "admin";
-    const firstName = user?.name?.trim().split(" ")[0];
 
     // Match exact routes or their nested routes
     const routeTitle = Object.entries(ROUTE_TITLES)
@@ -100,6 +120,7 @@ export function Topbar() {
             <StreakBadge />
             {/* Theme Toggle */}
             <ThemeToggle />
+            <ProfileTrackMenu />
 
             {/* Profile */}
             {user && (
@@ -122,15 +143,29 @@ export function Topbar() {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end" sideOffset={8} className="w-56">
-                        {!isAdmin && (
-                            <div className="px-2 py-2">
-                                <p className="truncate text-sm font-medium">
-                                    {user.name}
-                                </p>
-                                <p className="truncate text-xs text-muted-foreground">
-                                    {user.email}
-                                </p>
-                            </div>
+                        {(pdata?.items.length ?? 0) > 0 && (
+                            <>
+                                <DropdownMenuSeparator />
+                                {/* <DropdownMenuLabel className="text-xs text-muted-foreground">প্রোফাইল</DropdownMenuLabel> */}
+                                {pdata!.items.map((p) => (
+                                    <DropdownMenuItem key={p._id} onClick={() => switchTo(p._id)} className="justify-between gap-2">
+                                        <span className="min-w-0">
+                                            <span className="block truncate">{p.name}</span>
+                                            <span className="block truncate text-xs text-muted-foreground">
+                                                {p.tracks[0] ? trackLabel(p.tracks[0]) : "ক্লাস বাছাই বাকি"}
+                                                {p.tracks.length > 1 && ` +${p.tracks.length - 1}`}
+                                            </span>
+                                        </span>
+                                        {p._id === activeId && <Check className="size-4 shrink-0" />}
+                                    </DropdownMenuItem>
+                                ))}
+                                <DropdownMenuItem>
+                                    <Link href="/profiles" className="flex w-full items-center">
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        প্রোফাইল ও ট্র্যাক
+                                    </Link>
+                                </DropdownMenuItem>
+                            </>
                         )}
 
                         {isAdmin && (

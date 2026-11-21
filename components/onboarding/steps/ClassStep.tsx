@@ -9,8 +9,8 @@ import { PressButton } from '@/components/ui/press-button'; // Adjust path if ne
 
 // IDs of classes that require stream selection
 const STREAM_REQUIRED_CLASS_IDS = [
-    '6a6e31bcd2ea30ebd6a29b2e',
-    '6a6e31bdd2ea30ebd6a29ded',
+    '6a6e31bcd2ea30ebd6a29b2e', // class 11-12 (hsc)
+    '6a6e31bdd2ea30ebd6a29ded', // class 9-10 (ssc)
 ];
 
 // Stream options
@@ -157,8 +157,8 @@ const ClassOnboardingStep: React.FC<ClassOnboardingStepProps> = ({
                                     onClick={() => setSelectedClassId(c._id)}
                                     disabled={isSubmitting}
                                     className={`w-full py-4 px-6 rounded-2xl border text-xl text-center cursor-pointer transition-all duration-200 hover:scale-[0.98] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 ${isSelected
-                                            ? 'bg-brand/20 border-brand text-white shadow-md'
-                                            : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'
+                                        ? 'bg-brand/20 border-brand text-white shadow-md'
+                                        : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'
                                         }`}
                                 >
                                     <span>{c.name}</span>
@@ -175,8 +175,8 @@ const ClassOnboardingStep: React.FC<ClassOnboardingStepProps> = ({
                                     onClick={() => setSelectedStream(s.id)}
                                     disabled={isSubmitting}
                                     className={`w-full py-4 px-6 rounded-2xl border text-xl cursor-pointer transition-all duration-200 hover:scale-[0.98] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 ${isSelected
-                                            ? 'bg-brand/20 border-brand text-white shadow-md'
-                                            : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'
+                                        ? 'bg-brand/20 border-brand text-white shadow-md'
+                                        : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'
                                         }`}
                                 >
                                     <span className="text-2xl">{s.icon}</span>

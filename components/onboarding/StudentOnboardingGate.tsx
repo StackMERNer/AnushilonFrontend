@@ -17,9 +17,11 @@ const StudentOnboardingGate = ({ children }: { children: React.ReactNode }) => {
             </div>
         )
     }
-    if (user && (!user.class)) {
-        return <ClassOnboardningStep refetchUser={refetchUser} />
-    }
+    const needsOnboarding = !!user && !(user.profile?.tracks?.length);
+    // if (user && (!user.class)) {
+    //     return <ClassOnboardningStep refetchUser={refetchUser} />
+    // }
+    if (needsOnboarding) return <ClassOnboardningStep refetchUser={refetchUser} />
     return children
 }
 

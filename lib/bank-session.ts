@@ -1,7 +1,8 @@
 "use client";
 import { useSyncExternalStore } from "react";
+import { getProfileIdClient } from "./profile-cookie";
 
-const KEY = "anushilon:bank-session";
+const KEY = () => `anushilon:bank-session:${getProfileIdClient() ?? "default"}`;
 const IDLE_MS = 2 * 60 * 60 * 1000;
 const MAX_RETRY = 50;
 const MAX_PICKED = 400;
@@ -47,7 +48,7 @@ function read(): BankSession {
   if (typeof window === "undefined") return EMPTY;
   let raw: string | null = null;
   try {
-    raw = sessionStorage.getItem(KEY);
+    raw = sessionStorage.getItem(KEY());
   } catch {
     return EMPTY;
   }
@@ -67,7 +68,7 @@ function write(next: BankSession) {
   const value = { ...next, updatedAt: Date.now() };
   const raw = JSON.stringify(value);
   try {
-    sessionStorage.setItem(KEY, raw);
+    sessionStorage.setItem(KEY(), raw);
   } catch {}
   cache = { raw, value };
   listeners.forEach((l) => l());

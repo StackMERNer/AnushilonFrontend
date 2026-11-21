@@ -1,3 +1,5 @@
+import { IProfile } from "./profile";
+
 interface IInstitute {
   name: string;
   address: string;
@@ -25,16 +27,12 @@ export interface IUser extends Document {
   stream?: string;
   role?: "teacher" | "admin";
   anushilonRole?: "student" | "admin";
-  // institute?: IInstitute;
-  // subjectWiseSubscription: ISubjectSubscription[];
-  // subscription?: {
-  //   startedAt: Date;
-  //   expiresAt: Date;
-  // };
   anushilonSubscription?: {
     startedAt: Date;
     expiresAt: Date;
   };
+  profile?: IProfile;
+  activeTrackId?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

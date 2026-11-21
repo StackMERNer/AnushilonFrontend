@@ -49,6 +49,7 @@ export interface IStudyItem {
 }
 export interface IStudyQueue {
   totalDue: number;
+  totalDueAll: number;
   items: IStudyItem[];
 }
 export interface IProgressRow {

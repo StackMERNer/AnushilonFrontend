@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { toBnDigits } from "@/lib/helpers";
 import { IDashboardSubject } from "@/types/dashboard";
+import { getClassNameBn } from "@/lib/constants";
 
 export function SubjectsGrid({
     subjects,
@@ -17,6 +18,7 @@ export function SubjectsGrid({
             </p>
         );
     }
+    const multiClass = new Set(subjects.map((s) => s.className)).size > 1;
 
     return (
         <section>
@@ -36,6 +38,7 @@ export function SubjectsGrid({
                         >
                             <div className="flex items-start justify-between gap-2">
                                 <h4 className="font-semibold text-foreground">{s.name}</h4>
+                                {multiClass && s.className && <span className="text-xs text-muted-foreground">{getClassNameBn(s.className)}</span>}
                                 {s.due > 0 && (
                                     <span className="shrink-0 rounded-full bg-gold px-2 py-0.5 text-[11px] font-bold text-brand-dark">
                                         {toBnDigits(s.due)} রিভিউ

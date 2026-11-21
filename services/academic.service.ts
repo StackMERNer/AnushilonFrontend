@@ -30,6 +30,7 @@ export function getAcademicService(client: AxiosInstance) {
       paperId?: string;
       status?: "active" | "all";
       stream?: string;
+      track?: string;
     }) => {
       const r = await client.get<IAcademicTreeRespponse>(
         `${baseUrl}/anushilon/academic-tree`,

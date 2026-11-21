@@ -21,27 +21,37 @@ export const useAcademicTree = ({
   paperId,
   status,
   stream,
+  enabled,
+  trackKey,
 }: {
   classId?: string;
   upto?: "subject" | "chapter" | "topic";
   paperId?: string;
   status?: "active" | "all";
   stream?: string;
+  trackKey?: string;
+  enabled?: boolean;
 }) => {
   return useQuery({
-    queryKey: ["academic-tree", classId, upto, paperId, status, stream],
-    queryFn: async () => {
-      const data = await academicService.getAcademicTree({
+    queryKey: [
+      "academic-tree",
+      classId,
+      upto,
+      paperId,
+      status,
+      stream,
+      trackKey,
+    ],
+    queryFn: () =>
+      academicService.getAcademicTree({
         classId,
         upto,
         paperId,
         status,
         stream,
-      });
-      return data;
-    },
-    enabled: !!classId, // Only fetch once class is selected
-    staleTime: 1000 * 60 * 30, // 30 mins caching
+      }),
+    enabled: enabled ?? !!classId,
+    staleTime: 1000 * 60 * 30,
   });
 };
 

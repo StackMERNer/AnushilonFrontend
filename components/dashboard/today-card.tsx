@@ -39,6 +39,11 @@ export function TodayCard({ s }: { s: IDashboardSummary }) {
             <p className="text-sm text-white/70">{content.eyebrow}</p>
             <h2 className="mt-1 font-display text-2xl font-bold sm:text-4xl">{content.title}</h2>
             <p className="mt-2 max-w-md text-sm text-white/70 sm:text-base">{content.sub}</p>
+            {s.dueAll > s.dueCount && (
+                <Link href="/review?scope=all" className="mt-2 inline-block text-sm text-white/80 underline-offset-4 hover:text-white hover:underline">
+                    অন্য ট্র্যাকে আরও {toBnDigits(s.dueAll - s.dueCount)}টি রিভিউ বাকি →
+                </Link>
+            )}
 
             <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <PressButton variant="shine" size="lg">

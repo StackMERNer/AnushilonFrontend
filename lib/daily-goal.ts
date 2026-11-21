@@ -1,7 +1,8 @@
 "use client";
 import { useSyncExternalStore } from "react";
+import { getProfileIdClient } from "./profile-cookie";
 
-const KEY = "anushilon:daily";
+const KEY = () => `anushilon:daily-goal:${getProfileIdClient() ?? "default"}`;
 
 interface Daily {
   date: string; // Asia/Dhaka calendar day
@@ -21,7 +22,7 @@ function read(): Daily {
   const t = today();
   let raw: string | null = null;
   try {
-    raw = localStorage.getItem(KEY);
+    raw = localStorage.getItem(KEY());
   } catch {}
   if (cache && cache.raw === raw && cache.date === t) return cache.value;
 
@@ -39,7 +40,7 @@ function read(): Daily {
 function write(value: Daily) {
   const raw = JSON.stringify(value);
   try {
-    localStorage.setItem(KEY, raw);
+    localStorage.setItem(KEY(), raw);
   } catch {}
   cache = { raw, date: value.date, value };
   listeners.forEach((l) => l());

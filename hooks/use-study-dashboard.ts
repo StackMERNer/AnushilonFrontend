@@ -13,9 +13,10 @@ export const useDashboardSummary = () =>
     staleTime: ms("30s"),
   });
 
-export const useDashboardSubjects = () =>
+export const useDashboardSubjects = (trackKey?: string) =>
   useQuery({
-    queryKey: ["dashboard", "subjects"],
-    queryFn: service.getSubjects,
+    queryKey: ["dashboard", "subjects", trackKey ?? "none"],
+    queryFn: service.getSubjects, // no track param anymore: the header carries it
     staleTime: ms("30s"),
+    enabled: trackKey !== undefined,
   });

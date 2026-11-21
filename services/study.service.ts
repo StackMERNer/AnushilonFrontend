@@ -26,6 +26,7 @@ export function createStudyService(client: AxiosInstance) {
       chapter?: string;
       topic?: string;
       types?: string;
+      scope?: string;
     }) => run<IStudyQueue>(client.get(`${base}/queue`, { params })),
     startNew: (body: {
       chapterId: string;

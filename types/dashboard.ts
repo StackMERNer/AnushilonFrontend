@@ -11,6 +11,7 @@ export interface IDashboardSummary {
     chapterId: string;
     chapterName: string;
   } | null;
+  dueAll: number;
 }
 
 export interface IDashboardSubject {
@@ -21,4 +22,5 @@ export interface IDashboardSubject {
   studied: number;
   mastered: number;
   due: number;
+  className?: string;
 }

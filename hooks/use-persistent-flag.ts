@@ -3,7 +3,7 @@ import { useCallback, useSyncExternalStore } from "react";
 
 const listeners = new Map<string, Set<() => void>>();
 
-function useStored<T extends boolean | number>(
+function useStored<T extends boolean | number | string>(
   key: string,
   initial: T,
   parse: (raw: string, initial: T) => T,
@@ -60,3 +60,11 @@ export const usePersistentFlag = (key: string, initial = false) =>
 
 export const usePersistentNumber = (key: string, initial: number) =>
   useStored<number>(key, initial, parseNum, formatNum);
+
+export const usePersistentString = (key: string, initial = "") =>
+  useStored<string>(
+    key,
+    initial,
+    (r) => r,
+    (v) => v,
+  );

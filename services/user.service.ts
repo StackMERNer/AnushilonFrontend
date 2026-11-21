@@ -5,9 +5,10 @@ import { AxiosInstance } from "axios";
 
 export function createUserService(client: AxiosInstance) {
   return {
-    getMe: () => client.get<IUser>("/auth/me").then((r) => r.data),
+    getMe: () =>
+      client.get<IUser>("/auth/anushilon/profile").then((r) => r.data),
     updateProfile: (data: Partial<IUser>) =>
-      client.patch<IUser>("/auth/me", data).then((r) => r.data),
+      client.patch<IUser>("/auth/anushilon/profile", data).then((r) => r.data),
     getDashboard: () =>
       client.get<{ data: IDashboardData }>("/dashboard").then((r) => r.data),
     getUsers: (page = 1, limit = 20) =>
