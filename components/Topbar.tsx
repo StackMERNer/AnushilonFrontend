@@ -117,84 +117,83 @@ export function Topbar() {
                 )}
             </div>
 
-            <StreakBadge />
-            {/* Theme Toggle */}
-            <ThemeToggle />
-            <ProfileTrackMenu />
+            <div className="flex items-center gap-4">
+                <StreakBadge />
+                <ProfileTrackMenu />
+                {/* Theme Toggle */}
+                <ThemeToggle />
+                {user && (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger
+                            className="rounded-xl outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary"
+                            aria-label="Open profile menu"
+                        >
+                            <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-primary/20 bg-primary/10">
+                                {user.photoURL && (
+                                    <Image
+                                        src={user.photoURL}
+                                        alt="Profile"
+                                        fill
+                                        sizes="36px"
+                                        className="object-cover"
+                                    />
+                                )}
+                            </div>
+                        </DropdownMenuTrigger>
 
-            {/* Profile */}
-            {user && (
-                <DropdownMenu>
-                    <DropdownMenuTrigger
-                        className="rounded-xl outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary"
-                        aria-label="Open profile menu"
-                    >
-                        <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-primary/20 bg-primary/10">
-                            {user.photoURL && (
-                                <Image
-                                    src={user.photoURL}
-                                    alt="Profile"
-                                    fill
-                                    sizes="36px"
-                                    className="object-cover"
-                                />
-                            )}
-                        </div>
-                    </DropdownMenuTrigger>
-
-                    <DropdownMenuContent align="end" sideOffset={8} className="w-56">
-                        {(pdata?.items.length ?? 0) > 0 && (
-                            <>
-                                <DropdownMenuSeparator />
-                                {/* <DropdownMenuLabel className="text-xs text-muted-foreground">প্রোফাইল</DropdownMenuLabel> */}
-                                {pdata!.items.map((p) => (
-                                    <DropdownMenuItem key={p._id} onClick={() => switchTo(p._id)} className="justify-between gap-2">
-                                        <span className="min-w-0">
-                                            <span className="block truncate">{p.name}</span>
-                                            <span className="block truncate text-xs text-muted-foreground">
-                                                {p.tracks[0] ? trackLabel(p.tracks[0]) : "ক্লাস বাছাই বাকি"}
-                                                {p.tracks.length > 1 && ` +${p.tracks.length - 1}`}
+                        <DropdownMenuContent align="end" sideOffset={8} className="w-56">
+                            {(pdata?.items.length ?? 0) > 0 && (
+                                <>
+                                    <DropdownMenuSeparator />
+                                    {/* <DropdownMenuLabel className="text-xs text-muted-foreground">প্রোফাইল</DropdownMenuLabel> */}
+                                    {pdata!.items.map((p) => (
+                                        <DropdownMenuItem key={p._id} onClick={() => switchTo(p._id)} className="justify-between gap-2">
+                                            <span className="min-w-0">
+                                                <span className="block truncate">{p.name}</span>
+                                                <span className="block truncate text-xs text-muted-foreground">
+                                                    {p.tracks[0] ? trackLabel(p.tracks[0]) : "ক্লাস বাছাই বাকি"}
+                                                    {p.tracks.length > 1 && ` +${p.tracks.length - 1}`}
+                                                </span>
                                             </span>
-                                        </span>
-                                        {p._id === activeId && <Check className="size-4 shrink-0" />}
+                                            {p._id === activeId && <Check className="size-4 shrink-0" />}
+                                        </DropdownMenuItem>
+                                    ))}
+                                    <DropdownMenuItem>
+                                        <Link href="/profiles" className="flex w-full items-center">
+                                            <Plus className="mr-2 h-4 w-4" />
+                                            প্রোফাইল ও ট্র্যাক
+                                        </Link>
                                     </DropdownMenuItem>
-                                ))}
+                                </>
+                            )}
+
+                            {isAdmin && (
                                 <DropdownMenuItem>
-                                    <Link href="/profiles" className="flex w-full items-center">
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        প্রোফাইল ও ট্র্যাক
+                                    <Link href="/admin-dashboard" className="flex w-full items-center">
+                                        <User className="mr-2 h-4 w-4" />
+                                        অ্যাডমিন ড্যাশবোর্ড
                                     </Link>
                                 </DropdownMenuItem>
-                            </>
-                        )}
+                            )}
 
-                        {isAdmin && (
+                            <DropdownMenuSeparator />
+
                             <DropdownMenuItem>
-                                <Link href="/admin-dashboard" className="flex w-full items-center">
+                                <Link href="/account" className="flex w-full items-center">
                                     <User className="mr-2 h-4 w-4" />
-                                    অ্যাডমিন ড্যাশবোর্ড
+                                    অ্যাকাউন্ট
                                 </Link>
                             </DropdownMenuItem>
-                        )}
 
-                        <DropdownMenuSeparator />
-
-                        <DropdownMenuItem>
-                            <Link href="/account" className="flex w-full items-center">
-                                <User className="mr-2 h-4 w-4" />
-                                অ্যাকাউন্ট
-                            </Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                            <Link href="/payment-history" className="flex w-full items-center">
-                                <CreditCard className="mr-2 h-4 w-4" />
-                                পেমেন্ট হিস্টোরি
-                            </Link>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )}
+                            <DropdownMenuItem>
+                                <Link href="/payment-history" className="flex w-full items-center">
+                                    <CreditCard className="mr-2 h-4 w-4" />
+                                    পেমেন্ট হিস্টোরি
+                                </Link>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                )}</div>
         </div>
     );
 }

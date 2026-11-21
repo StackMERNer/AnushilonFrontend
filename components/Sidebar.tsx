@@ -31,6 +31,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
+import ProfileTrackMenu from './profile-track-menu';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Data                                    */
@@ -272,17 +273,22 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                         collapsed ? 'justify-between lg:flex-col lg:gap-3' : 'justify-between'
                     )}
                 >
-                    <div onClick={closeMobileMenu} className="flex min-w-0 items-center gap-3">
+                    <div className="flex min-w-0 items-start gap-3">
                         <Logo />
                         <div className={clsx('flex min-w-0 flex-col gap-1', collapsed && 'lg:hidden')}>
-                            <span className="truncate text-xl font-bold leading-tight tracking-tight text-foreground">
-                                {userClass ? getClassNameBn(userClass) : 'অনুশীলন'}
+                            <span className='font-kobita text-2xl leading-tight tracking-tight mt-2'>
+                                অনুশীলন
                             </span>
-                            {userStream && (
+                            <span className="truncate text-sm font-bold leading-tight tracking-tight text-foreground">
+                                {userClass && getClassNameBn(userClass)}
+                            </span>
+
+
+                            {/* {userStream && (
                                 <span className="w-fit rounded-full bg-brand-soft px-2.5 py-0.5 text-xs font-semibold text-brand">
                                     {userStream}
                                 </span>
-                            )}
+                            )} */}
                         </div>
                     </div>
 
@@ -305,9 +311,9 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                         <X className="size-5" />
                     </button>
                 </div>
-
                 {/* -------------------------------- Nav -------------------------------- */}
                 <nav className="space-y-1">
+
                     {navItems.map((item) => (
                         <NavLink
                             key={item.href}

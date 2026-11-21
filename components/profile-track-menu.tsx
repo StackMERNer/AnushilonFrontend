@@ -33,7 +33,7 @@ export default function ProfileTrackMenu() {
     return (
         <DropdownMenu onOpenChange={(open) => !open && setShowProfiles(false)}>
             <DropdownMenuTrigger
-                className="flex max-w-[9rem] items-center gap-1.5 rounded-xl border border-line bg-card px-2.5 py-1.5 text-sm font-semibold outline-none transition hover:bg-accent focus-visible:ring-2 focus-visible:ring-primary sm:max-w-[16rem]"
+                className="flex max-w-36 items-center gap-1.5 rounded-xl border border-line bg-card px-2.5 py-1.5 text-sm font-semibold outline-none transition hover:bg-accent focus-visible:ring-2 focus-visible:ring-primary sm:max-w-[16rem]"
                 aria-label="প্রোফাইল ও ট্র্যাক"
             >
                 <span className="truncate">{activeTrack ? trackLabel(activeTrack) : profile.name}</span>
