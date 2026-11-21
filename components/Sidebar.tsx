@@ -31,7 +31,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
-import ProfileTrackMenu from './profile-track-menu';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Data                                    */
@@ -154,7 +153,7 @@ function SubscriptionCard({
             href="/plans"
             onClick={onNavigate}
             title="প্ল্যান দেখো"
-            className="mx-auto hidden size-11 place-items-center rounded-xl bg-gradient-to-b from-[#f8d77a] to-[#d9961f] text-brand-dark shadow-md transition hover:brightness-110 lg:grid"
+            className="mx-auto hidden size-11 place-items-center rounded-xl bg-linear-to-b from-[#f8d77a] to-[#d9961f] text-brand-dark shadow-md transition hover:brightness-110 lg:grid"
         >
             <Crown className="size-5" />
         </Link>
@@ -247,7 +246,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
 
 
     const userClass = user?.class?.name;
-    const userStream = user?.stream;
+    // const userStream = user?.stream;
 
     return (
         <>
@@ -276,7 +275,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                     <div className="flex min-w-0 items-start gap-3">
                         <Logo />
                         <div className={clsx('flex min-w-0 flex-col gap-1', collapsed && 'lg:hidden')}>
-                            <span className='font-kobita text-2xl leading-tight tracking-tight mt-2'>
+                            <span className='font-kobita text-2xl leading-tight tracking-tight'>
                                 অনুশীলন
                             </span>
                             <span className="truncate text-sm font-bold leading-tight tracking-tight text-foreground">
