@@ -39,7 +39,7 @@ export default function QuestionFilterSidebar({
 
     const { data: user } = useUserProfile();
 
-    const { data: academicTree } = useAcademicTree({ classId: user?.class._id, stream: user?.stream, upto: "topic" });
+    const { data: academicTree, isLoading } = useAcademicTree({ classId: user?.class?._id, stream: user?.stream, upto: "topic" });
     const { data: questionTypes } = useQuestionTypes(selectedChapterId);
 
     const setParams = (updates: {
@@ -127,30 +127,29 @@ export default function QuestionFilterSidebar({
 
     return (
         <div className={clsx("space-y-4", isPending && "opacity-50 pointer-events-none")}>
+            {(!academicTree && isLoading) && <SkeletonBlock />}
             {/* 1. Subject → Chapter */}
-            <SectionCard
+            {academicTree && <SectionCard
                 title="অধ্যায়"
                 hint={selectedChapter ? selectedChapter.name : selectedSubject ? "অধ্যায় নির্বাচন করো" : undefined}
             >
-                {!academicTree ? (
-                    <SkeletonBlock />
-                ) : (
-                    <div className="space-y-3">
-                        {/* <SubjectDropdown
+
+                <div className="space-y-3">
+                    {/* <SubjectDropdown
                             subjects={academicTree}
                             selectedId={selectedSubjectId}
                             onSelect={handleSubjectSelect}
                         /> */}
-                        {selectedSubject && (
-                            <ChapterDropdown
-                                chapters={chapters}
-                                selectedId={selectedChapterId}
-                                onSelect={handleChapterSelect}
-                            />
-                        )}
-                    </div>
-                )}
-            </SectionCard>
+                    {selectedSubject && academicTree && (
+                        <ChapterDropdown
+                            chapters={chapters}
+                            selectedId={selectedChapterId}
+                            onSelect={handleChapterSelect}
+                        />
+                    )}
+                </div>
+
+            </SectionCard>}
 
             {/* 2. Topics */}
             {(topics.length > 1) && <SectionCard title="টপিক">

@@ -38,9 +38,9 @@ export default function ProfilesManager() {
                     </button>
                 )}
             </div>
-            {full && !creating && (
+            {/* {full && !creating && (
                 <p className="text-xs text-muted-foreground">আরও প্রোফাইল দরকার হলে আমাদের সাথে যোগাযোগ করো।</p>
-            )}
+            )} */}
 
             {creating && (
                 <section className="space-y-3 rounded-2xl border border-line bg-card p-4 sm:p-5">

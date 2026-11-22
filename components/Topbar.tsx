@@ -33,7 +33,7 @@ function greeting() {
 const ROUTE_TITLES: Record<string, string> = {
     "/bookmarks": "বুকমার্কস",
     "/review": "রিভিউ",
-    "/browse": "অনুশীলন",
+    "/browse": "অধ্যায় সমূহ",
     "/question-bank": "প্রশ্নব্যাংক",
     "/payment-history": "পেমেন্ট হিস্টোরি",
     "/profile": "প্রোফাইল",

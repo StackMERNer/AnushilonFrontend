@@ -20,10 +20,10 @@ export interface IUser extends Document {
   email: string;
   name?: string;
   photoURL?: string;
-  class: {
+  class?: {
     _id: string;
     name: string;
-  };
+  } | null;
   stream?: string;
   role?: "teacher" | "admin";
   anushilonRole?: "student" | "admin";
