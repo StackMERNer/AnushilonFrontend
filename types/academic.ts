@@ -10,7 +10,8 @@ export interface ISubject {
   chapters: string[];
   subjectCode: string;
   order: number;
-  class: string;
+  // class: string;
+  class: { _id: string; name: string };
 }
 export type PopulatedSubject = ISubject & { chapters: PopulatedChapter[] };
 export type PopulatedChapter = Omit<IChapter, "chapters"> & {
