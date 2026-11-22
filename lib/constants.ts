@@ -118,8 +118,8 @@ export const plansInfo: PlanInfo[] = [
   {
     type: "six_month",
     name: "৬ মাস",
-    price: 500,
-    originalPrice: 850,
+    price: 750,
+    originalPrice: 1200,
     popular: true,
     durationDays: 180,
     durationLabel: "/ ৬ মাস",
