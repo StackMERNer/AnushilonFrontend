@@ -9,7 +9,7 @@ const SubjectList = ({ baseUrl, }: { baseUrl: string, }) => {
     const { data: user } = useUserProfile();
     const { data: subjects } = useAcademicTree({ upto: "topic", enabled: !!user?.profile, trackKey: user?.activeTrackId ?? undefined, });
     const classIds = subjects?.map((subject) => subject.class._id) ?? [];
-    const hasMultipleClasses = classIds.length > 1;
+    const hasMultipleClasses = new Set(classIds).size > 1;
     return (
         <>
             {subjects?.map((subject) => (
