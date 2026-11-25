@@ -50,6 +50,7 @@ const HIDE_TOPBAR_PAGES = [
     "/my-papers",
     "/content-library",
     "/question-bank/questions",
+    "/pdf"
 ];
 
 export function Topbar() {

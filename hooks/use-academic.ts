@@ -18,7 +18,6 @@ export const useClasses = () => {
 export const useAcademicTree = ({
   classId,
   upto = "chapter",
-  paperId,
   status,
   stream,
   enabled,
@@ -26,27 +25,17 @@ export const useAcademicTree = ({
 }: {
   classId?: string;
   upto?: "subject" | "chapter" | "topic";
-  paperId?: string;
   status?: "active" | "all";
   stream?: string;
   trackKey?: string;
   enabled?: boolean;
 }) => {
   return useQuery({
-    queryKey: [
-      "academic-tree",
-      classId,
-      upto,
-      paperId,
-      status,
-      stream,
-      trackKey,
-    ],
+    queryKey: ["academic-tree", classId, upto, status, stream, trackKey],
     queryFn: () =>
       academicService.getAcademicTree({
         classId,
         upto,
-        paperId,
         status,
         stream,
       }),
