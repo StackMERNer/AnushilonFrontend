@@ -31,6 +31,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
+import { useHasPdf } from '@/hooks/use-pdf';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Data                                    */
@@ -54,7 +55,7 @@ const ADMIN_NAV: MenuItem[] = [
 
 const getStudentNav = (dueCount?: number): MenuItem[] => [
     { label: 'ড্যাশবোর্ড', href: '/dashboard', icon: LayoutDashboard, image: '/img/icons/learn.svg' },
-    { label: 'দ্রুত অনুশীলন', href: '/browse', icon: FileText, image: '/img/icons/practice.svg' },
+    { label: 'দ্রুত অনুশীলন', href: '/browse', icon: FileText, image: '/img/icons/xp.svg' },
     {
         label: 'রিভিউ',
         href: '/review',
@@ -64,7 +65,7 @@ const getStudentNav = (dueCount?: number): MenuItem[] => [
     },
     { label: 'প্রশ্নব্যাংক', href: '/question-bank', icon: File, image: '/img/icons/quests.svg' },
     { label: 'বুকমার্ক', href: '/bookmarks', icon: Bookmark, image: '/img/icons/heart.svg' },
-    { label: 'পেমেন্ট হিস্টোরি', href: '/payment-history', icon: Clock, image: '/img//icons/calculator.svg' },
+    // { label: 'পেমেন্ট হিস্টোরি', href: '/payment-history', icon: Clock, image: '/img//icons/calculator.svg' },
     // { label: 'সহায়তা', href: '/help', icon: HelpCircle, image: '/images/help.svg' },
 ];
 
@@ -234,7 +235,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
     const { mobileMenuOpen, closeMobileMenu, collapsed, toggleCollapsed } = useSidebar();
     const { data: countData } = useDueCount();
     const { data: user } = useUserProfile();
-
+    const { hasPdf } = useHasPdf();
     const isActive = (href: string) => {
         if (href === '/dashboard' && (pathname === '/dashboard' || pathname === '/')) return true;
         return pathname === href || pathname.startsWith(`${href}/`);
@@ -244,9 +245,10 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
 
     const hasGlobalSubscription = !!user && hasActiveSubscription(user);
 
-
+    const isAdmin = user?.role === "admin" || user?.anushilonRole === "admin";
     const userClass = user?.class?.name;
-    // const userStream = user?.stream;
+
+    const pdfItem: MenuItem[] = (hasPdf || isAdmin) ? [{ label: 'PDF', href: '/pdf', icon: File, image: "/img/icons/practice.svg", badge: 'new' }] : []
 
     return (
         <>
@@ -313,7 +315,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
                 {/* -------------------------------- Nav -------------------------------- */}
                 <nav className="space-y-1">
 
-                    {navItems.map((item) => (
+                    {[...navItems, ...pdfItem].map((item) => (
                         <NavLink
                             key={item.href}
                             item={item}

@@ -3,6 +3,7 @@ import { apiClient } from "@/lib/api/api-client";
 import { createPdfService, IPdfAnchor, PdfRect } from "@/services/pdf.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ms from "ms";
+import { useUserProfile } from "./useUserProfile";
 
 export const pdfService = createPdfService(apiClient);
 
@@ -50,4 +51,20 @@ export function useAnchorMutations(versionId: string) {
 
 export function useCreateBook() {
   return useMutation({ mutationFn: pdfService.createBook });
+}
+
+export function usePdfSubjects() {
+  const { data: user } = useUserProfile();
+  return useQuery({
+    queryKey: ["pdf-subjects", user?.profile?._id, user?.activeTrackId], // refetch when profile/track changes
+    queryFn: async () => (await pdfService.getSubjects()).subjectIds,
+    enabled: !!user?.profile,
+    staleTime: ms("30m"),
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useHasPdf() {
+  const { data, isLoading } = usePdfSubjects();
+  return { hasPdf: (data?.length ?? 0) > 0, isLoading };
 }

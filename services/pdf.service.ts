@@ -57,7 +57,8 @@ export function createPdfService(client: AxiosInstance) {
       run<{ questions: CardQuestion[] }>(
         client.get(`/pdf/anchors/${anchorId}/questions`),
       ),
-
+    getSubjects: () =>
+      run<{ subjectIds: string[] }>(client.get("/pdf/subjects")),
     // admin
     createBook: (body: {
       title: string;

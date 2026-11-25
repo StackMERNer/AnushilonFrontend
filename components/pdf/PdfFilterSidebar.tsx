@@ -6,6 +6,7 @@ import { useTransition } from "react";
 import clsx from "clsx";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useAcademicTree } from "@/hooks/use-academic";
+import { usePdfSubjects } from "@/hooks/use-pdf";
 
 function RadioDot({ checked }: { checked: boolean }) {
     return (
@@ -62,12 +63,14 @@ export default function PdfFilterSidebar() {
     const subjectId = sp.get("subjectId") ?? "";
 
     const { data: user } = useUserProfile();
-
+    const { data: withPdf } = usePdfSubjects();
     const { data: subjects = [], isLoading } = useAcademicTree({
         upto: "subject",
         enabled: !!user?.profile,
         trackKey: user?.activeTrackId ?? undefined,
     });
+
+    const list = (subjects as any[]).filter(s => withPdf?.includes(s._id));
 
     const choose = (id: string) => {
         const params = new URLSearchParams(sp.toString());
@@ -102,7 +105,7 @@ export default function PdfFilterSidebar() {
                         onClick={choose}
                     />
 
-                    {(subjects as any[]).map((s) => (
+                    {(list as any[]).map((s) => (
                         <Item
                             key={s._id}
                             id={s._id}
