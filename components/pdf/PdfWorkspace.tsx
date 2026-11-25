@@ -591,7 +591,7 @@ function QuestionModal({ anchor, onClose }: { anchor: IPdfAnchor; onClose: () =>
     return (
         <div onClick={onClose} className="fixed inset-0 z-1000 flex items-end justify-center bg-black/50 sm:items-center sm:p-4">
             <div onClick={e => e.stopPropagation()}
-                className="flex max-h-[90dvh] w-full max-w-2xl flex-col rounded-t-2xl bg-background p-4 shadow-xl sm:rounded-2xl">
+                className="flex max-h-[90dvh] w-full max-w-2xl flex-col rounded-t-2xl bg-background p-4 shadow-xl sm:rounded-2xl border">
                 <div className="mb-3 flex items-center justify-between">
                     <h3 className="font-bold">প্রশ্ন ({anchor.count})</h3>
                     <button onClick={onClose} className="grid size-8 place-items-center rounded-full hover:bg-muted"><X className="size-5" /></button>
