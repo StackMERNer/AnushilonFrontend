@@ -1,6 +1,17 @@
 import { AxiosError, AxiosInstance } from "axios";
 import type { CardQuestion } from "@/components/QuestionCard";
 import type { PaginatedResponse } from "@/types/pagination";
+export interface IExportMeta {
+  topic: string | null;
+  total: number;
+  parts: number;
+  updatedAt: string;
+}
+export interface IExportInfo {
+  chapter: { _id: string; name: string };
+  topics: { _id: string; name: string }[];
+  export: IExportMeta | null;
+}
 
 export type PdfRect = { x: number; y: number; w: number; h: number };
 export interface IPdfAnchor {
@@ -76,9 +87,17 @@ export function createPdfService(client: AxiosInstance) {
       run<{ questions: CardQuestion[]; notFound: string[] }>(
         client.post("/pdf/lookup", { tokens }),
       ),
-    resolveIds: (exportId: string, text: string) =>
+    getExport: (bookId: string) =>
+      run<IExportInfo>(client.get(`/pdf/books/${bookId}/export`)),
+    generateExport: (
+      bookId: string,
+      body: { topic?: string; chunk?: number },
+    ) => run<IExportMeta>(client.post(`/pdf/books/${bookId}/export`, body)),
+    getExportFiles: (bookId: string) =>
+      run<{ parts: string[] }>(client.get(`/pdf/books/${bookId}/export/files`)),
+    resolveIds: (bookId: string, text: string) =>
       run<{ questions: CardQuestion[]; unknown: number[] }>(
-        client.post("/pdf/resolve-ids", { exportId, text }),
+        client.post(`/pdf/books/${bookId}/resolve`, { text }),
       ),
     createAnchor: (body: {
       version: string;

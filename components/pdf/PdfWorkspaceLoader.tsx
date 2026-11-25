@@ -2,7 +2,7 @@
 import { useEffect, useState, type ComponentType } from "react";
 import type { IPdfAnchor } from "@/services/pdf.service";
 
-type Props = { title: string; fileUrl: string; versionId: string; exportId?: string; initialAnchors: IPdfAnchor[] };
+type Props = { title: string; fileUrl: string; versionId: string; bookId?: string; initialAnchors: IPdfAnchor[] };
 
 export default function PdfWorkspaceLoader(props: Props) {
     const [Comp, setComp] = useState<ComponentType<Props> | null>(null);

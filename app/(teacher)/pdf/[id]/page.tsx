@@ -20,7 +20,7 @@ export default async function PdfPage({ params, searchParams }: {
             title={book.title}
             fileUrl={book.version.fileUrl}
             versionId={book.version._id}
-            exportId={sp.export ?? book.chapter._id}   // override with ?export=<topicId> when you exported per topic
+            bookId={book._id}
             initialAnchors={anchors}
         />
     );

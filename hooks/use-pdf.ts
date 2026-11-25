@@ -1,6 +1,11 @@
 "use client";
 import { apiClient } from "@/lib/api/api-client";
-import { createPdfService, IPdfAnchor, PdfRect } from "@/services/pdf.service";
+import {
+  createPdfService,
+  IExportInfo,
+  IPdfAnchor,
+  PdfRect,
+} from "@/services/pdf.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ms from "ms";
 import { useUserProfile } from "./useUserProfile";
@@ -67,4 +72,25 @@ export function usePdfSubjects() {
 export function useHasPdf() {
   const { data, isLoading } = usePdfSubjects();
   return { hasPdf: (data?.length ?? 0) > 0, isLoading };
+}
+
+export function useBookExport(bookId: string, enabled: boolean) {
+  const qc = useQueryClient();
+  const key = ["pdf-export", bookId];
+  const info = useQuery({
+    queryKey: key,
+    queryFn: () => pdfService.getExport(bookId),
+    enabled,
+    staleTime: ms("5m"),
+    refetchOnWindowFocus: false,
+  });
+  const generate = useMutation({
+    mutationFn: (b: { topic?: string }) => pdfService.generateExport(bookId, b),
+    onSuccess: (meta) =>
+      qc.setQueryData<IExportInfo>(
+        key,
+        (old) => old && { ...old, export: meta },
+      ),
+  });
+  return { info, generate };
 }

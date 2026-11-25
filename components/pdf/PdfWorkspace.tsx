@@ -11,7 +11,7 @@ import {
 import clsx from "clsx";
 import QuestionCard, { CardQuestion } from "@/components/QuestionCard"; // adjust path
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { pdfService, useAnchorMutations, usePdfAnchors } from "@/hooks/use-pdf";
+import { pdfService, useAnchorMutations, useBookExport, usePdfAnchors } from "@/hooks/use-pdf";
 import type { IPdfAnchor, PdfRect } from "@/services/pdf.service";
 import { getAnchorQuestions } from "@/app/(teacher)/pdf/actions";
 import QuestionListSkeleton from "../QuestionListSkeleton";
@@ -140,18 +140,11 @@ function useWindow(ref: React.RefObject<HTMLElement | null>, offsets: number[], 
 
 /* ------------------------------------------------------------------ */
 
-export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "", initialAnchors }: {
-    title: string; fileUrl: string; versionId: string; exportId?: string; initialAnchors: IPdfAnchor[];
+export default function PdfWorkspace({ title, fileUrl, versionId, bookId = "", initialAnchors }: {
+    title: string; fileUrl: string; versionId: string; bookId?: string; initialAnchors: IPdfAnchor[];
 }) {
     const { data: me } = useUserProfile();
-    const isAdmin = me?.role === "teacher" || me?.role === "admin"; // match your backend's requireAdmin
-
-    // useEffect(() => {
-    //     console.log("[workspace] mounted");
-    //     return () => console.log("[workspace] unmounted");
-    // }, []);
-    // const prevFile = useRef(fileUrl);
-    // if (prevFile.current !== fileUrl) { console.log("[workspace] fileUrl changed", prevFile.current, fileUrl); prevFile.current = fileUrl; }
+    const isAdmin = me?.role === "admin";
 
     const [numPages, setNumPages] = useState(0);
     const [ratios, setRatios] = useState<number[]>([]);
@@ -535,7 +528,7 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
                 {/* editor panel */}
                 {editOn && (
                     <EditorPanel
-                        sel={sel} qCache={qCache} exportId={exportId} msg={msg} busy={busy} dirty={dirty}
+                        sel={sel} qCache={qCache} bookId={bookId} msg={msg} busy={busy} dirty={dirty}
                         onCopy={copyImage} onSave={save} onDelete={del}
                         onAdd={addQuestions} onMove={move}
                         onRemove={i => { setSel(s => s && { ...s, ids: s.ids.filter((_, k) => k !== i) }); setDirty(true); }}
@@ -609,15 +602,15 @@ function QuestionModal({ anchor, onClose }: { anchor: IPdfAnchor; onClose: () =>
 
 /* ------------------------------ editor panel ----------------------------- */
 
-function EditorPanel({ sel, qCache, exportId, msg, busy, dirty, onCopy, onSave, onDelete, onAdd, onMove, onRemove, onClose, setMsg }: {
-    sel: Sel | null; qCache: Record<string, CardQuestion>; exportId: string; msg: string; busy: boolean; dirty: boolean;
+function EditorPanel({ sel, qCache, bookId, msg, busy, dirty, onCopy, onSave, onDelete, onAdd, onMove, onRemove, onClose, setMsg }: {
+    sel: Sel | null; qCache: Record<string, CardQuestion>; bookId: string; msg: string; busy: boolean; dirty: boolean;
     onCopy: () => void; onSave: () => void; onDelete: () => void;
     onAdd: (qs: CardQuestion[]) => void; onMove: (i: number, d: -1 | 1) => void;
     onRemove: (i: number) => void; onClose: () => void; setMsg: (m: string) => void;
 }) {
     const [mode, setMode] = useState<"ids" | "gemini">("ids");
     const [text, setText] = useState("");
-    const [expId, setExpId] = useState(exportId);
+
     const [open, setOpen] = useState<string | null>(null);
     const [working, setWorking] = useState(false);
 
@@ -630,8 +623,8 @@ function EditorPanel({ sel, qCache, exportId, msg, busy, dirty, onCopy, onSave, 
                 onAdd(r.questions);
                 if (r.notFound.length) setMsg(`Not found: ${r.notFound.join(", ")}`);
             } else {
-                if (!expId) return setMsg("Enter the export id first.");
-                const r = await pdfService.resolveIds(expId, text);
+                if (!bookId) return setMsg("Enter the export id first.");
+                const r = await pdfService.resolveIds(bookId, text);
                 onAdd(r.questions);
                 if (r.unknown.length) setMsg(`Not in the export: ${r.unknown.join(", ")}`);
             }
@@ -641,6 +634,7 @@ function EditorPanel({ sel, qCache, exportId, msg, busy, dirty, onCopy, onSave, 
 
     return (
         <aside className="w-[220px] shrink-0 space-y-3 overflow-y-auto border-l border-line bg-card p-4">
+            <ExportBox bookId={bookId} setMsg={setMsg} />
             {!sel ? (
                 <p className="text-sm text-muted-foreground">
                     Drag on a page to draw a region, or click a dashed region to edit it. Drag the body to move it and the handles to resize.
@@ -667,10 +661,7 @@ function EditorPanel({ sel, qCache, exportId, msg, busy, dirty, onCopy, onSave, 
                                 </button>
                             ))}
                         </div>
-                        {mode === "gemini" && (
-                            <input value={expId} onChange={e => setExpId(e.target.value)} placeholder="Export id (topic or chapter id)"
-                                className="w-full rounded-lg border border-line bg-background px-2 py-1.5 text-sm" />
-                        )}
+
                         <textarea value={text} onChange={e => setText(e.target.value)} rows={3}
                             placeholder={mode === "ids" ? "ids or refIds, separated by space, comma or new line" : "e.g. [1], [6], [7]"}
                             className="w-full rounded-lg border border-line bg-background p-2 text-sm" />
@@ -716,5 +707,70 @@ function EditorPanel({ sel, qCache, exportId, msg, busy, dirty, onCopy, onSave, 
                 </>
             )}
         </aside>
+    );
+}
+
+
+function saveText(name: string, text: string) {
+    const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
+    const a = document.createElement("a");
+    a.href = url; a.download = name; a.click();
+    URL.revokeObjectURL(url);
+}
+
+function ExportBox({ bookId, setMsg }: { bookId: string; setMsg: (m: string) => void }) {
+    console.log('bookId', bookId);
+    const { info, generate } = useBookExport(bookId, true);
+    const [topic, setTopic] = useState("");
+    const [busy, setBusy] = useState(false);
+    const data = info.data;
+    const ex = data?.export;
+
+    async function run() {
+        if (ex && !confirm("This replaces the current list. Question numbers in your old AI chat will no longer match. Continue?")) return;
+        setMsg("");
+        try { await generate.mutateAsync({ topic: topic || undefined }); }
+        catch (e: any) { setMsg(e.message); }
+    }
+
+    async function download(only?: number) {
+        setBusy(true);
+        try {
+            const { parts } = await pdfService.getExportFiles(bookId);
+            const todo = only === undefined ? parts.map((_, i) => i) : [only];
+            todo.forEach((i, k) => setTimeout(() => saveText(`questions-part-${i + 1}-of-${parts.length}.txt`, parts[i]), k * 350));
+        } catch (e: any) { setMsg(e.message); } finally { setBusy(false); }
+    }
+
+    const exTopic = data?.topics.find(t => t._id === ex?.topic)?.name;
+
+    return (
+        <div className="space-y-2 rounded-xl border border-line p-3 text-xs">
+            <div className="font-semibold">Question list for AI</div>
+            <div className="text-muted-foreground">{data ? data.chapter.name : "Loading…"}</div>
+            <select value={topic} onChange={e => setTopic(e.target.value)}
+                className="w-full rounded-lg border border-line bg-background px-2 py-1.5">
+                <option value="">Whole chapter</option>
+                {data?.topics.map(t => <option key={t._id} value={t._id}>{t.name}</option>)}
+            </select>
+            <button onClick={run} disabled={!data || generate.isPending}
+                className="w-full rounded-full bg-brand px-3 py-1.5 text-white disabled:opacity-50">
+                {generate.isPending ? "Generating…" : ex ? "Regenerate" : "Generate"}
+            </button>
+
+            {ex && (
+                <div className="space-y-1.5">
+                    <p className="text-muted-foreground">
+                        {ex.total} questions · {exTopic ?? "whole chapter"} · {ex.parts} file{ex.parts > 1 ? "s" : ""}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                        <button onClick={() => download()} disabled={busy} className="rounded-full border px-2.5 py-1">Download all</button>
+                        {ex.parts > 1 && Array.from({ length: ex.parts }, (_, i) => (
+                            <button key={i} onClick={() => download(i)} disabled={busy} className="rounded-full border px-2.5 py-1">{i + 1}</button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
