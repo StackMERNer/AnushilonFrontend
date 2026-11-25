@@ -248,7 +248,7 @@ export function Sidebar({ layout }: { layout: 'admin' | 'student' }) {
     const isAdmin = user?.role === "admin" || user?.anushilonRole === "admin";
     const userClass = user?.class?.name;
 
-    const pdfItem: MenuItem[] = (hasPdf || isAdmin) ? [{ label: 'PDF', href: '/pdf', icon: File, image: "/img/icons/practice.svg", badge: 'new' }] : []
+    const pdfItem: MenuItem[] = (isAdmin) ? [{ label: 'PDF', href: '/pdf', icon: File, image: "/img/icons/practice.svg", badge: 'new' }] : []
 
     return (
         <>
