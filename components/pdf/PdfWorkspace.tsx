@@ -329,7 +329,7 @@ export default function PdfWorkspace({ title, fileUrl, versionId, bookId = "", i
         try {
             const blob = await cropBlob(sel.page, sel.rect);
             await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-            setMsg("Image copied. Paste it into Gemini.");
+            setMsg("Image copied. Paste it into AI.");
         } catch (e: any) { setMsg(e.message || "Copy failed (needs https or localhost)"); }
     }
 
@@ -608,7 +608,7 @@ function EditorPanel({ sel, qCache, bookId, msg, busy, dirty, onCopy, onSave, on
     onAdd: (qs: CardQuestion[]) => void; onMove: (i: number, d: -1 | 1) => void;
     onRemove: (i: number) => void; onClose: () => void; setMsg: (m: string) => void;
 }) {
-    const [mode, setMode] = useState<"ids" | "gemini">("ids");
+    const [mode, setMode] = useState<"ids" | "AI">("ids");
     const [text, setText] = useState("");
 
     const [open, setOpen] = useState<string | null>(null);
@@ -654,10 +654,10 @@ function EditorPanel({ sel, qCache, bookId, msg, busy, dirty, onCopy, onSave, on
 
                     <div className="space-y-2 rounded-xl border border-line p-3">
                         <div className="flex flex-wrap gap-1 text-xs">
-                            {(["ids", "gemini"] as const).map(m => (
+                            {(["ids", "AI"] as const).map(m => (
                                 <button key={m} onClick={() => setMode(m)}
                                     className={clsx("rounded-full px-3 py-1", mode === m ? "bg-brand text-white" : "border")}>
-                                    {m === "ids" ? "Ids / refIds" : "Gemini"}
+                                    {m === "ids" ? "Ids" : "AI"}
                                 </button>
                             ))}
                         </div>
@@ -719,7 +719,6 @@ function saveText(name: string, text: string) {
 }
 
 function ExportBox({ bookId, setMsg }: { bookId: string; setMsg: (m: string) => void }) {
-    console.log('bookId', bookId);
     const { info, generate } = useBookExport(bookId, true);
     const [topic, setTopic] = useState("");
     const [busy, setBusy] = useState(false);
@@ -727,7 +726,7 @@ function ExportBox({ bookId, setMsg }: { bookId: string; setMsg: (m: string) => 
     const ex = data?.export;
 
     async function run() {
-        if (ex && !confirm("This replaces the current list. Question numbers in your old AI chat will no longer match. Continue?")) return;
+        if (ex && !confirm("This replaces the current list. Question numbers in your old chat will no longer match. Continue?")) return;
         setMsg("");
         try { await generate.mutateAsync({ topic: topic || undefined }); }
         catch (e: any) { setMsg(e.message); }
@@ -746,7 +745,7 @@ function ExportBox({ bookId, setMsg }: { bookId: string; setMsg: (m: string) => 
 
     return (
         <div className="space-y-2 rounded-xl border border-line p-3 text-xs">
-            <div className="font-semibold">Question list for AI</div>
+            <div className="font-semibold">Question list</div>
             <div className="text-muted-foreground">{data ? data.chapter.name : "Loading…"}</div>
             <select value={topic} onChange={e => setTopic(e.target.value)}
                 className="w-full rounded-lg border border-line bg-background px-2 py-1.5">
