@@ -154,15 +154,42 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
 
     const [numPages, setNumPages] = useState(0);
     const [ratios, setRatios] = useState<number[]>([]);
-    const [width, setWidth] = useState(800);
-    const [renderWidth, setRenderWidth] = useState(800);
     const [editing, setEditing] = useState(false);
-    const [thumbsOpen, setThumbsOpen] = useState(true);
+    // const [thumbsOpen, setThumbsOpen] = useState(true);
+    const [thumbsOpen, setThumbsOpen] = useState(() => window.innerWidth >= 768);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLElement>(null);
     const navHover = useRef(false);
     const drag = useRef<Drag | null>(null);
+
+    const ZOOMS = [0.75, 1, 1.25, 1.5, 2, 3];
+
+    const [zoom, setZoom] = useState(1);
+    const [boxW, setBoxW] = useState(0);
+    const [renderWidth, setRenderWidth] = useState(800);
+
+    // measure the scroll area (runs again once the pages container exists)
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const ro = new ResizeObserver(() => setBoxW(el.clientWidth));
+        ro.observe(el);
+        setBoxW(el.clientWidth);
+        return () => ro.disconnect();
+    }, [numPages]);
+
+    // 100% = fit the screen, capped on big monitors; 12px gutters keep the badges from being clipped
+    const fitW = Math.max(240, Math.min(boxW - 24, 900));
+    const width = Math.round(fitW * zoom);
+
+    const stepZoom = (d: 1 | -1) =>
+        setZoom(z => {
+            const i = ZOOMS.findIndex(v => v >= z);
+            return ZOOMS[Math.min(ZOOMS.length - 1, Math.max(0, i + d))];
+        });
+
+
 
     const [viewing, setViewing] = useState<IPdfAnchor | null>(null);
 
@@ -171,7 +198,7 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
     const [dirty, setDirty] = useState(false);
     const [qCache, setQCache] = useState<Record<string, CardQuestion>>({});
     const cacheRef = useRef(qCache);
-    cacheRef.current = qCache;
+    useEffect(() => { cacheRef.current = qCache; }, [qCache]);
     const [msg, setMsg] = useState("");
     const [busy, setBusy] = useState(false);
 
@@ -210,10 +237,13 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
 
     // keep the zoomed page in view when the width changes
     const currentRef = useRef(1);
-    currentRef.current = current;
+    useEffect(() => { currentRef.current = current; }, [current]);
+
     useEffect(() => {
-        if (scrollRef.current && pageOffsets.length) scrollRef.current.scrollTop = pageOffsets[currentRef.current - 1] ?? 0;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (scrollRef.current && pageOffsets.length)
+            // eslint-disable-next-line react-hooks/immutability
+            scrollRef.current.scrollTop = pageOffsets[currentRef.current - 1] ?? 0;
+        //  eslint-disable-next-line react-hooks/exhaustive-deps
     }, [width]);
 
     // keep the active thumbnail visible, but never fight the user while they use the thumbnail panel
@@ -228,7 +258,6 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
     const goTo = (p: number) => scrollRef.current?.scrollTo({ top: pageOffsets[p - 1] ?? 0 });
 
     const onLoadSuccess = useCallback(async (d: any) => {
-        console.log('inside onLoadSuccess');
         setNumPages(d.numPages);
         const rs = await Promise.all(Array.from({ length: d.numPages }, async (_, i) => {
             const p = await d.getPage(i + 1);
@@ -352,25 +381,25 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
         <div className="flex h-dvh flex-col bg-muted/30">
             {/* toolbar */}
             <div className="flex items-center gap-2 border-b border-line bg-card px-3 py-2 text-sm">
-                <Link href="/pdf" className="grid size-8 place-items-center rounded-full hover:bg-muted" aria-label="Back">
+                <Link href="/pdf" className="grid size-8 place-items-center rounded-full hover:bg-muted md:hidden" aria-label="Back">
                     <ChevronLeft className="size-5" />
                 </Link>
                 <button onClick={() => setThumbsOpen(v => !v)} title={thumbsOpen ? "Hide thumbnails" : "Show thumbnails"}
-                    className="hidden size-8 place-items-center rounded-full hover:bg-muted md:grid">
+                    className="grid size-8 place-items-center rounded-full hover:bg-muted">
                     {thumbsOpen ? <PanelLeftClose className="size-5" /> : <PanelLeftOpen className="size-5" />}
                 </button>
-                <b className="max-w-[40%] truncate">{title}</b>
-                <span className="text-muted-foreground">{numPages ? `${current} / ${numPages}` : "…"}</span>
-                <button className="rounded-full border p-1.5" onClick={() => setWidth(w => Math.max(400, w - 100))}><ZoomOut className="size-4" /></button>
-                <span className="w-14 text-center">{width}px</span>
-                <button className="rounded-full border p-1.5" onClick={() => setWidth(w => Math.min(1400, w + 100))}><ZoomIn className="size-4" /></button>
+                <b className="min-w-0 flex-1 truncate sm:flex-none sm:max-w-[40%]">{title}</b>
+                <span className="text-muted-foreground text-xs md:text-base">{numPages ? `${current} / ${numPages}` : "…"}</span>
+                <button className="rounded-full border p-1.5" onClick={() => stepZoom(-1)}><ZoomOut className="size-4" /></button>
+                <button onClick={() => setZoom(1)} className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</button>
+                <button className="rounded-full border p-1.5" onClick={() => stepZoom(1)}><ZoomIn className="size-4" /></button>
                 {isAdmin && (
                     <button
                         onClick={() => { if (editing && !confirmLeave()) return; setEditing(v => !v); setSel(null); setDirty(false); }}
-                        className={clsx("ml-auto inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-semibold",
+                        className={clsx("ml-auto hidden items-center gap-1.5 rounded-full px-4 py-1.5 font-semibold md:inline-flex",
                             editing ? "bg-brand text-white" : "border")}
                     >
-                        <Pencil className="size-4" /> {editing ? "Editing" : "Edit mode"}
+                        <Pencil className="size-4" /> {editing ? "Editing" : "Edit"}
                     </button>
                 )}
             </div>
@@ -378,19 +407,20 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
             <Document
                 file={fileUrl}
                 options={PDF_OPTIONS}
-                className="flex min-h-0 flex-1"
+                className="relative flex min-h-0 flex-1"
                 loading={LOADING_EL}
                 error={ERROR_EL}
                 onLoadSuccess={onLoadSuccess}
-                onItemClick={({ pageNumber }) => goTo(pageNumber)}
+                onItemClick={({ pageNumber }) => { goTo(pageNumber); if (window.innerWidth < 768) setThumbsOpen(false); }}
             >
                 {/* thumbnails (collapsible) */}
+                {thumbsOpen && <div className="absolute inset-0 z-20 bg-black/30 md:hidden" onClick={() => setThumbsOpen(false)} />}
                 {thumbsOpen && (
                     <nav
                         ref={navRef}
                         onMouseEnter={() => { navHover.current = true; }}
                         onMouseLeave={() => { navHover.current = false; }}
-                        className="hidden w-36 shrink-0 overflow-y-auto border-r border-line bg-card md:block"
+                        className="absolute inset-y-0 left-0 z-30 w-36 shrink-0 overflow-y-auto border-r border-line bg-card shadow-xl md:static md:z-auto md:shadow-none"
                         style={{ overflowAnchor: "none" }}
                     >
                         {Array.from({ length: numPages }, (_, i) => {
@@ -399,7 +429,7 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
                             const count = anchorsByPage.get(p)?.length ?? 0;
                             return (
                                 <button key={p}
-                                    // onClick={() => goTo(p)}
+                                    onClick={() => { goTo(p); if (window.innerWidth < 768) setThumbsOpen(false); }}
                                     className="block w-full overflow-hidden text-center"
                                     style={{ height: thumbH(ratioOf(p)) }}>
                                     <div className="pt-2">
@@ -449,7 +479,14 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
                                                 cursor: editOn ? "pointer" : "default",
                                             }}>
                                             <button
-                                                onClick={e => { e.stopPropagation(); editOn ? selectAnchor(a) : setViewing(a); }}
+                                                onClick={e => {
+                                                    e.stopPropagation();
+                                                    if (editOn) {
+                                                        selectAnchor(a);
+                                                    } else {
+                                                        setViewing(a);
+                                                    }
+                                                }}
                                                 style={{
                                                     position: "absolute", right: -10, top: -10, pointerEvents: "auto",
                                                     borderRadius: 999, background: "#e67e22", color: "#fff",
@@ -546,9 +583,9 @@ function QuestionModal({ anchor, onClose }: { anchor: IPdfAnchor; onClose: () =>
         refetchOnWindowFocus: false,
     });
     return (
-        <div onClick={onClose} className="fixed inset-0 z-1000 grid place-items-center bg-black/50 p-4">
+        <div onClick={onClose} className="fixed inset-0 z-1000 flex items-end justify-center bg-black/50 sm:items-center sm:p-4">
             <div onClick={e => e.stopPropagation()}
-                className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl bg-background p-4 shadow-xl">
+                className="flex max-h-[90dvh] w-full max-w-2xl flex-col rounded-t-2xl bg-background p-4 shadow-xl sm:rounded-2xl">
                 <div className="mb-3 flex items-center justify-between">
                     <h3 className="font-bold">প্রশ্ন ({anchor.count})</h3>
                     <button onClick={onClose} className="grid size-8 place-items-center rounded-full hover:bg-muted"><X className="size-5" /></button>

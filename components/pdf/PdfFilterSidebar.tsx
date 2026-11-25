@@ -72,9 +72,11 @@ export default function PdfFilterSidebar() {
     const choose = (id: string) => {
         const params = new URLSearchParams(sp.toString());
 
-        id
-            ? params.set("subjectId", id)
-            : params.delete("subjectId");
+        if (id) {
+            params.set("subjectId", id);
+        } else {
+            params.delete("subjectId");
+        }
 
         params.delete("page");
 
