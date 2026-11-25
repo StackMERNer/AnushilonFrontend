@@ -14,6 +14,7 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { pdfService, useAnchorMutations, usePdfAnchors } from "@/hooks/use-pdf";
 import type { IPdfAnchor, PdfRect } from "@/services/pdf.service";
 import { getAnchorQuestions } from "@/app/(teacher)/pdf/actions";
+import QuestionListSkeleton from "../QuestionListSkeleton";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -597,7 +598,7 @@ function QuestionModal({ anchor, onClose }: { anchor: IPdfAnchor; onClose: () =>
                     <button onClick={onClose} className="grid size-8 place-items-center rounded-full hover:bg-muted"><X className="size-5" /></button>
                 </div>
                 <div className="space-y-3 overflow-y-auto">
-                    {isLoading && <p className="text-sm text-muted-foreground">Loading...</p>}
+                    {isLoading && <QuestionListSkeleton length={3} />}
                     {error && <p className="text-sm text-red-500">{(error as Error).message}</p>}
                     {qs?.map((q, i) => <QuestionCard key={q._id} question={q} questionNo={i + 1} srsEnabled />)}
                 </div>
