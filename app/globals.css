@@ -324,22 +324,53 @@
 /* ================================
    Custom Scrollbar
 ================================ */
+/* ================================
+   Custom Scrollbar
+================================ */
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 10px;
+:root {
+  --scrollbar-size: 8px;
+  --scrollbar-thumb: #d6d1e2;
+  --scrollbar-thumb-hover: #a99acb;
+  --scrollbar-track: transparent;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+.dark {
+  --scrollbar-thumb: #403750;
+  --scrollbar-thumb-hover: #66558a;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--border);
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
   border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-light);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+  background-clip: padding-box;
+}
+
+/* Optional: Hide scrollbar arrows */
+::-webkit-scrollbar-button {
+  display: none;
 }
 
 /* ================================
