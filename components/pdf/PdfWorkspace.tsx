@@ -377,6 +377,12 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
 
     const dpr = typeof window === "undefined" ? 1 : Math.min(editOn ? 2 : 1.5, window.devicePixelRatio || 1);
 
+    const questionsByPage = useMemo(() => {
+        const m = new Map<number, number>();
+        anchors.forEach(a => m.set(a.page, (m.get(a.page) ?? 0) + a.count));
+        return m;
+    }, [anchors]);
+
     return (
         <div className="flex h-dvh flex-col bg-muted/30">
             {/* toolbar */}
@@ -426,7 +432,7 @@ export default function PdfWorkspace({ title, fileUrl, versionId, exportId = "",
                         {Array.from({ length: numPages }, (_, i) => {
                             const p = i + 1;
                             const near = i >= tw.from && i <= tw.to;
-                            const count = anchorsByPage.get(p)?.length ?? 0;
+                            const count = questionsByPage.get(p) ?? 0;
                             return (
                                 <button key={p}
                                     onClick={() => { goTo(p); if (window.innerWidth < 768) setThumbsOpen(false); }}
