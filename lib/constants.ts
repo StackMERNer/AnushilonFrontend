@@ -70,6 +70,7 @@ export type PlanType =
   | "yearly"
   | "free"
   | "subject_yearly"
+  | "three_month"
   | "custom";
 
 export interface PlanInfo {
@@ -101,29 +102,38 @@ export const plansInfo: PlanInfo[] = [
 
     features: ["লিমিটেড মক পরীক্ষা", "লিমিটেড প্রশ্নব্যাংক অ্যাকসেস"],
   },
+  // {
+  //   type: "monthly",
+  //   name: "মাসিক",
+  //   price: 200,
+  //   originalPrice: 250,
+
+  //   durationDays: 30,
+  //   durationLabel: "/ মাস",
+
+  //   popular: false,
+
+  //   features: ["আনলিমিটেড প্রশ্ন রিভিউ", "সম্পূর্ণ প্রশ্নব্যাংক অ্যাকসেস"],
+  // },
   {
-    type: "monthly",
-    name: "মাসিক",
+    type: "three_month",
+    name: "৩ মাস",
     price: 200,
-    originalPrice: 250,
-
-    durationDays: 30,
-    durationLabel: "/ মাস",
-
+    originalPrice: 350,
+    durationDays: 90,
+    durationLabel: "/৩ মাস",
     popular: false,
-
-    features: ["আনলিমিটেড মক পরীক্ষা", "প্রশ্নব্যাংক অ্যাকসেস"],
+    features: ["আনলিমিটেড প্রশ্ন রিভিউ", "সম্পূর্ণ প্রশ্নব্যাংক অ্যাকসেস"],
   },
-
   {
     type: "six_month",
     name: "৬ মাস",
-    price: 750,
-    originalPrice: 1200,
+    price: 500,
+    originalPrice: 700,
     popular: true,
     durationDays: 180,
     durationLabel: "/ ৬ মাস",
-    features: ["আনলিমিটেড মক পরীক্ষা", "সকল বিষয়ের প্রশ্নব্যাংক অ্যাকসেস"],
+    features: ["আনলিমিটেড প্রশ্ন রিভিউ", "সম্পূর্ণ প্রশ্নব্যাংক অ্যাকসেস"],
   },
 ];
 
